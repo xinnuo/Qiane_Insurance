@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_size_180"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/product_bj"
+                tools:ignore="ContentDescription" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/dimen_size_10">
+
+                    <TextView
+                        style="@style/Font15_black_medium"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="平安e生保2108版" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_size_30"
+                        android:adjustViewBounds="true"
+                        android:src="@mipmap/product_icon01"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_size_10"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        style="@style/Font14_gray"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="承保年龄：16-25岁" />
+
+                    <View
+                        android:layout_width="@dimen/divider_height"
+                        android:layout_height="@dimen/dimen_size_12"
+                        android:layout_marginEnd="@dimen/dimen_size_10"
+                        android:layout_marginStart="@dimen/dimen_size_10"
+                        android:background="@color/gray" />
+
+                    <TextView
+                        style="@style/Font14_gray"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="保障期限：1年" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_height"
+                    android:layout_marginEnd="@dimen/dimen_size_10"
+                    android:layout_marginStart="@dimen/dimen_size_10"
+                    android:layout_marginTop="@dimen/dimen_size_10"
+                    android:background="@color/divider" />
+
+                <com.zhy.view.flowlayout.TagFlowLayout
+                    android:id="@+id/detail_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dimen_size_8"
+                    android:layout_marginEnd="@dimen/dimen_size_5"
+                    android:layout_marginStart="@dimen/dimen_size_5"
+                    android:layout_marginTop="@dimen/dimen_size_8"
+                    app:max_select="0" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:background="@color/divider" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        style="@style/Font14_black"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_size_10"
+                        android:layout_weight="1"
+                        android:text="出生日期" />
+
+                    <TextView
+                        android:id="@+id/detail_birth"
+                        style="@style/Font14_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:id="@+id/detail_birth_img"
+                        android:layout_width="@dimen/dimen_size_40"
+                        android:layout_height="match_parent"
+                        android:onClick="doClick"
+                        android:paddingBottom="@dimen/dimen_size_14"
+                        android:paddingTop="@dimen/dimen_size_14"
+                        android:src="@mipmap/plan_bri01"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_height"
+                    android:layout_marginEnd="@dimen/dimen_size_10"
+                    android:layout_marginStart="@dimen/dimen_size_10"
+                    android:background="@color/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        style="@style/Font14_black"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_size_10"
+                        android:layout_weight="1"
+                        android:text="保障计划" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_plan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="@dimen/dimen_size_10"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rb_plan1"
+                            style="@style/Font14_black"
+                            android:layout_width="@dimen/dimen_size_60"
+                            android:layout_height="@dimen/dimen_size_25"
+                            android:background="@drawable/rb_plan_detail_selector"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="计划一"
+                            android:textColor="@color/rb_main_selector_color" />
+
+                        <RadioButton
+                            android:id="@+id/rb_plan2"
+                            style="@style/Font14_black"
+                            android:layout_width="@dimen/dimen_size_60"
+                            android:layout_height="@dimen/dimen_size_25"
+                            android:layout_marginStart="@dimen/dimen_size_10"
+                            android:background="@drawable/rb_plan_detail_selector"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="计划二"
+                            android:textColor="@color/rb_main_selector_color" />
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_height"
+                    android:layout_marginEnd="@dimen/dimen_size_10"
+                    android:layout_marginStart="@dimen/dimen_size_10"
+                    android:background="@color/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        style="@style/Font14_black"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_size_10"
+                        android:layout_weight="1"
+                        android:text="社保（含新农合）" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_she"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="@dimen/dimen_size_10"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rb_she1"
+                            style="@style/Font14_black"
+                            android:layout_width="@dimen/dimen_size_60"
+                            android:layout_height="@dimen/dimen_size_25"
+                            android:background="@drawable/rb_plan_detail_selector"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="有"
+                            android:textColor="@color/rb_main_selector_color" />
+
+                        <RadioButton
+                            android:id="@+id/rb_she2"
+                            style="@style/Font14_black"
+                            android:layout_width="@dimen/dimen_size_60"
+                            android:layout_height="@dimen/dimen_size_25"
+                            android:layout_marginStart="@dimen/dimen_size_10"
+                            android:background="@drawable/rb_plan_detail_selector"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="无"
+                            android:textColor="@color/rb_main_selector_color" />
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_height"
+                    android:layout_marginEnd="@dimen/dimen_size_10"
+                    android:layout_marginStart="@dimen/dimen_size_10"
+                    android:background="@color/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        style="@style/Font14_black"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_size_10"
+                        android:layout_weight="1"
+                        android:text="职业类型" />
+
+                    <TextView
+                        style="@style/Font14_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1-4类" />
+
+                    <TextView
+                        android:id="@+id/detail_look"
+                        style="@style/Font14_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:onClick="doClick"
+                        android:padding="@dimen/dimen_size_10"
+                        android:text="查询"
+                        android:textColor="@color/colorAccent" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_height"
+                    android:layout_marginEnd="@dimen/dimen_size_10"
+                    android:layout_marginStart="@dimen/dimen_size_10"
+                    android:background="@color/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        style="@style/Font12_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_size_10"
+                        android:text="￥"
+                        android:textColor="@color/colorAccent" />
+
+                    <TextView
+                        android:id="@+id/detail_fee"
+                        style="@style/Font14_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0.00"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/sp_size_18" />
+
+                    <TextView
+                        android:id="@+id/detail_extend"
+                        style="@style/Font13_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:onClick="doClick"
+                        android:padding="@dimen/dimen_size_15"
+                        android:text="推广费20%"
+                        android:textColor="@color/colorAccent" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:background="@color/divider" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:background="@color/divider" />
+
+            <TextView
+                style="@style/Font14_black_medium"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_size_40"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingEnd="@dimen/dimen_size_10"
+                android:paddingStart="@dimen/dimen_size_10"
+                android:text="保障利益" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:background="@color/divider" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/detail_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:overScrollMode="never" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:layout_marginBottom="@dimen/dimen_size_10"
+                android:background="@color/divider" />
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/dimen_size_5"
+        android:paddingEnd="@dimen/dimen_size_10"
+        android:paddingStart="@dimen/dimen_size_10"
+        android:paddingTop="@dimen/dimen_size_5">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/divider_height"
+            android:layout_weight="1" />
+
+        <TextView
+            style="@style/Font12_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="￥"
+            android:textColor="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/detail_total"
+            style="@style/Font15_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.00"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/sp_size_18" />
+
+        <LinearLayout
+            android:layout_width="@dimen/dimen_size_90"
+            android:layout_height="@dimen/dimen_size_35"
+            android:layout_marginStart="@dimen/dimen_size_15"
+            android:background="@drawable/rec_bg_white_stroke_lighter"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Font14_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="转发客户" />
+
+            <TextView
+                android:id="@+id/plan_fee"
+                style="@style/Font12_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="推广费不可见" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/plan_make"
+            style="@style/Font15_white_borderless"
+            android:layout_width="@dimen/dimen_size_90"
+            android:layout_height="@dimen/dimen_size_35"
+            android:layout_marginStart="@dimen/dimen_size_10"
+            android:background="@drawable/rec_bg_red"
+            android:onClick="doClick"
+            android:text="立即投保" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:layout_marginTop="@dimen/dimen_size_10"
+        android:background="@color/divider" />
+
+    <LinearLayout
+        android:id="@+id/withdraw_type_ll"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:onClick="doClick"
+        android:paddingEnd="@dimen/dimen_size_10"
+        android:paddingStart="@dimen/dimen_size_10">
+
+        <TextView
+            style="@style/Font14_gray"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="提现方式" />
+
+        <TextView
+            android:id="@+id/withdraw_type"
+            style="@style/Font14_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_width="@dimen/dimen_size_12"
+            android:layout_height="@dimen/dimen_size_12"
+            android:layout_marginStart="@dimen/dimen_size_5"
+            android:src="@mipmap/per_top_icon05"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:layout_marginBottom="@dimen/dimen_size_10"
+        android:background="@color/divider" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/Font14_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_size_10"
+            android:layout_marginTop="@dimen/dimen_size_15"
+            android:text="提现金额" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dimen_size_10"
+            android:layout_marginStart="@dimen/dimen_size_10"
+            android:layout_marginTop="@dimen/dimen_size_15">
+
+            <TextView
+                style="@style/Font14_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="￥"
+                android:textSize="@dimen/sp_size_18" />
+
+            <EditText
+                android:id="@+id/et_count"
+                style="@style/Font14_black"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@null"
+                android:hint="请输入提现金额"
+                android:inputType="numberDecimal"
+                android:paddingEnd="@dimen/dimen_size_15"
+                android:paddingStart="@dimen/dimen_size_15"
+                android:singleLine="true"
+                android:textSize="@dimen/sp_size_20" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_marginEnd="@dimen/dimen_size_10"
+            android:layout_marginStart="@dimen/dimen_size_10"
+            android:background="@color/divider" />
+
+        <TextView
+            android:id="@+id/withdraw_money"
+            style="@style/Font14_light"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_size_40"
+            android:layout_marginEnd="@dimen/dimen_size_10"
+            android:layout_marginStart="@dimen/dimen_size_10"
+            android:gravity="center_vertical"
+            android:text="可提现金额0.00元" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider" />
+
+    <TextView
+        style="@style/Font13_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_size_20"
+        android:layout_marginTop="@dimen/dimen_size_10"
+        android:drawablePadding="@dimen/dimen_size_3"
+        android:drawableStart="@mipmap/icon_xing"
+        android:text="@string/hint_withdraw" />
+
+    <Button
+        android:id="@+id/bt_submit"
+        style="@style/Font15_white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_height"
+        android:layout_marginBottom="@dimen/dimen_size_20"
+        android:layout_marginEnd="@dimen/dimen_size_20"
+        android:layout_marginStart="@dimen/dimen_size_20"
+        android:layout_marginTop="@dimen/dimen_size_10"
+        android:background="@drawable/rec_bg_red"
+        android:onClick="doClick"
+        android:text="提现" />
+
+</LinearLayout>

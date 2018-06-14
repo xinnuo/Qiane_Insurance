@@ -1,0 +1,80 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.ruanmeng.fragment.MainFirstFragment">
+
+    <include layout="@layout/layout_list" />
+
+    <LinearLayout
+        android:id="@+id/first_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/toolbar_padding_top">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingBottom="@dimen/dimen_size_10"
+            android:paddingTop="@dimen/dimen_size_10">
+
+            <LinearLayout
+                android:id="@+id/first_search"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dimen_size_28"
+                android:layout_marginStart="@dimen/dimen_size_10"
+                android:layout_weight="1"
+                android:background="@drawable/rec_bg_ova_white"
+                android:gravity="center_vertical"
+                android:onClick="doClick">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_size_15"
+                    android:layout_height="@dimen/dimen_size_15"
+                    android:layout_marginStart="@dimen/dimen_size_12"
+                    android:src="@mipmap/index_search_icon"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    style="@style/Font13_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/dimen_size_10"
+                    android:gravity="center_vertical"
+                    android:text="请输入产品，计划书"
+                    android:textColor="#BFBFBF" />
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/first_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dimen_size_5"
+                android:onClick="doClick">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_size_45"
+                    android:layout_height="@dimen/dimen_size_25"
+                    android:src="@mipmap/index_message"
+                    tools:ignore="ContentDescription" />
+
+                <ImageView
+                    android:id="@+id/first_message_dot"
+                    android:layout_width="@dimen/dimen_size_5"
+                    android:layout_height="@dimen/dimen_size_5"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/dimen_size_6"
+                    android:src="@drawable/orange_oval"
+                    tools:ignore="ContentDescription" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

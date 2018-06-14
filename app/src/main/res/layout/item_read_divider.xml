@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:layout_marginTop="@dimen/dimen_size_10"
+        android:background="@color/divider" />
+
+    <TextView
+        android:id="@+id/item_divider_hint"
+        style="@style/Font14_light"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingEnd="@dimen/dimen_size_10"
+        android:paddingStart="@dimen/dimen_size_10"
+        android:paddingTop="@dimen/dimen_size_10"
+        android:text="更早" />
+
+</LinearLayout>

@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">祁安经纪人</string>
+
+    <string name="hint_real">根据信息安全法规，您的信息将会得到严密保护！</string>
+    <string name="hint_withdraw">到账时间以财务为准，提现有3–5天审核期</string>
+</resources>

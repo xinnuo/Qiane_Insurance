@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/Font14_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dimen_size_15"
+            android:layout_marginStart="@dimen/dimen_size_15"
+            android:layout_marginTop="@dimen/dimen_size_15"
+            android:text="保障年龄" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/age_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never" />
+
+        <LinearLayout
+            android:id="@+id/age_custom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/Font14_light"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dimen_size_15"
+                android:layout_marginStart="@dimen/dimen_size_15"
+                android:text="自定义年龄" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_15">
+
+                <LinearLayout
+                    android:id="@+id/age_num_ll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_size_35"
+                    android:layout_marginStart="@dimen/dimen_size_15"
+                    android:background="@drawable/rec_bg_white_stroke_red"
+                    android:gravity="center_vertical"
+                    android:onClick="doClick"
+                    android:paddingEnd="@dimen/dimen_size_15"
+                    android:paddingStart="@dimen/dimen_size_15">
+
+                    <TextView
+                        android:id="@+id/age_num"
+                        style="@style/Font14_light"
+                        android:layout_width="@dimen/dimen_size_70"
+                        android:layout_height="wrap_content"
+                        android:text="0周岁"
+                        android:textColor="@color/colorAccent" />
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_size_10"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_size_5"
+                        android:adjustViewBounds="true"
+                        android:src="@mipmap/triangle_red"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/age_birth"
+                    android:layout_width="@dimen/dimen_size_35"
+                    android:layout_height="@dimen/dimen_size_35"
+                    android:layout_marginStart="@dimen/dimen_size_10"
+                    android:onClick="doClick"
+                    android:padding="@dimen/dimen_size_6"
+                    android:src="@mipmap/plan_bri"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="end"
+        android:paddingBottom="@dimen/dimen_size_5"
+        android:paddingEnd="@dimen/dimen_size_10"
+        android:paddingStart="@dimen/dimen_size_10"
+        android:paddingTop="@dimen/dimen_size_5">
+
+        <Button
+            android:id="@+id/age_clear"
+            style="@style/Font15_gray_borderless"
+            android:layout_width="@dimen/dimen_size_90"
+            android:layout_height="@dimen/dimen_size_35"
+            android:layout_marginStart="@dimen/dimen_size_10"
+            android:background="@drawable/rec_bg_white_stroke_lighter"
+            android:onClick="doClick"
+            android:text="清空" />
+
+        <Button
+            android:id="@+id/age_sure"
+            style="@style/Font15_white_borderless"
+            android:layout_width="@dimen/dimen_size_90"
+            android:layout_height="@dimen/dimen_size_35"
+            android:layout_marginStart="@dimen/dimen_size_10"
+            android:background="@drawable/rec_bg_red"
+            android:onClick="doClick"
+            android:text="确定" />
+
+    </LinearLayout>
+
+</LinearLayout>

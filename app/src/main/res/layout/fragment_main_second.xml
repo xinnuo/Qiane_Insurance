@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.ruanmeng.fragment.MainSecondFragment">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_padding_top"
+        android:background="@color/colorPrimaryDark" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:background="@color/white"
+        android:gravity="center">
+
+        <LinearLayout
+            android:id="@+id/second_search"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_size_28"
+            android:layout_marginEnd="@dimen/dimen_size_15"
+            android:layout_marginStart="@dimen/dimen_size_15"
+            android:background="@drawable/rec_bg_ova_background"
+            android:gravity="center_vertical"
+            android:onClick="doClick"
+            tools:ignore="OnClick">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_size_15"
+                android:layout_height="@dimen/dimen_size_15"
+                android:layout_marginStart="@dimen/dimen_size_12"
+                android:src="@mipmap/index_search_icon"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                style="@style/Font13_black"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/dimen_size_10"
+                android:gravity="center_vertical"
+                android:text="请输入产品"
+                android:textColor="#BFBFBF" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider" />
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:elevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_scrollFlags="scroll|enterAlways">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    tools:ignore="DisableBaselineAlignment">
+
+                    <LinearLayout
+                        android:id="@+id/second_total_ll"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dimen_size_140"
+                        android:layout_weight="1"
+                        android:background="@mipmap/money_top_img01"
+                        android:gravity="center"
+                        android:onClick="doClick"
+                        tools:ignore="OnClick">
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen_size_50"
+                            android:layout_height="@dimen/dimen_size_50"
+                            android:src="@mipmap/money_top_icon01"
+                            tools:ignore="ContentDescription" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen_size_10"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/second_total"
+                                style="@style/Font15_white_medium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textSize="@dimen/sp_size_18" />
+
+                            <TextView
+                                style="@style/Font15_white_medium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dimen_size_5"
+                                android:text="累计获客" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/second_read_ll"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dimen_size_140"
+                        android:layout_marginStart="-16dp"
+                        android:layout_weight="1"
+                        android:background="@mipmap/money_top_img02"
+                        android:gravity="center"
+                        android:onClick="doClick"
+                        tools:ignore="OnClick">
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen_size_50"
+                            android:layout_height="@dimen/dimen_size_50"
+                            android:src="@mipmap/money_top_icon02"
+                            tools:ignore="ContentDescription" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen_size_10"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/second_read"
+                                style="@style/Font15_white_medium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textSize="@dimen/sp_size_18" />
+
+                            <TextView
+                                style="@style/Font15_white_medium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dimen_size_5"
+                                android:text="计划书阅读" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_height"
+                    android:background="@color/divider" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/second_type_ll"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:onClick="doClick"
+                    tools:ignore="OnClick">
+
+                    <TextView
+                        android:id="@+id/second_type"
+                        style="@style/Font14_gray"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLength="4"
+                        android:text="保险种类" />
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_size_10"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_size_5"
+                        android:adjustViewBounds="true"
+                        android:src="@mipmap/triangle_black"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/second_company_ll"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:onClick="doClick"
+                    tools:ignore="OnClick">
+
+                    <TextView
+                        android:id="@+id/second_company"
+                        style="@style/Font14_gray"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLength="4"
+                        android:text="公司" />
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_size_10"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_size_5"
+                        android:src="@mipmap/triangle_black"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/second_age_ll"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:onClick="doClick"
+                    tools:ignore="OnClick">
+
+                    <TextView
+                        android:id="@+id/second_age"
+                        style="@style/Font14_gray"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLength="4"
+                        android:text="年龄" />
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_size_10"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_size_5"
+                        android:src="@mipmap/triangle_black"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/second_filter_ll"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:onClick="doClick"
+                    tools:ignore="OnClick">
+
+                    <TextView
+                        android:id="@+id/second_filter"
+                        style="@style/Font14_gray"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLength="4"
+                        android:text="筛选" />
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_size_13"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_size_5"
+                        android:src="@mipmap/money_tab_icon01"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:background="@color/divider" />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <include layout="@layout/layout_list" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</LinearLayout>

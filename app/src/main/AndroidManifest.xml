@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ruanmeng.qiane_insurance">
+
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <application
+        android:name="com.ruanmeng.Application"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".GuideActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SearchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MessageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PlanActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CompanyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ShareActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WebActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ForgetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PlanMakeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PlanDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PlanDoneActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PlanLookActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PlanSendActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PlanMineActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RegisterDoneActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".InfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".InfoPhoneActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".InfoRealActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".InfoJobActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CardEditActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".IncomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".IncomeWithdrawActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".IncomeDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PointActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".OrderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".OrderDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ClientActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ClientSearchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ClientBirthActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ClientFormActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ClientEditActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ClientAddActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".ClientBankActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FilterKindActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FilterCompanyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FilterAgeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FilterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TotalActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ReadActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".NewsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ToolActivity"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>

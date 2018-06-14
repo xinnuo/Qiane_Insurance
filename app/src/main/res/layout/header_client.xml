@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_115"
+        android:background="@mipmap/cus_icon05">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/dimen_size_30"
+            android:layout_marginStart="@dimen/dimen_size_30"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_size_60"
+                android:layout_height="@dimen/dimen_size_60"
+                android:src="@mipmap/cus_icon06"
+                tools:ignore="ContentDescription" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_size_15"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/client_num"
+                    style="@style/Font15_white_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="@dimen/sp_size_25" />
+
+                <TextView
+                    style="@style/Font15_white_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_size_5"
+                    android:text="累计获客" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider" />
+
+    <TextView
+        style="@style/Font15_black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="@dimen/dimen_size_15"
+        android:text="客户管家" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/client_birth_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:onClick="doClick"
+            android:padding="@dimen/dimen_size_15">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_size_42"
+                android:layout_height="@dimen/dimen_size_42"
+                android:src="@mipmap/cus_icon01"
+                tools:ignore="ContentDescription" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_size_15"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Font14_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="生日提醒" />
+
+                <TextView
+                    android:id="@+id/client_birth"
+                    style="@style/Font13_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_size_5"
+                    android:text="最近有0位客户过生日" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="@dimen/dimen_size_12"
+                android:layout_height="@dimen/dimen_size_12"
+                android:layout_marginStart="@dimen/dimen_size_5"
+                android:src="@mipmap/per_top_icon05"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_marginEnd="@dimen/dimen_size_10"
+            android:layout_marginStart="@dimen/dimen_size_10"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:id="@+id/client_form_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:onClick="doClick"
+            android:padding="@dimen/dimen_size_15">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_size_42"
+                android:layout_height="@dimen/dimen_size_42"
+                android:src="@mipmap/cus_icon02"
+                tools:ignore="ContentDescription" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_size_15"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Font14_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="保单到期" />
+
+                <TextView
+                    android:id="@+id/client_form"
+                    style="@style/Font13_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_size_5"
+                    android:text="最近有0个保单到期" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="@dimen/dimen_size_12"
+                android:layout_height="@dimen/dimen_size_12"
+                android:layout_marginStart="@dimen/dimen_size_5"
+                android:src="@mipmap/per_top_icon05"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:layout_marginTop="@dimen/dimen_size_10"
+        android:background="@color/divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingEnd="@dimen/dimen_size_0"
+        android:paddingStart="@dimen/dimen_size_15">
+
+        <TextView
+            style="@style/Font15_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen_size_15"
+            android:layout_marginTop="@dimen/dimen_size_15"
+            android:text="所有客户" />
+
+        <TextView
+            android:id="@+id/client_all"
+            style="@style/Font13_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(0人)" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimen_size_1"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/client_edit"
+            style="@style/Font14_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="doClick"
+            android:padding="@dimen/dimen_size_15"
+            android:text="编辑"
+            android:textColor="@color/colorAccent" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider" />
+
+</LinearLayout>

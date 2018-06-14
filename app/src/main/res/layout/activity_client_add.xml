@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_marginTop="@dimen/dimen_size_10"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:gravity="center_vertical"
+                android:paddingEnd="@dimen/dimen_size_10"
+                android:paddingStart="@dimen/dimen_size_10">
+
+                <TextView
+                    style="@style/Font14_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="@dimen/dimen_size_65"
+                    android:text="姓名" />
+
+                <EditText
+                    android:id="@+id/et_name"
+                    style="@style/Font14_black"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent"
+                    android:hint="请输入姓名"
+                    android:maxLength="16"
+                    android:paddingEnd="@dimen/dimen_size_0"
+                    android:paddingStart="@dimen/dimen_size_15" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:layout_marginEnd="@dimen/dimen_size_10"
+                android:layout_marginStart="@dimen/dimen_size_10"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:id="@+id/client_gender_ll"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:gravity="center_vertical"
+                android:onClick="doClick"
+                android:paddingEnd="@dimen/dimen_size_10"
+                android:paddingStart="@dimen/dimen_size_10">
+
+                <TextView
+                    style="@style/Font14_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="@dimen/dimen_size_65"
+                    android:text="性别" />
+
+                <TextView
+                    android:id="@+id/client_gender"
+                    style="@style/Font14_black"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_size_15"
+                    android:layout_weight="1"
+                    android:hint="请选择性别" />
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_size_12"
+                    android:layout_height="@dimen/dimen_size_12"
+                    android:layout_marginStart="@dimen/dimen_size_5"
+                    android:src="@mipmap/per_top_icon05"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:layout_marginEnd="@dimen/dimen_size_10"
+                android:layout_marginStart="@dimen/dimen_size_10"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:id="@+id/client_birth_ll"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:gravity="center_vertical"
+                android:onClick="doClick"
+                android:paddingEnd="@dimen/dimen_size_10"
+                android:paddingStart="@dimen/dimen_size_10">
+
+                <TextView
+                    style="@style/Font14_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="@dimen/dimen_size_65"
+                    android:text="出生日期" />
+
+                <TextView
+                    android:id="@+id/client_birth"
+                    style="@style/Font14_black"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_size_15"
+                    android:layout_weight="1"
+                    android:hint="请选择出生日期" />
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_size_12"
+                    android:layout_height="@dimen/dimen_size_12"
+                    android:layout_marginStart="@dimen/dimen_size_5"
+                    android:src="@mipmap/per_top_icon05"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:layout_marginEnd="@dimen/dimen_size_10"
+                android:layout_marginStart="@dimen/dimen_size_10"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:gravity="center_vertical"
+                android:paddingEnd="@dimen/dimen_size_10"
+                android:paddingStart="@dimen/dimen_size_10">
+
+                <TextView
+                    style="@style/Font14_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="@dimen/dimen_size_65"
+                    android:text="年收入元" />
+
+                <EditText
+                    android:id="@+id/et_get"
+                    style="@style/Font14_black"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent"
+                    android:digits="0123456789万"
+                    android:hint="请输入年收入"
+                    android:inputType="number"
+                    android:maxLength="9"
+                    android:paddingEnd="@dimen/dimen_size_0"
+                    android:paddingStart="@dimen/dimen_size_15" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:layout_marginEnd="@dimen/dimen_size_10"
+                android:layout_marginStart="@dimen/dimen_size_10"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:gravity="center_vertical"
+                android:paddingEnd="@dimen/dimen_size_10"
+                android:paddingStart="@dimen/dimen_size_10">
+
+                <TextView
+                    style="@style/Font14_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="@dimen/dimen_size_65"
+                    android:text="身高cm" />
+
+                <EditText
+                    android:id="@+id/et_height"
+                    style="@style/Font14_black"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent"
+                    android:hint="请输入身高"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:paddingEnd="@dimen/dimen_size_0"
+                    android:paddingStart="@dimen/dimen_size_15" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:layout_marginEnd="@dimen/dimen_size_10"
+                android:layout_marginStart="@dimen/dimen_size_10"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:gravity="center_vertical"
+                android:paddingEnd="@dimen/dimen_size_10"
+                android:paddingStart="@dimen/dimen_size_10">
+
+                <TextView
+                    style="@style/Font14_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="@dimen/dimen_size_65"
+                    android:text="体重kg" />
+
+                <EditText
+                    android:id="@+id/et_weight"
+                    style="@style/Font14_black"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent"
+                    android:hint="请输入体重"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:paddingEnd="@dimen/dimen_size_0"
+                    android:paddingStart="@dimen/dimen_size_15" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:background="@color/divider" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_marginTop="@dimen/dimen_size_10"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/client_tel_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never" />
+
+            <LinearLayout
+                android:id="@+id/client_tel"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:onClick="doClick">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_size_18"
+                    android:layout_height="@dimen/dimen_size_18"
+                    android:layout_marginEnd="@dimen/dimen_size_10"
+                    android:layout_marginStart="@dimen/dimen_size_10"
+                    android:src="@mipmap/cus_icon04"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    style="@style/Font14_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="@dimen/dimen_size_65"
+                    android:text="添加联系电话" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:background="@color/divider" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_marginTop="@dimen/dimen_size_10"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/client_email_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never" />
+
+            <LinearLayout
+                android:id="@+id/client_email"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:onClick="doClick">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_size_18"
+                    android:layout_height="@dimen/dimen_size_18"
+                    android:layout_marginEnd="@dimen/dimen_size_10"
+                    android:layout_marginStart="@dimen/dimen_size_10"
+                    android:src="@mipmap/cus_icon04"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    style="@style/Font14_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="@dimen/dimen_size_65"
+                    android:text="添加电子邮箱" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:background="@color/divider" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_marginTop="@dimen/dimen_size_10"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/client_license_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never" />
+
+            <LinearLayout
+                android:id="@+id/client_license"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:onClick="doClick">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_size_18"
+                    android:layout_height="@dimen/dimen_size_18"
+                    android:layout_marginEnd="@dimen/dimen_size_10"
+                    android:layout_marginStart="@dimen/dimen_size_10"
+                    android:src="@mipmap/cus_icon04"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    style="@style/Font14_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="@dimen/dimen_size_65"
+                    android:text="添加证件" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:background="@color/divider" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_marginTop="@dimen/dimen_size_10"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/client_addr_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never" />
+
+            <LinearLayout
+                android:id="@+id/client_addr"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:onClick="doClick">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_size_18"
+                    android:layout_height="@dimen/dimen_size_18"
+                    android:layout_marginEnd="@dimen/dimen_size_10"
+                    android:layout_marginStart="@dimen/dimen_size_10"
+                    android:src="@mipmap/cus_icon04"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    style="@style/Font14_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="@dimen/dimen_size_65"
+                    android:text="添加联系地址" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:background="@color/divider" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_marginTop="@dimen/dimen_size_10"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:id="@+id/client_bank_ll"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_height"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:onClick="doClick"
+            android:paddingEnd="@dimen/dimen_size_10"
+            android:paddingStart="@dimen/dimen_size_10">
+
+            <TextView
+                style="@style/Font14_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="@dimen/dimen_size_75"
+                android:text="银行卡管理" />
+
+            <TextView
+                android:id="@+id/client_bank"
+                style="@style/Font14_black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_size_15"
+                android:layout_weight="1"
+                android:hint="请添加银行卡" />
+
+            <ImageView
+                android:layout_width="@dimen/dimen_size_12"
+                android:layout_height="@dimen/dimen_size_12"
+                android:layout_marginStart="@dimen/dimen_size_5"
+                android:src="@mipmap/per_top_icon05"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:background="@color/divider" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_marginTop="@dimen/dimen_size_10"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingEnd="@dimen/dimen_size_0"
+            android:paddingStart="@dimen/dimen_size_10">
+
+            <TextView
+                style="@style/Font14_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/line_height"
+                android:gravity="center_vertical"
+                android:minWidth="@dimen/dimen_size_75"
+                android:text="备注" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_memo"
+                    style="@style/Font14_black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:hint="最多支持255字"
+                    android:lineSpacingMultiplier="1.2"
+                    android:maxLength="255"
+                    android:minHeight="@dimen/line_height"
+                    android:paddingBottom="@dimen/dimen_size_13"
+                    android:paddingEnd="@dimen/dimen_size_15"
+                    android:paddingStart="@dimen/dimen_size_15"
+                    android:paddingTop="@dimen/dimen_size_13" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_marginBottom="@dimen/dimen_size_10"
+            android:background="@color/divider" />
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

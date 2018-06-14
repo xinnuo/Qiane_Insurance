@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="@dimen/dimen_size_1"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <ImageView
+        android:layout_width="@dimen/dimen_size_65"
+        android:layout_height="@dimen/dimen_size_65"
+        android:src="@mipmap/income_icon01"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        style="@style/Font13_gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_size_10"
+        android:text="累计收入" />
+
+    <TextView
+        android:id="@+id/income_total"
+        style="@style/Font15_black_medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_size_10"
+        android:text="￥0.00"
+        android:textSize="@dimen/sp_size_30" />
+
+    <View
+        android:layout_width="@dimen/dimen_size_1"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:background="@color/divider" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_marginTop="@dimen/dimen_size_10"
+            android:background="@color/divider" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="@dimen/dimen_size_1"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        style="@style/Font13_gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="可提现余额" />
+
+    <TextView
+        android:id="@+id/income_withdraw"
+        style="@style/Font15_black_medium"
+        android:layout_width="@dimen/dimen_size_150"
+        android:layout_height="@dimen/dimen_size_150"
+        android:layout_marginTop="@dimen/dimen_size_10"
+        android:background="@mipmap/income_icon02"
+        android:gravity="center"
+        android:text="￥0.00"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/sp_size_20" />
+
+    <View
+        android:layout_width="@dimen/dimen_size_1"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/income_rule"
+        style="@style/Font13_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="doClick"
+        android:padding="@dimen/dimen_size_10"
+        android:text="提现规则？" />
+
+    <Button
+        android:id="@+id/bt_withdraw"
+        style="@style/Font15_white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_height"
+        android:layout_marginBottom="@dimen/dimen_size_20"
+        android:layout_marginEnd="@dimen/dimen_size_20"
+        android:layout_marginStart="@dimen/dimen_size_20"
+        android:background="@drawable/rec_bg_red"
+        android:onClick="doClick"
+        android:text="立即提现" />
+
+</LinearLayout>

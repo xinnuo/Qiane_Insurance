@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/item_order_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_10" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider" />
+
+    <LinearLayout
+        android:id="@+id/item_order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_height"
+            android:layout_marginEnd="@dimen/dimen_size_10"
+            android:layout_marginStart="@dimen/dimen_size_10"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/item_order_time"
+                style="@style/Font14_black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="时间" />
+
+            <TextView
+                android:id="@+id/item_order_status"
+                style="@style/Font14_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="待付款" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_marginEnd="@dimen/dimen_size_10"
+            android:layout_marginStart="@dimen/dimen_size_10"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_size_10">
+
+            <ImageView
+                android:id="@+id/item_order_img"
+                android:layout_width="@dimen/dimen_size_55"
+                android:layout_height="@dimen/dimen_size_55"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/default_logo"
+                tools:ignore="ContentDescription" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_size_10"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/item_order_title"
+                    style="@style/Font15_black_medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="@dimen/dimen_size_3"
+                    android:text="标题" />
+
+                <TextView
+                    android:id="@+id/item_order_plan"
+                    style="@style/Font13_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_size_8"
+                    android:text="投保人：" />
+
+                <TextView
+                    android:id="@+id/item_order_planed"
+                    style="@style/Font13_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_size_8"
+                    android:text="被保人：" />
+
+                <TextView
+                    android:id="@+id/item_order_range"
+                    style="@style/Font13_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_size_8"
+                    android:text="投保期间：" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_marginEnd="@dimen/dimen_size_10"
+            android:layout_marginStart="@dimen/dimen_size_10"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_height"
+            android:layout_marginEnd="@dimen/dimen_size_10"
+            android:layout_marginStart="@dimen/dimen_size_10"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/item_order_around"
+                style="@style/Font14_black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="推广费0%"
+                android:textColor="@color/colorAccent" />
+
+            <TextView
+                android:id="@+id/item_order_money"
+                style="@style/Font14_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="订单金额：0.00元" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/item_order_pay"
+            style="@style/Font14_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginBottom="@dimen/dimen_size_10"
+            android:layout_marginEnd="@dimen/dimen_size_10"
+            android:background="@drawable/rec_bg_trans_stroke_red"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dimen_size_5"
+            android:paddingEnd="@dimen/dimen_size_15"
+            android:paddingStart="@dimen/dimen_size_15"
+            android:paddingTop="@dimen/dimen_size_5"
+            android:text="立即付款"
+            android:textColor="@color/colorAccent" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:layout_marginBottom="@dimen/dimen_size_10"
+        android:background="@color/divider" />
+
+</LinearLayout>

@@ -1,0 +1,841 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/shade_red"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen_size_10">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rec_bg_background_r5"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Font15_black_medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_size_40"
+                    android:gravity="center_vertical"
+                    android:paddingEnd="@dimen/dimen_size_10"
+                    android:paddingStart="@dimen/dimen_size_10"
+                    android:text="被保人信息" />
+
+                <RadioGroup
+                    android:id="@+id/planed_check"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingEnd="@dimen/dimen_size_10"
+                    android:paddingStart="@dimen/dimen_size_10">
+
+                    <TextView
+                        style="@style/Font14_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="性别：" />
+
+                    <RadioButton
+                        android:id="@+id/planed_check1"
+                        style="@style/Font14_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:button="@null"
+                        android:drawablePadding="@dimen/dimen_size_5"
+                        android:drawableStart="@drawable/rb_plan_selector"
+                        android:paddingEnd="@dimen/dimen_size_10"
+                        android:paddingStart="@dimen/dimen_size_10"
+                        android:text="男" />
+
+                    <RadioButton
+                        android:id="@+id/planed_check2"
+                        style="@style/Font14_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:button="@null"
+                        android:drawablePadding="@dimen/dimen_size_5"
+                        android:drawableStart="@drawable/rb_plan_selector"
+                        android:paddingEnd="@dimen/dimen_size_10"
+                        android:paddingStart="@dimen/dimen_size_10"
+                        android:text="女" />
+
+                </RadioGroup>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_height"
+                    android:background="@color/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:paddingEnd="@dimen/dimen_size_10"
+                    android:paddingStart="@dimen/dimen_size_10">
+
+                    <TextView
+                        style="@style/Font14_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="年龄：" />
+
+                    <LinearLayout
+                        android:id="@+id/planed_age_ll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_size_25"
+                        android:layout_marginStart="@dimen/dimen_size_10"
+                        android:background="@drawable/rec_bg_white_stroke_divider"
+                        android:gravity="center_vertical"
+                        android:onClick="doClick">
+
+                        <TextView
+                            android:id="@+id/planed_age"
+                            style="@style/Font14_black"
+                            android:layout_width="@dimen/dimen_size_55"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen_size_10"
+                            android:text="0岁" />
+
+                        <View
+                            android:layout_width="@dimen/divider_height"
+                            android:layout_height="match_parent"
+                            android:background="@color/divider" />
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen_size_25"
+                            android:layout_height="match_parent"
+                            android:padding="@dimen/dimen_size_6"
+                            android:src="@mipmap/index_arrow"
+                            tools:ignore="ContentDescription" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dimen_size_1"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/planed_birth"
+                        style="@style/Font14_gray"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_size_25"
+                        android:background="@drawable/rec_bg_white_stroke_lighter"
+                        android:drawablePadding="@dimen/dimen_size_10"
+                        android:drawableStart="@mipmap/plan_bri"
+                        android:gravity="center"
+                        android:onClick="doClick"
+                        android:paddingEnd="@dimen/dimen_size_10"
+                        android:paddingStart="@dimen/dimen_size_10"
+                        android:text="生日" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_size_40"
+                    android:gravity="center_vertical">
+
+                    <CheckBox
+                        android:id="@+id/plan_select"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:button="@null"
+                        android:drawableStart="@drawable/rb_plan_selector"
+                        android:paddingEnd="@dimen/dimen_size_10"
+                        android:paddingStart="@dimen/dimen_size_10" />
+
+                    <TextView
+                        style="@style/Font15_black_medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="投保人信息" />
+
+                    <TextView
+                        style="@style/Font14_light"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="（豁免相关）" />
+
+                </LinearLayout>
+
+                <net.cachapa.expandablelayout.ExpandableLayout
+                    android:id="@+id/plan_expand"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:el_duration="300"
+                    app:el_expanded="false">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RadioGroup
+                            android:id="@+id/plan_check"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/line_height"
+                            android:background="@color/white"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingEnd="@dimen/dimen_size_10"
+                            android:paddingStart="@dimen/dimen_size_10">
+
+                            <TextView
+                                style="@style/Font14_black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="性别：" />
+
+                            <RadioButton
+                                android:id="@+id/plan_check1"
+                                style="@style/Font14_black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:button="@null"
+                                android:drawablePadding="@dimen/dimen_size_5"
+                                android:drawableStart="@drawable/rb_plan_selector"
+                                android:paddingEnd="@dimen/dimen_size_10"
+                                android:paddingStart="@dimen/dimen_size_10"
+                                android:text="男" />
+
+                            <RadioButton
+                                android:id="@+id/plan_check2"
+                                style="@style/Font14_black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:button="@null"
+                                android:drawablePadding="@dimen/dimen_size_5"
+                                android:drawableStart="@drawable/rb_plan_selector"
+                                android:paddingEnd="@dimen/dimen_size_10"
+                                android:paddingStart="@dimen/dimen_size_10"
+                                android:text="女" />
+
+                        </RadioGroup>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/divider_height"
+                            android:background="@color/divider" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/line_height"
+                            android:background="@color/white"
+                            android:gravity="center_vertical"
+                            android:paddingEnd="@dimen/dimen_size_10"
+                            android:paddingStart="@dimen/dimen_size_10">
+
+                            <TextView
+                                style="@style/Font14_black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="年龄：" />
+
+                            <LinearLayout
+                                android:id="@+id/plan_age_ll"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/dimen_size_25"
+                                android:layout_marginStart="@dimen/dimen_size_10"
+                                android:background="@drawable/rec_bg_white_stroke_divider"
+                                android:gravity="center_vertical"
+                                android:onClick="doClick">
+
+                                <TextView
+                                    android:id="@+id/plan_age"
+                                    style="@style/Font14_black"
+                                    android:layout_width="@dimen/dimen_size_55"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_size_10"
+                                    android:text="0岁" />
+
+                                <View
+                                    android:layout_width="@dimen/divider_height"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/divider" />
+
+                                <ImageView
+                                    android:layout_width="@dimen/dimen_size_25"
+                                    android:layout_height="match_parent"
+                                    android:padding="@dimen/dimen_size_6"
+                                    android:src="@mipmap/index_arrow"
+                                    tools:ignore="ContentDescription" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/dimen_size_1"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                android:id="@+id/plan_birth"
+                                style="@style/Font14_gray"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/dimen_size_25"
+                                android:background="@drawable/rec_bg_white_stroke_lighter"
+                                android:drawablePadding="@dimen/dimen_size_10"
+                                android:drawableStart="@mipmap/plan_bri"
+                                android:gravity="center"
+                                android:onClick="doClick"
+                                android:paddingEnd="@dimen/dimen_size_10"
+                                android:paddingStart="@dimen/dimen_size_10"
+                                android:text="生日" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </net.cachapa.expandablelayout.ExpandableLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_size_40"
+                    android:gravity="center_vertical">
+
+                    <CheckBox
+                        android:id="@+id/plane_select"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:button="@null"
+                        android:drawableStart="@drawable/rb_plan_selector"
+                        android:paddingEnd="@dimen/dimen_size_10"
+                        android:paddingStart="@dimen/dimen_size_10" />
+
+                    <TextView
+                        style="@style/Font15_black_medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="投保人配偶信息" />
+
+                    <TextView
+                        style="@style/Font14_light"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="（双豁免）" />
+
+                </LinearLayout>
+
+                <net.cachapa.expandablelayout.ExpandableLayout
+                    android:id="@+id/plane_expand"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:el_duration="300"
+                    app:el_expanded="false">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RadioGroup
+                            android:id="@+id/plane_check"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/line_height"
+                            android:background="@color/white"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingEnd="@dimen/dimen_size_10"
+                            android:paddingStart="@dimen/dimen_size_10">
+
+                            <TextView
+                                style="@style/Font14_black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="性别：" />
+
+                            <RadioButton
+                                android:id="@+id/plane_check1"
+                                style="@style/Font14_black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:button="@null"
+                                android:drawablePadding="@dimen/dimen_size_5"
+                                android:drawableStart="@drawable/rb_plan_selector"
+                                android:paddingEnd="@dimen/dimen_size_10"
+                                android:paddingStart="@dimen/dimen_size_10"
+                                android:text="男" />
+
+                            <RadioButton
+                                android:id="@+id/plane_check2"
+                                style="@style/Font14_black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:button="@null"
+                                android:drawablePadding="@dimen/dimen_size_5"
+                                android:drawableStart="@drawable/rb_plan_selector"
+                                android:paddingEnd="@dimen/dimen_size_10"
+                                android:paddingStart="@dimen/dimen_size_10"
+                                android:text="女" />
+
+                        </RadioGroup>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/divider_height"
+                            android:background="@color/divider" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/line_height"
+                            android:background="@drawable/rec_bg_white_r5_bottom"
+                            android:gravity="center_vertical"
+                            android:paddingEnd="@dimen/dimen_size_10"
+                            android:paddingStart="@dimen/dimen_size_10">
+
+                            <TextView
+                                style="@style/Font14_black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="年龄：" />
+
+                            <LinearLayout
+                                android:id="@+id/plane_age_ll"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/dimen_size_25"
+                                android:layout_marginStart="@dimen/dimen_size_10"
+                                android:background="@drawable/rec_bg_white_stroke_divider"
+                                android:gravity="center_vertical"
+                                android:onClick="doClick">
+
+                                <TextView
+                                    android:id="@+id/plane_age"
+                                    style="@style/Font14_black"
+                                    android:layout_width="@dimen/dimen_size_55"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_size_10"
+                                    android:text="0岁" />
+
+                                <View
+                                    android:layout_width="@dimen/divider_height"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/divider" />
+
+                                <ImageView
+                                    android:layout_width="@dimen/dimen_size_25"
+                                    android:layout_height="match_parent"
+                                    android:padding="@dimen/dimen_size_6"
+                                    android:src="@mipmap/index_arrow"
+                                    tools:ignore="ContentDescription" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/dimen_size_1"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                android:id="@+id/plane_birth"
+                                style="@style/Font14_gray"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/dimen_size_25"
+                                android:background="@drawable/rec_bg_white_stroke_lighter"
+                                android:drawablePadding="@dimen/dimen_size_10"
+                                android:drawableStart="@mipmap/plan_bri"
+                                android:gravity="center"
+                                android:onClick="doClick"
+                                android:paddingEnd="@dimen/dimen_size_10"
+                                android:paddingStart="@dimen/dimen_size_10"
+                                android:text="生日" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </net.cachapa.expandablelayout.ExpandableLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:background="@drawable/rec_bg_white_r5"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dimen_size_10">
+
+                <TextView
+                    style="@style/Font15_black_medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_size_40"
+                    android:background="@drawable/rec_bg_background_r5_top"
+                    android:gravity="center_vertical"
+                    android:paddingEnd="@dimen/dimen_size_10"
+                    android:paddingStart="@dimen/dimen_size_10"
+                    android:text="险种选择" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingEnd="@dimen/dimen_size_10"
+                    android:paddingStart="@dimen/dimen_size_10"
+                    android:paddingTop="@dimen/dimen_size_10">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                style="@style/Font12_white"
+                                android:layout_width="@dimen/dimen_size_18"
+                                android:layout_height="@dimen/dimen_size_18"
+                                android:background="@drawable/rec_bg_red"
+                                android:gravity="center"
+                                android:text="主" />
+
+                            <TextView
+                                style="@style/Font14_black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dimen_size_5"
+                                android:text="平安福2018" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            style="@style/Font14_gray"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen_size_23"
+                            android:layout_marginTop="@dimen/dimen_size_10"
+                            android:text="首年保费：9981.16" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dimen_size_1"
+                        android:layout_weight="1" />
+
+                    <Button
+                        style="@style/Font14_white_borderless"
+                        android:layout_width="@dimen/dimen_size_50"
+                        android:layout_height="@dimen/dimen_size_25"
+                        android:background="@drawable/rec_bg_red"
+                        android:text="修改" />
+
+                    <Button
+                        style="@style/Font14_white_borderless"
+                        android:layout_width="@dimen/dimen_size_50"
+                        android:layout_height="@dimen/dimen_size_25"
+                        android:layout_marginStart="@dimen/dimen_size_10"
+                        android:background="@drawable/rec_bg_trans_stroke_red"
+                        android:text="删除"
+                        android:textColor="@color/colorAccent" />
+
+                </LinearLayout>
+
+                <win.smartown.android.library.tableLayout.TableLayout
+                    android:id="@+id/plan_table"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dimen_size_10"
+                    android:layout_marginStart="@dimen/dimen_size_10"
+                    android:layout_marginTop="@dimen/dimen_size_10"
+                    app:tableColumnCount="4"
+                    app:tableDividerColor="@color/divider"
+                    app:tableDividerSize="@dimen/divider_height"
+                    app:tableMode="equallyDivide"
+                    app:tableRowHeight="@dimen/dimen_size_35"
+                    app:tableTextColor="@color/gray"
+                    app:tableTextSize="@dimen/sp_size_14"
+                    app:tableTextStyle="@style/Font14_gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingEnd="@dimen/dimen_size_10"
+                    android:paddingStart="@dimen/dimen_size_10"
+                    android:paddingTop="@dimen/dimen_size_10">
+
+                    <LinearLayout
+                        android:id="@+id/plan_title_ll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            style="@style/Font12_white"
+                            android:layout_width="@dimen/dimen_size_18"
+                            android:layout_height="@dimen/dimen_size_18"
+                            android:background="@drawable/rec_bg_red"
+                            android:gravity="center"
+                            android:text="主" />
+
+                        <TextView
+                            android:id="@+id/plan_title"
+                            style="@style/Font14_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen_size_5"
+                            android:text="平安福2018" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/plan_append"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="@dimen/dimen_size_5"
+                        android:paddingTop="@dimen/dimen_size_5"
+                        android:visibility="gone">
+
+                        <TextView
+                            style="@style/Font12_white"
+                            android:layout_width="@dimen/dimen_size_18"
+                            android:layout_height="@dimen/dimen_size_18"
+                            android:background="@drawable/rec_bg_orange"
+                            android:gravity="center"
+                            android:text="附" />
+
+                        <TextView
+                            style="@style/Font14_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen_size_5"
+                            android:text="选择附加险" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dimen_size_1"
+                        android:layout_weight="1" />
+
+                    <LinearLayout
+                        android:id="@+id/plan_host"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:onClick="doClick"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen_size_18"
+                            android:layout_height="@dimen/dimen_size_18"
+                            android:src="@mipmap/plan_add"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            style="@style/Font14_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen_size_5"
+                            android:text="添加主险"
+                            android:textColor="@color/colorAccent" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:background="@drawable/rec_bg_white_r5"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_size_40"
+                    android:background="@drawable/rec_bg_background_r5_top"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingEnd="@dimen/dimen_size_10"
+                        android:paddingStart="@dimen/dimen_size_10"
+                        android:src="@mipmap/plan_choose_icon01"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        style="@style/Font15_black_medium"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="收件人信息" />
+
+                    <TextView
+                        android:id="@+id/planr_in"
+                        style="@style/Font14_light"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="@dimen/dimen_size_10"
+                        android:gravity="center_vertical"
+                        android:onClick="doClick"
+                        android:text="从客户列表导入"
+                        android:textColor="@color/colorAccent" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:gravity="center_vertical"
+                    android:paddingEnd="@dimen/dimen_size_10"
+                    android:paddingStart="@dimen/dimen_size_10">
+
+                    <TextView
+                        style="@style/Font14_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="姓名：" />
+
+                    <EditText
+                        android:id="@+id/planr_name"
+                        style="@style/Font14_black"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/transparent"
+                        android:hint="输入姓名可生成封面"
+                        android:maxLength="16"
+                        android:paddingEnd="@dimen/dimen_size_10"
+                        android:paddingStart="@dimen/dimen_size_10"
+                        android:singleLine="true" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_height"
+                    android:background="@color/divider" />
+
+                <RadioGroup
+                    android:id="@+id/planer_check"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingEnd="@dimen/dimen_size_10"
+                    android:paddingStart="@dimen/dimen_size_10">
+
+                    <TextView
+                        style="@style/Font14_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="性别：" />
+
+                    <RadioButton
+                        android:id="@+id/planer_check1"
+                        style="@style/Font14_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:button="@null"
+                        android:drawablePadding="@dimen/dimen_size_5"
+                        android:drawableStart="@drawable/rb_plan_selector"
+                        android:paddingEnd="@dimen/dimen_size_10"
+                        android:paddingStart="@dimen/dimen_size_10"
+                        android:text="男" />
+
+                    <RadioButton
+                        android:id="@+id/planer_check2"
+                        style="@style/Font14_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:button="@null"
+                        android:drawablePadding="@dimen/dimen_size_5"
+                        android:drawableStart="@drawable/rb_plan_selector"
+                        android:paddingEnd="@dimen/dimen_size_10"
+                        android:paddingStart="@dimen/dimen_size_10"
+                        android:text="女" />
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingEnd="@dimen/dimen_size_10"
+        android:paddingStart="@dimen/dimen_size_10">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen_size_8"
+            android:layout_marginTop="@dimen/dimen_size_8"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Font14_black_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="首年总保费" />
+
+            <TextView
+                android:id="@+id/plan_fee"
+                style="@style/Font15_black_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_5"
+                android:text="￥0.00"
+                android:textColor="@color/colorAccent" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/plan_data"
+            style="@style/Font15_gray_borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_size_35"
+            android:background="@drawable/rec_bg_white_stroke_lighter"
+            android:onClick="doClick"
+            android:paddingEnd="@dimen/dimen_size_15"
+            android:paddingStart="@dimen/dimen_size_15"
+            android:text="产品资料" />
+
+        <Button
+            android:id="@+id/plan_make"
+            style="@style/Font15_white_borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_size_35"
+            android:layout_marginStart="@dimen/dimen_size_10"
+            android:background="@drawable/rec_bg_red"
+            android:onClick="doClick"
+            android:paddingEnd="@dimen/dimen_size_15"
+            android:paddingStart="@dimen/dimen_size_15"
+            android:text="生成计划书" />
+
+    </LinearLayout>
+
+</LinearLayout>

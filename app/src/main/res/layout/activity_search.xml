@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title_search" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/layout_list" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen_size_5">
+
+            <TextView
+                style="@style/Font15_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_size_10"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:text="热门搜索" />
+
+            <com.zhy.view.flowlayout.TagFlowLayout
+                android:id="@+id/search_hot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_size_10"
+                android:layout_marginEnd="@dimen/dimen_size_5"
+                android:layout_marginStart="@dimen/dimen_size_5"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                app:max_select="1" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

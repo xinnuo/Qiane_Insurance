@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_size_15"
+        android:background="@drawable/rec_bg_white_r5">
+
+        <LinearLayout
+            android:id="@+id/dialog_share_qq"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="doClick"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dimen_size_15"
+            android:paddingTop="@dimen/dimen_size_15">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_size_50"
+                android:layout_height="@dimen/dimen_size_50"
+                android:src="@mipmap/plan_share_icon01"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                style="@style/Font14_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:text="QQ好友" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dialog_share_wechat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="doClick"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dimen_size_15"
+            android:paddingTop="@dimen/dimen_size_15">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_size_50"
+                android:layout_height="@dimen/dimen_size_50"
+                android:src="@mipmap/plan_share_icon02"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                style="@style/Font14_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:text="微信好友" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dialog_share_space"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="doClick"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dimen_size_15"
+            android:paddingTop="@dimen/dimen_size_15">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_size_50"
+                android:layout_height="@dimen/dimen_size_50"
+                android:src="@mipmap/plan_share_icon03"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                style="@style/Font14_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:text="QQ空间" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dialog_share_circle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="doClick"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dimen_size_15"
+            android:paddingTop="@dimen/dimen_size_15">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_size_50"
+                android:layout_height="@dimen/dimen_size_50"
+                android:src="@mipmap/plan_share_icon04"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                style="@style/Font14_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:text="朋友圈" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/dialog_share_cancel"
+        style="@style/Font15_gray"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_40"
+        android:layout_marginBottom="@dimen/dimen_size_20"
+        android:layout_marginEnd="@dimen/dimen_size_15"
+        android:layout_marginStart="@dimen/dimen_size_15"
+        android:background="@drawable/rec_bg_white_r5"
+        android:onClick="doClick"
+        android:text="取消" />
+
+</LinearLayout>

@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/shade_gold">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/card_bj"
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/dimen_size_10"
+            android:background="@drawable/rec_bg_white_r5"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="@dimen/dimen_size_15">
+
+                <com.sunfusheng.glideimageview.GlideImageView
+                    android:id="@+id/card_img"
+                    android:layout_width="@dimen/dimen_size_60"
+                    android:layout_height="@dimen/dimen_size_60"
+                    android:src="@mipmap/personal_tx" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_size_15"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/card_name"
+                        style="@style/Font15_black_medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_size_5"
+                        android:text="姓名" />
+
+                    <LinearLayout
+                        android:id="@+id/card_introduce"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_size_8"
+                        android:gravity="center_vertical"
+                        android:onClick="doClick"
+                        android:paddingBottom="@dimen/dimen_size_5"
+                        android:paddingTop="@dimen/dimen_size_5">
+
+                        <TextView
+                            android:id="@+id/card_company"
+                            style="@style/Font14_gray"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="公司名称" />
+
+                        <TextView
+                            style="@style/Font14_gray"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen_size_20"
+                            android:text="公司介绍" />
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen_size_12"
+                            android:layout_height="@dimen/dimen_size_12"
+                            android:src="@mipmap/setting_right_icon"
+                            tools:ignore="ContentDescription" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:layout_marginEnd="@dimen/dimen_size_15"
+                android:layout_marginStart="@dimen/dimen_size_15"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingBottom="@dimen/dimen_size_25"
+                android:paddingTop="@dimen/dimen_size_25"
+                tools:ignore="DisableBaselineAlignment">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/card_get"
+                        style="@style/Font15_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="@dimen/sp_size_18" />
+
+                    <TextView
+                        style="@style/Font14_gray"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_size_10"
+                        android:text="已收到赞（个）" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="@dimen/divider_height"
+                    android:layout_height="@dimen/dimen_size_30"
+                    android:background="@color/divider" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/card_planed"
+                        style="@style/Font15_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="@dimen/sp_size_18" />
+
+                    <TextView
+                        style="@style/Font14_gray"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_size_10"
+                        android:text="已规划保障（份）" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_size_40"
+                android:background="@drawable/rec_bg_background_r5_bottom"
+                tools:ignore="DisableBaselineAlignment">
+
+                <LinearLayout
+                    android:id="@+id/card_call"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:onClick="doClick"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_size_17"
+                        android:layout_height="@dimen/dimen_size_17"
+                        android:layout_marginEnd="@dimen/dimen_size_10"
+                        android:src="@mipmap/bus_icon01"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        style="@style/Font14_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="拨打电话" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/card_wechat"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:onClick="doClick"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_size_17"
+                        android:layout_height="@dimen/dimen_size_17"
+                        android:layout_marginEnd="@dimen/dimen_size_10"
+                        android:src="@mipmap/bus_icon02"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        style="@style/Font14_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="加微信" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingBottom="@dimen/dimen_size_8"
+        android:paddingTop="@dimen/dimen_size_8">
+
+        <TextView
+            android:id="@+id/card_zan"
+            style="@style/Font15_gray"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/dimen_size_5"
+            android:drawableStart="@mipmap/bus_icon03"
+            android:gravity="center_vertical"
+            android:onClick="doClick"
+            android:padding="@dimen/dimen_size_10"
+            android:text="点个赞" />
+
+        <Button
+            android:id="@+id/card_edit"
+            style="@style/Font15_gray_borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_size_35"
+            android:background="@drawable/rec_bg_white_stroke_lighter"
+            android:onClick="doClick"
+            android:paddingEnd="@dimen/dimen_size_15"
+            android:paddingStart="@dimen/dimen_size_15"
+            android:text="编辑名片" />
+
+        <Button
+            android:id="@+id/card_trans"
+            style="@style/Font15_white_borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_size_35"
+            android:layout_marginEnd="@dimen/dimen_size_10"
+            android:layout_marginStart="@dimen/dimen_size_10"
+            android:background="@drawable/rec_bg_red"
+            android:onClick="doClick"
+            android:paddingEnd="@dimen/dimen_size_15"
+            android:paddingStart="@dimen/dimen_size_15"
+            android:text="转发名片" />
+
+    </LinearLayout>
+
+</LinearLayout>

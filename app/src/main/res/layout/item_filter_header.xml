@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/item_header_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_15"/>
+
+    <TextView
+        android:id="@+id/item_header"
+        style="@style/Font14_light"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dimen_size_15"
+        android:layout_marginStart="@dimen/dimen_size_15"
+        android:text="类型" />
+
+</LinearLayout>

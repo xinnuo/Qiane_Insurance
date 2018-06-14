@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background">
+
+        <com.jude.rollviewpager.RollPagerView
+            android:id="@+id/first_banner"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            app:rollviewpager_hint_gravity="center"
+            app:rollviewpager_play_delay="3000" />
+
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="DisableBaselineAlignment">
+
+        <LinearLayout
+            android:id="@+id/first_get"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="doClick"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dimen_size_15"
+            android:paddingTop="@dimen/dimen_size_15"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_size_45"
+                android:src="@mipmap/index_fun_icon01"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                style="@style/Font14_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:text="获取资格证" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/first_plan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="doClick"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dimen_size_15"
+            android:paddingTop="@dimen/dimen_size_15"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_size_45"
+                android:src="@mipmap/index_fun_icon02"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                style="@style/Font14_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:text="计划书" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/first_tool"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="doClick"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dimen_size_15"
+            android:paddingTop="@dimen/dimen_size_15"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_size_45"
+                android:src="@mipmap/index_fun_icon03"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                style="@style/Font14_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:text="展业工具" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/first_share"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="doClick"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dimen_size_15"
+            android:paddingTop="@dimen/dimen_size_15"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_size_45"
+                android:src="@mipmap/index_fun_icon04"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                style="@style/Font14_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:text="邀请有奖" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="@dimen/dimen_size_15">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_size_17"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/index_title"
+            tools:ignore="ContentDescription" />
+
+        <View
+            android:layout_width="@dimen/divider_height"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/dimen_size_10"
+            android:layout_marginStart="@dimen/dimen_size_10"
+            android:background="@color/divider" />
+
+        <com.ruanmeng.view.SwitcherTextView
+            android:id="@+id/first_notice"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_10"
+        android:background="@color/background" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider" />
+
+    <LinearLayout
+        android:id="@+id/first_company"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:gravity="center_vertical"
+        android:onClick="doClick"
+        android:paddingEnd="@dimen/dimen_size_15"
+        android:paddingStart="@dimen/dimen_size_15">
+
+        <ImageView
+            android:layout_width="@dimen/dimen_size_17"
+            android:layout_height="@dimen/dimen_size_17"
+            android:src="@mipmap/index_logo"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            style="@style/Font15_black_medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_size_5"
+            android:layout_weight="1"
+            android:text="热门产品/计划书" />
+
+        <TextView
+            android:id="@+id/first_company_name"
+            style="@style/Font13_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="选择公司" />
+
+        <ImageView
+            android:layout_width="@dimen/dimen_size_13"
+            android:layout_height="@dimen/dimen_size_13"
+            android:layout_marginStart="@dimen/dimen_size_5"
+            android:src="@mipmap/index_arrow"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:layout_marginEnd="@dimen/dimen_size_10"
+        android:layout_marginStart="@dimen/dimen_size_10"
+        android:background="@color/divider" />
+
+</LinearLayout>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/Font15_black_medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_size_40"
+        android:text="请选择您的身份" />
+
+    <LinearLayout
+        android:id="@+id/register_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_size_40"
+        android:gravity="center"
+        android:onClick="doClick"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="@dimen/dimen_size_110"
+            android:layout_height="@dimen/dimen_size_110"
+            android:src="@mipmap/login_option01"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            style="@style/Font15_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_size_10"
+            android:text="我不是保险从业人员" />
+
+        <TextView
+            style="@style/Font15_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_size_5"
+            android:text="没有执业证" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/register_yes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_size_40"
+        android:gravity="center"
+        android:onClick="doClick"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="@dimen/dimen_size_110"
+            android:layout_height="@dimen/dimen_size_110"
+            android:src="@mipmap/login_option02"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            style="@style/Font15_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_size_10"
+            android:text="我是保险从业人员" />
+
+        <TextView
+            style="@style/Font15_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_size_5"
+            android:text="已有执业证" />
+
+    </LinearLayout>
+
+</LinearLayout>

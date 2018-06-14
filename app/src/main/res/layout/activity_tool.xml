@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dimen_size_30"
+            android:paddingTop="@dimen/dimen_size_30">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_size_30"
+                android:layout_height="@dimen/dimen_size_30"
+                android:src="@mipmap/tool_icon01"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                style="@style/Font15_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_size_15"
+                android:text="海报" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dimen_size_30"
+            android:paddingTop="@dimen/dimen_size_30">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_size_30"
+                android:layout_height="@dimen/dimen_size_30"
+                android:src="@mipmap/tool_icon02"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                style="@style/Font15_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_size_15"
+                android:text="朋友圈助手" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

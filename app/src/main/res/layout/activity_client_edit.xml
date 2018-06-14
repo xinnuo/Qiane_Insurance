@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/client_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:overScrollMode="never" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider" />
+
+    <LinearLayout
+        android:id="@+id/client_add"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_50"
+        android:background="@color/white"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/client_input"
+            style="@style/Font15_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="doClick"
+            android:padding="@dimen/dimen_size_15"
+            android:text="手动添加"
+            android:textColor="@color/colorAccent" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimen_size_1"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/client_contact"
+            style="@style/Font15_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="doClick"
+            android:padding="@dimen/dimen_size_15"
+            android:text="通讯录导入"
+            android:textColor="@color/colorAccent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/client_edit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_50"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:visibility="gone">
+
+        <CheckBox
+            android:id="@+id/client_all"
+            style="@style/Font15_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:drawablePadding="@dimen/dimen_size_10"
+            android:drawableStart="@drawable/rb_plan_selector"
+            android:padding="@dimen/dimen_size_15"
+            android:text="全选"
+            android:textColor="@color/rb_main_selector_color" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimen_size_1"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/client_del"
+            style="@style/Font15_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="doClick"
+            android:padding="@dimen/dimen_size_15"
+            android:text="删除"
+            android:textColor="@color/colorAccent" />
+
+    </LinearLayout>
+
+</LinearLayout>
