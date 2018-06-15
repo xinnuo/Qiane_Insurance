@@ -90,6 +90,30 @@ class MainSecondFragment : BaseFragment() {
             price = "168"
             percent = "16"
         })
+        list.add(CommonData().apply {
+            title = "平安e生保2108版"
+            content = "1万住院医疗+1万意外医疗+10万身价保障"
+            price = "200"
+            percent = "20"
+        })
+        list.add(CommonData().apply {
+            title = "平安住院保"
+            content = "30万身价+3万意外医疗+150元津贴"
+            price = "100"
+            percent = "15"
+        })
+        list.add(CommonData().apply {
+            title = "少儿平安福2018（至尊版）"
+            content = "1万住院医疗+1万意外医疗+10万身价保障"
+            price = "300"
+            percent = "15"
+        })
+        list.add(CommonData().apply {
+            title = "平安意外险2018"
+            content = "30万身价+3万意外医疗+150元津贴"
+            price = "150"
+            percent = "16"
+        })
 
         mAdapter.updateData(list)
 

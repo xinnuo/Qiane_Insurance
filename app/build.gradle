@@ -103,7 +103,8 @@ dependencies {
 
     implementation project(':okgo')
     implementation project(':tableLayout')
-    def aar = ['FlycoDialog-1.3.2', 'GlideImageView-1.3.0', 'MNProgressHUD-1.0.1', 'RollViewPager']
+    def aar = ['BouncingJelly-1.0.4', 'FlycoDialog-1.3.2', 'GlideImageView-1.3.0',
+               'MNProgressHUD-1.0.1', 'RollViewPager']
     aar.each { implementation(name: it, ext: 'aar') }
 
     //图片加载
