@@ -52,7 +52,7 @@ class PlanActivity : BaseActivity() {
     override fun doClick(v: View) {
         super.doClick(v)
         when (v.id) {
-            R.id.plan_company_ll -> startActivity<CompanyActivity>()
+            R.id.plan_company_ll -> startActivity<CompanyActivity>("type" to "计划书")
         }
     }
 

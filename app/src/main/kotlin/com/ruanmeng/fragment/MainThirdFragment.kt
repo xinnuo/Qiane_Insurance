@@ -6,11 +6,16 @@ import android.support.v4.widget.NestedScrollView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.lzy.okgo.utils.OkLogger
-import com.ruanmeng.base.BaseFragment
+import com.lzg.extend.StringDialogCallback
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.model.Response
+import com.ruanmeng.base.*
 import com.ruanmeng.qiane_insurance.R
+import com.ruanmeng.share.BaseHttp
+import com.ruanmeng.utils.Tools
 import kotlinx.android.synthetic.main.fragment_main_third.*
 import org.jetbrains.anko.support.v4.dip
+import org.json.JSONObject
 
 class MainThirdFragment : BaseFragment() {
 
@@ -30,6 +35,11 @@ class MainThirdFragment : BaseFragment() {
         init_title()
     }
 
+    override fun onStart() {
+        super.onStart()
+        getData()
+    }
+
     override fun init_title() {
         third_title_ll.setBackgroundColor(Color.argb(0, 194, 13, 35))
 
@@ -44,5 +54,40 @@ class MainThirdFragment : BaseFragment() {
                 third_title_ll.setBackgroundColor(color)
             }
         }
+    }
+
+    override fun getData() {
+        OkGo.post<String>(BaseHttp.user_msg_data)
+                .tag(this@MainThirdFragment)
+                .headers("token", getString("token"))
+                .execute(object : StringDialogCallback(activity, false) {
+
+                    override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
+
+                        val obj = JSONObject(response.body()).getJSONObject("userMsg") ?: JSONObject()
+                        putString("nickName", Tools.decodeUnicode(obj.optString("nickName")))
+                        putString("realName", obj.optString("realName"))
+                        putString("userhead", obj.optString("userhead"))
+                        putString("sex", obj.optString("sex", "1"))
+                        putString("pass", obj.optString("pass"))
+                        putString("balance", obj.optStringNotEmpty("balance", "0.00"))
+                        putString("integral", obj.optStringNotEmpty("integral", "0"))
+
+                        third_name.text = getString("nickName")
+                        third_income.text = getString("balance")
+                        third_point.text = getString("integral")
+
+                        if (third_img.getTag(R.id.third_img) == null) {
+                            third_img.loadImage(BaseHttp.baseImg + getString("userhead"))
+                            third_img.setTag(R.id.third_img, getString("userhead"))
+                        } else {
+                            if (third_img.getTag(R.id.third_img) != getString("userhead")) {
+                                third_img.loadImage(BaseHttp.baseImg + getString("userhead"))
+                                third_img.setTag(R.id.third_img, getString("userhead"))
+                            }
+                        }
+                    }
+
+                })
     }
 }

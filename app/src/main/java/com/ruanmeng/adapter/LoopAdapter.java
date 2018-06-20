@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.LoopPagerAdapter;
 import com.ruanmeng.qiane_insurance.R;
@@ -61,11 +62,12 @@ public class LoopAdapter extends LoopPagerAdapter {
         ImageView iv_img = view.findViewById(R.id.iv_banner_img);
 
         GlideApp.with(context)
-                .load(imgs.get(position))
+                .asGif()
+                .load(/*imgs.get(position)*/R.mipmap.skid_right_1)
                 // .load(BaseHttp.baseImg + imgs.get(position))
                 // .placeholder(R.mipmap.default_banner) //等待时的图片
                 // .error(R.mipmap.default_banner)       //加载失败的图片
-                .dontAnimate()
+                // .dontAnimate()
                 .into(iv_img);
 
         return view;

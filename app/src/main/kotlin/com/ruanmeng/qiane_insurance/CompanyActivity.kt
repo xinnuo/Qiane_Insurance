@@ -5,14 +5,22 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
+import com.lzg.extend.BaseResponse
+import com.lzg.extend.jackson.JacksonDialogCallback
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.model.Response
 import com.ruanmeng.base.BaseActivity
+import com.ruanmeng.base.addItems
 import com.ruanmeng.model.CommonData
+import com.ruanmeng.model.RefreshMessageEvent
+import com.ruanmeng.share.BaseHttp
+import com.ruanmeng.utils.ActivityStack
 import com.ruanmeng.utils.MultiGapDecoration
 import net.idik.lib.slimadapter.SlimAdapter
+import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.backgroundResource
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import java.util.*
-
 
 class CompanyActivity : BaseActivity() {
 
@@ -30,13 +38,12 @@ class CompanyActivity : BaseActivity() {
             adapter = SlimAdapter.create()
                     .register<CommonData>(R.layout.item_company_grid) { data, injector ->
                         @Suppress("DEPRECATION")
-                        injector.text(R.id.item_company, data.title)
+                        injector.text(R.id.item_company, data.companyName)
                                 .with<TextView>(R.id.item_company) {
-                                    if (data.isChecked){
+                                    if (data.isChecked) {
                                         it.setTextColor(resources.getColor(R.color.colorAccent))
                                         it.backgroundResource = R.mipmap.plan_option01
-                                    }
-                                    else {
+                                    } else {
                                         it.setTextColor(resources.getColorStateList(R.color.item_selector_color))
                                         it.backgroundResource = R.drawable.item_selector
                                     }
@@ -46,32 +53,38 @@ class CompanyActivity : BaseActivity() {
                                     list.filter { it.isChecked }.forEach { it.isChecked = false }
                                     data.isChecked = true
                                     (this.adapter as SlimAdapter).notifyDataSetChanged()
+
+                                    EventBus.getDefault().post(RefreshMessageEvent(
+                                            intent.getStringExtra("type"),
+                                            data.companyId,
+                                            data.companyName))
+
+                                    window.decorView.postDelayed({
+                                        ActivityStack.screenManager.popActivities(this@CompanyActivity::class.java)
+                                    }, 300)
                                 }
                     }
                     .attachTo(this)
         }
 
-        list.add(CommonData().apply { title = "中国平安" })
-        list.add(CommonData().apply { title = "太平洋保险" })
-        list.add(CommonData().apply { title = "新华保险" })
-        list.add(CommonData().apply { title = "富德生命" })
-        list.add(CommonData().apply { title = "人保寿" })
-        list.add(CommonData().apply { title = "人保健康" })
-        list.add(CommonData().apply { title = "阳光保险" })
-        list.add(CommonData().apply { title = "合众人寿" })
-        list.add(CommonData().apply { title = "天安人寿" })
-        list.add(CommonData().apply { title = "信泰" })
-        list.add(CommonData().apply { title = "恒大人寿" })
-        list.add(CommonData().apply { title = "中英人寿" })
-        list.add(CommonData().apply { title = "民生保险" })
-        list.add(CommonData().apply { title = "华泰保险" })
-        list.add(CommonData().apply { title = "农银人寿" })
-        list.add(CommonData().apply { title = "君康人寿" })
-        list.add(CommonData().apply { title = "国联人寿" })
-        list.add(CommonData().apply { title = "前海人寿" })
-        list.add(CommonData().apply { title = "安心保险" })
-        list.add(CommonData().apply { title = "上海人寿" })
+        getData()
+    }
 
-        (mRecyclerView.adapter as SlimAdapter).updateData(list)
+    override fun getData() {
+        OkGo.post<BaseResponse<ArrayList<CommonData>>>(BaseHttp.company_list_data)
+                .tag(this@CompanyActivity)
+                .execute(object : JacksonDialogCallback<BaseResponse<ArrayList<CommonData>>>(baseContext, true) {
+
+                    override fun onSuccess(response: Response<BaseResponse<ArrayList<CommonData>>>) {
+
+                        list.apply {
+                            clear()
+                            addItems(response.body().`object`)
+                        }
+
+                        (mRecyclerView.adapter as SlimAdapter).updateData(list)
+                    }
+
+                })
     }
 }

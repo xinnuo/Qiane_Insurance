@@ -62,13 +62,9 @@ data class CommonData(
         var type: String = "",
         var userInfoId: String = "",
 
-        //下级列表
-        var fromRecommend: String = "",
-        var mobile: String = "",
-        var nickName: String = "",
-        var profitSum: String = "",
-        var recommenduserId: String = "",
-        var userHead: String = "",
+        //公司列表
+        var companyId: String = "",
+        var companyName: String = "",
 
         //消息中心
         var content: String = "",

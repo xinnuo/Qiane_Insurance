@@ -3,17 +3,27 @@ package com.ruanmeng.qiane_insurance
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.InputFilter
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
-import com.ruanmeng.base.BaseActivity
-import com.ruanmeng.base.loadImage
-import com.ruanmeng.base.startActivity
+import com.lzg.extend.StringDialogCallback
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.model.Response
+import com.ruanmeng.base.*
+import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.share.Const
 import com.ruanmeng.utils.DialogHelper
+import com.ruanmeng.utils.KeyboardHelper
+import com.ruanmeng.utils.NameLengthFilter
 import kotlinx.android.synthetic.main.activity_info.*
+import org.json.JSONObject
+import java.io.File
+import java.util.regex.Pattern
 
 class InfoActivity : BaseActivity() {
 
@@ -23,6 +33,61 @@ class InfoActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info)
         init_title("个人资料")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        info_tel.text = getString("mobile")
+        info_name.text = getString("realName")
+        info_real.text = when (getString("pass")) {
+            "-1" -> "认证中"
+            "0" -> "未通过"
+            "1" -> "已认证"
+            else -> "未认证"
+        }
+    }
+
+    override fun init_title() {
+        super.init_title()
+        loadUserHead(getString("userhead"))
+        info_nick.setText(getString("nickName"))
+        info_nick.setSelection(info_nick.text.length)
+        info_gender.text = when (getString("sex")) {
+            "0" -> "女"
+            else -> "男"
+        }
+
+        info_nick.filters = arrayOf<InputFilter>(NameLengthFilter(16))
+        info_nick.addTextChangedListener(this@InfoActivity)
+
+        info_nick.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                KeyboardHelper.hideSoftInput(baseContext) //隐藏软键盘
+
+                when {
+                    info_nick.text.isBlank() -> showToast("请输入昵称")
+                    info_nick.text.trim().toString() == getString("nickName") -> showToast("未做任何修改")
+                    pageNum < 4 -> showToast("昵称长度不少于4个字符（一个汉字两个字符）")
+                    else -> {
+                        OkGo.post<String>(BaseHttp.nickName_change_sub)
+                                .tag(this@InfoActivity)
+                                .isMultipart(true)
+                                .headers("token", getString("token"))
+                                .params("nickName", info_nick.text.trim().toString())
+                                .execute(object : StringDialogCallback(baseContext) {
+
+                                    override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
+
+                                        showToast(msg)
+                                        putString("nickName", info_nick.text.trim().toString())
+                                    }
+
+                                })
+                    }
+                }
+            }
+            return@setOnEditorActionListener false
+        }
     }
 
     override fun doClick(v: View) {
@@ -98,13 +163,22 @@ class InfoActivity : BaseActivity() {
                 DialogHelper.showItemDialog(
                         baseContext,
                         "选择性别",
-                        items) { _, name ->
-                    info_gender.text = name
+                        items) { position, _ ->
+                    window.decorView.postDelayed({ runOnUiThread { getSexData(position) } }, 300)
                 }
             }
             R.id.info_tel_ll -> startActivity<InfoPhoneActivity>()
-            R.id.info_real_ll -> startActivity<InfoRealActivity>("title" to "实名认证", "hint" to "确认")
+            R.id.info_real_ll -> when (getString("pass")) {
+                "-1" -> showToast("实名认证正在认证中，请耐心等待！")
+                "1" -> showToast("已通过实名认证！")
+                "0" -> {
+                    showToast("未通过实名认证，请重新提交！")
+                    startActivity<InfoRealActivity>("title" to "实名认证", "hint" to "确认")
+                }
+                else -> startActivity<InfoRealActivity>("title" to "实名认证", "hint" to "确认")
+            }
             R.id.info_job -> startActivity<InfoJobActivity>()
+            R.id.info_clear -> info_nick.setText("")
         }
     }
 
@@ -122,9 +196,59 @@ class InfoActivity : BaseActivity() {
                     // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
                     // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
 
-                    if (selectList[0].isCompressed) info_img.loadImage(selectList[0].compressPath)
+                    if (selectList[0].isCompressed) getHeadData()
                 }
             }
+        }
+    }
+
+    private fun loadUserHead(path: String) = info_img.loadImage(BaseHttp.baseImg + path)
+
+    private fun getHeadData() {
+        OkGo.post<String>(BaseHttp.userinfo_uploadhead_sub)
+                .tag(this@InfoActivity)
+                .isMultipart(true)
+                .headers("token", getString("token"))
+                .params("img", File(selectList[0].compressPath))
+                .execute(object : StringDialogCallback(baseContext) {
+
+                    override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
+
+                        showToast(msg)
+                        val userhead = JSONObject(response.body()).optString("object")
+                        putString("userhead", userhead)
+                        loadUserHead(userhead)
+                    }
+
+                })
+    }
+
+    private fun getSexData(position: Int) {
+        OkGo.post<String>(BaseHttp.sex_change_sub)
+                .tag(this@InfoActivity)
+                .headers("token", getString("token"))
+                .params("sex", 1 - position)
+                .execute(object : StringDialogCallback(baseContext) {
+
+                    override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
+
+                        showToast(msg)
+                        putString("sex", (1 - position).toString())
+                        info_gender.text = when (getString("sex")) {
+                            "0" -> "女"
+                            else -> "男"
+                        }
+                    }
+
+                })
+    }
+
+    override fun afterTextChanged(s: Editable) {
+        pageNum = 0
+        (0 until s.length).forEach {
+            val matcher = Pattern.compile("[\u4e00-\u9fa5]").matcher(s[it].toString())
+            if (matcher.matches()) pageNum += 2
+            else pageNum++
         }
     }
 }

@@ -51,4 +51,5 @@ fun ImageView.setImageURL(url: String, @DrawableRes resourceId: Int = R.mipmap.d
                 .dontAnimate())
         .into(this)
 
-fun GlideImageView.loadImage(url: String) = loadImage(url, R.mipmap.default_user)
+// fun GlideImageView.loadImage(url: String) = loadImage(url, R.mipmap.default_user)
+fun GlideImageView.loadImage(url: String) = loadImage(url, R.mipmap.personal_tx)

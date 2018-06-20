@@ -26,13 +26,14 @@ class PhoneSecondFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init_title()
+
+        // setOnClickListener();后会默认设置setClickable=true
+        bt_ok.setBackgroundResource(R.drawable.rec_bg_d0d0d0)
+        bt_ok.isClickable = false
     }
 
     @SuppressLint("SetTextI18n")
     override fun init_title() {
-        bt_ok.setBackgroundResource(R.drawable.rec_bg_d0d0d0)
-        bt_ok.isClickable = false
-
         et_tel.addTextChangedListener(this)
         et_yzm.addTextChangedListener(this)
 

@@ -17,9 +17,16 @@ class InfoPhoneActivity : BaseActivity(), OnFragmentItemSelectListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        init_title("手机号码")
+        init_title("验证手机号码")
 
         frameLayout { id = mContainer }
+
+        supportFragmentManager.addOnBackStackChangedListener {
+            tvTitle.text = when (supportFragmentManager.backStackEntryCount) {
+                1 -> "更换手机号码"
+                else -> "验证手机号码"
+            }
+        }
 
         first = PhoneFirstFragment()
         supportFragmentManager

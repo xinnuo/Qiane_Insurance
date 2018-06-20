@@ -26,13 +26,13 @@ class PhoneFirstFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init_title()
+
+        bt_next.setBackgroundResource(R.drawable.rec_bg_d0d0d0)
+        bt_next.isClickable = false
     }
 
     @SuppressLint("SetTextI18n")
     override fun init_title() {
-        bt_next.setBackgroundResource(R.drawable.rec_bg_d0d0d0)
-        bt_next.isClickable = false
-
         et_card.addTextChangedListener(this)
         et_tel.addTextChangedListener(this)
         et_yzm.addTextChangedListener(this)

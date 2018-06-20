@@ -5,12 +5,15 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.widget.CompoundButton
-import com.ruanmeng.base.BaseActivity
-import com.ruanmeng.base.getString
-import com.ruanmeng.base.putBoolean
-import com.ruanmeng.base.startActivity
+import com.lzg.extend.StringDialogCallback
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.model.Response
+import com.ruanmeng.base.*
+import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.utils.ActivityStack
+import com.ruanmeng.utils.CommonUtil
 import kotlinx.android.synthetic.main.activity_login.*
+import org.json.JSONObject
 
 class LoginActivity : BaseActivity() {
 
@@ -47,15 +50,54 @@ class LoginActivity : BaseActivity() {
             R.id.login_forget -> startActivity<ForgetActivity>()
             R.id.login_deal -> startActivity<WebActivity>("title" to "注册协议")
             R.id.bt_login -> {
-                putBoolean("isLogin", true)
-                startActivity<MainActivity>()
-                ActivityStack.screenManager.popActivities(this@LoginActivity::class.java)
+                if (!CommonUtil.isMobile(et_name.text.toString())) {
+                    et_name.requestFocus()
+                    et_name.setText("")
+                    showToast("手机号码格式错误，请重新输入")
+                    return
+                }
+
+                if (et_pwd.text.length < 6) {
+                    et_pwd.requestFocus()
+                    showToast("密码长度不少于6位")
+                    return
+                }
+
+                OkGo.post<String>(BaseHttp.login_sub)
+                        .tag(this@LoginActivity)
+                        .params("accountName", et_name.text.trim().toString())
+                        .params("password", et_pwd.text.trim().toString())
+                        .params("loginType", "mobile")
+                        .execute(object : StringDialogCallback(baseContext) {
+
+                            override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
+
+                                val obj = JSONObject(response.body()).optJSONObject("object") ?: JSONObject()
+
+                                putBoolean("isLogin", true)
+                                putString("token", obj.optString("token"))
+                                putString("mobile", obj.optString("mobile"))
+
+                                startActivity<MainActivity>()
+                                ActivityStack.screenManager.popActivities(this@LoginActivity::class.java)
+                            }
+
+                        })
             }
         }
     }
 
     private fun clearData() {
         putBoolean("isLogin", false)
+        putString("token", "")
+
+        putString("nickName", "")
+        putString("realName", "")
+        putString("userhead", "")
+        putString("sex", "")
+        putString("pass", "")
+        putString("balance", "0.00")
+        putString("integral", "0")
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {

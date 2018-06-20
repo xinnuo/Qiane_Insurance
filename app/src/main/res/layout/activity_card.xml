@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -36,7 +37,8 @@
                     android:id="@+id/card_img"
                     android:layout_width="@dimen/dimen_size_60"
                     android:layout_height="@dimen/dimen_size_60"
-                    android:src="@mipmap/personal_tx" />
+                    android:src="@mipmap/personal_tx"
+                    app:riv_is_circle="true" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

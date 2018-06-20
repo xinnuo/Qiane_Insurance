@@ -2,7 +2,7 @@ package com.ruanmeng.utils
 
 /**
  * 姓名替换，保留姓氏
- * 如果身姓名为空 或者 null ,返回null ；否则，返回替换后的字符串；
+ * 如果身姓名为空 或者 null ,返回空 ；否则，返回替换后的字符串；
  */
 fun String.nameReplaceWithStar(): String = when {
     isNullOrEmpty() -> ""
@@ -11,7 +11,7 @@ fun String.nameReplaceWithStar(): String = when {
 
 /**
  * 手机号号替换，保留前三位和后四位
- * 如果身手机号为空 或者 null ,返回null ；否则，返回替换后的字符串；
+ * 如果身手机号为空 或者 null ,返回空 ；否则，返回替换后的字符串；
  */
 fun String.phoneReplaceWithStar(): String = when {
     isNullOrEmpty() -> ""
@@ -21,7 +21,7 @@ fun String.phoneReplaceWithStar(): String = when {
 
 /**
  * 身份证号替换，保留前四位和后四位
- * 如果身份证号为空 或者 null ,返回null ；否则，返回替换后的字符串；
+ * 如果身份证号为空 或者 null ,返回空 ；否则，返回替换后的字符串；
  */
 fun String.idCardReplaceWithStar(): String = when {
     isNullOrEmpty() -> ""
@@ -31,7 +31,7 @@ fun String.idCardReplaceWithStar(): String = when {
 
 /**
  * 银行卡替换，保留后四位
- * 如果银行卡号为空 或者 null ,返回null ；否则，返回替换后的字符串；
+ * 如果银行卡号为空 或者 null ,返回空 ；否则，返回替换后的字符串；
  */
 fun String.bankCardReplaceWithStar(): String = when {
     isNullOrEmpty() -> ""
@@ -41,7 +41,7 @@ fun String.bankCardReplaceWithStar(): String = when {
 
 /**
  * 银行卡替换，保留后四位
- * 如果银行卡号为空 或者 null ,返回null ；否则，返回替换后的字符串；
+ * 如果银行卡号为空 或者 null ,返回空 ；否则，返回替换后的字符串；
  */
 fun String.bankCardReplaceHeaderWithStar(): String = when {
     isNullOrEmpty() -> ""

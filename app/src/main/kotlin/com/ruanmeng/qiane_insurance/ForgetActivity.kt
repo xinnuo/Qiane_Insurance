@@ -3,10 +3,17 @@ package com.ruanmeng.qiane_insurance
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import com.lzg.extend.StringDialogCallback
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.model.Response
 import com.ruanmeng.base.BaseActivity
 import com.ruanmeng.base.showToast
+import com.ruanmeng.share.BaseHttp
+import com.ruanmeng.share.Const
+import com.ruanmeng.utils.ActivityStack
 import com.ruanmeng.utils.CommonUtil
 import kotlinx.android.synthetic.main.activity_password.*
+import org.json.JSONObject
 
 class ForgetActivity : BaseActivity() {
 
@@ -60,6 +67,25 @@ class ForgetActivity : BaseActivity() {
                         time_count = 180
                     }
                 }
+
+                OkGo.post<String>(BaseHttp.identify_getbyforget)
+                        .tag(this@ForgetActivity)
+                        .params("mobile", et_tel.text.toString())
+                        .params("time", Const.MAKER)
+                        .execute(object : StringDialogCallback(baseContext) {
+
+                            override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
+
+                                YZM = JSONObject(response.body()).optString("object")
+                                mTel = et_tel.text.toString()
+                                if (BuildConfig.LOG_DEBUG) et_yzm.setText(YZM)
+
+                                bt_yzm.isClickable = false
+                                time_count = 180
+                                bt_yzm.post(thread)
+                            }
+
+                        })
             }
             R.id.bt_ok -> {
                 if (!CommonUtil.isMobile(et_tel.text.toString())) {
@@ -85,6 +111,21 @@ class ForgetActivity : BaseActivity() {
                     showToast("新密码长度不少于6位")
                     return
                 }
+
+                OkGo.post<String>(BaseHttp.pwd_forget_sub)
+                        .tag(this@ForgetActivity)
+                        .params("mobile", mTel)
+                        .params("smscode", et_yzm.text.toString())
+                        .params("newpwd", et_new.text.toString())
+                        .execute(object : StringDialogCallback(baseContext) {
+
+                            override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
+
+                                showToast(msg)
+                                ActivityStack.screenManager.popActivities(this@ForgetActivity::class.java)
+                            }
+
+                        })
             }
         }
     }

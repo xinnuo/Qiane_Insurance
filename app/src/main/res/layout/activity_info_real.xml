@@ -51,7 +51,8 @@
                 android:hint="请输入您的真实姓名"
                 android:maxLength="12"
                 android:paddingEnd="@dimen/dimen_size_0"
-                android:paddingStart="@dimen/dimen_size_15" />
+                android:paddingStart="@dimen/dimen_size_15"
+                android:singleLine="true" />
 
         </LinearLayout>
 

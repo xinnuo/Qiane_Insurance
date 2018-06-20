@@ -62,7 +62,7 @@ class MainActivity : BaseActivity() {
             R.id.first_plan -> startActivity<PlanActivity>()
             R.id.first_tool -> startActivity<ToolActivity>()
             R.id.first_share -> startActivity<ShareActivity>()
-            R.id.first_company -> startActivity<CompanyActivity>()
+            R.id.first_company -> startActivity<CompanyActivity>("type" to "选择公司")
 
             R.id.second_search -> startActivity<SearchActivity>()
             R.id.second_total_ll -> startActivity<TotalActivity>()
