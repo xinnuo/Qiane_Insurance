@@ -21,6 +21,7 @@ import com.ruanmeng.utils.DialogHelper
 import com.ruanmeng.utils.KeyboardHelper
 import com.ruanmeng.utils.NameLengthFilter
 import kotlinx.android.synthetic.main.activity_info.*
+import org.jetbrains.anko.startActivity
 import org.json.JSONObject
 import java.io.File
 import java.util.regex.Pattern

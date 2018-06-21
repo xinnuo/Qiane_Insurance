@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.View
 import com.ruanmeng.base.BaseActivity
 import com.ruanmeng.base.loadImage
-import com.ruanmeng.base.startActivity
 import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.utils.ActivityStack
 import kotlinx.android.synthetic.main.activity_card_edit.*
+import org.jetbrains.anko.startActivity
 
 class CardEditActivity : BaseActivity() {
 

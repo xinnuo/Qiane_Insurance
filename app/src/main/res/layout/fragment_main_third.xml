@@ -41,7 +41,7 @@
                         android:layout_width="@dimen/dimen_size_55"
                         android:layout_height="@dimen/dimen_size_55"
                         android:scaleType="centerCrop"
-                        android:src="@mipmap/personal_tx"
+                        android:src="@mipmap/default_user"
                         app:riv_is_circle="true" />
 
                     <LinearLayout

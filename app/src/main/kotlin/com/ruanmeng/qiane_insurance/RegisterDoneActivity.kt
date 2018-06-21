@@ -3,8 +3,8 @@ package com.ruanmeng.qiane_insurance
 import android.os.Bundle
 import android.view.View
 import com.ruanmeng.base.BaseActivity
-import com.ruanmeng.base.startActivity
 import com.ruanmeng.utils.ActivityStack
+import org.jetbrains.anko.startActivity
 
 class RegisterDoneActivity : BaseActivity() {
 

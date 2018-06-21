@@ -7,8 +7,14 @@ import android.view.Gravity
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import com.lzg.extend.BaseResponse
+import com.lzg.extend.jackson.JacksonDialogCallback
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.model.Response
 import com.ruanmeng.base.BaseActivity
+import com.ruanmeng.base.addItems
 import com.ruanmeng.model.CommonData
+import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.utils.ActivityStack
 import com.ruanmeng.utils.MultiGapDecoration
 import net.idik.lib.slimadapter.SlimAdapter
@@ -67,7 +73,7 @@ class FilterCompanyActivity : BaseActivity() {
         mAdapter = SlimAdapter.create()
                 .register<CommonData>(R.layout.item_company_grid) { data, injector ->
                     @Suppress("DEPRECATION")
-                    injector.text(R.id.item_company, data.title)
+                    injector.text(R.id.item_company, data.companyName)
                             .with<TextView>(R.id.item_company) {
                                 if (data.isChecked) {
                                     it.setTextColor(resources.getColor(R.color.colorAccent))
@@ -96,28 +102,20 @@ class FilterCompanyActivity : BaseActivity() {
     }
 
     override fun getData() {
-        list.add(CommonData().apply { title = "中国平安" })
-        list.add(CommonData().apply { title = "太平洋保险" })
-        list.add(CommonData().apply { title = "新华保险" })
-        list.add(CommonData().apply { title = "中国太平" })
-        list.add(CommonData().apply { title = "富德生命" })
-        list.add(CommonData().apply { title = "人保寿" })
-        list.add(CommonData().apply { title = "人保健康" })
-        list.add(CommonData().apply { title = "阳光保险" })
-        list.add(CommonData().apply { title = "合众人寿" })
-        list.add(CommonData().apply { title = "天安人寿" })
-        list.add(CommonData().apply { title = "信泰" })
-        list.add(CommonData().apply { title = "恒大人寿" })
-        list.add(CommonData().apply { title = "中英人寿" })
-        list.add(CommonData().apply { title = "民生保险" })
-        list.add(CommonData().apply { title = "华泰保险" })
-        list.add(CommonData().apply { title = "农银人寿" })
-        list.add(CommonData().apply { title = "君康人寿" })
-        list.add(CommonData().apply { title = "国联人寿" })
-        list.add(CommonData().apply { title = "前海人寿" })
-        list.add(CommonData().apply { title = "安心保险" })
-        list.add(CommonData().apply { title = "上海人寿" })
+        OkGo.post<BaseResponse<ArrayList<CommonData>>>(BaseHttp.company_list_data)
+                .tag(this@FilterCompanyActivity)
+                .execute(object : JacksonDialogCallback<BaseResponse<ArrayList<CommonData>>>(baseContext, true) {
 
-        mAdapter.updateData(list)
+                    override fun onSuccess(response: Response<BaseResponse<ArrayList<CommonData>>>) {
+
+                        list.apply {
+                            clear()
+                            addItems(response.body().`object`)
+                        }
+
+                        mAdapter.updateData(list)
+                    }
+
+                })
     }
 }

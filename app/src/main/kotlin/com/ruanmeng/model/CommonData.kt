@@ -39,80 +39,42 @@ data class CommonData(
         var href: String = "",
         var sliderId: String = "",
         var sliderImg: String = "",
+
+        //首页列表
         var title: String = "",
-
-        //首页公告
-        var createDate: String = "",
-        var newsnoticeId: String = "",
-        var price: String = "",
-        var percent: String = "",
-        var resourceId: Int = 0,
-
-        //账单
-        var cardId: String = "",
-        var cardNo: String = "",
-        var cardType: String = "",
-        var payRecordId: String = "",
-        var paySum: String = "",
-        var payTime: String = "",
-        var payType: String = "",
-        var rate: String = "",
-        var rateSum: String = "",
-        var status: String = "",
+        var img: String = "",
+        var productprospectusId: String = "",
         var type: String = "",
-        var userInfoId: String = "",
+
+        var content: String = "",
+        var price: String = "",
+
+        //计划列表
+        var prospectusId: String = "",
+        var prospectusImg: String = "",
+        var prospectusTitle: String = "",
+
+        //产品列表
+        var productinId: String = "",
+        var productImg: String = "",
+        var productName: String = "",
+        var synopsis: String = "",
+        var productSum: String = "",
+        var recommendSum: String = "",
+
+        //资讯列表
+        var informationId: String = "",
+        var informationHead: String = "",
+        var informationTitle: String = "",
+        var createDate: String = "",
 
         //公司列表
         var companyId: String = "",
         var companyName: String = "",
 
-        //消息中心
-        var content: String = "",
-        var msgReciveId: String = "",
+        //公司列表
+        var msgReceiveId: String = "",
         var sendDate: String = "",
-
-        //升级列表
-        var agentId: String = "",
-        var agentLevel: String = "",
-        var cost: String = "",
-        var levelName: String = "",
-        var levelExplain: String = "",
-
-        //全部计划
-        var repaymentId: String = "",
-        var repaymentSum: String = "",
-        var repaymentTime: String = "",
-        var repaymentType: String = "",
-        var repaymentNum: String = "",
-        var repaymentplanId: String = "",
-        var maxSum: String = "",
-        var sumRateSum: String = "",
-        var sfdelete: String = "0",
-
-        //省、市
-        var areaId: String = "",
-        var areaCode: String = "",
-        var areaName: String = "",
-
-        //客服列表
-        var userhead: String = "",
-
-        //信用卡列表
-        var billDay: String = "",
-        var creditcard: String = "",
-        var creditcardId: String = "",
-        var cvn2: String = "",
-        var invaridDate: String = "",
-        var quota: String = "",
-        var repaymentDay: String = "",
-
-        //储蓄卡列表
-        var bank: String = "",
-        var depositcard: String = "",
-        var depositcardId: String = "",
-        var identityCard: String = "",
-        var name: String = "",
-        var tel: String = "",
 
         var position: Int = -1,
         var letter: String = "",

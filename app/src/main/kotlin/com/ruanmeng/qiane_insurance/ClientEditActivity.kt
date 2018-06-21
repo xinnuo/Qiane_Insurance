@@ -7,7 +7,6 @@ import android.widget.TextView
 import com.ruanmeng.base.BaseActivity
 import com.ruanmeng.base.load_Linear
 import com.ruanmeng.base.setOneClickListener
-import com.ruanmeng.base.startActivity
 import com.ruanmeng.model.CommonData
 import com.ruanmeng.view.NormalDecoration
 import kotlinx.android.synthetic.main.activity_client_edit.*

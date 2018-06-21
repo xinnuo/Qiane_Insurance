@@ -11,12 +11,12 @@ import com.lzy.okgo.OkGo
 import com.lzy.okgo.model.Response
 import com.ruanmeng.base.BaseActivity
 import com.ruanmeng.base.showToast
-import com.ruanmeng.base.startActivity
 import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.share.Const
 import com.ruanmeng.utils.ActivityStack
 import com.ruanmeng.utils.CommonUtil
 import kotlinx.android.synthetic.main.activity_register.*
+import org.jetbrains.anko.startActivity
 import org.json.JSONObject
 
 class RegisterActivity : BaseActivity() {

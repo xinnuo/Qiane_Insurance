@@ -3,11 +3,11 @@ package com.ruanmeng.qiane_insurance
 import android.os.Bundle
 import android.view.View
 import com.ruanmeng.base.BaseActivity
-import com.ruanmeng.base.startActivity
 import com.ruanmeng.model.CommonData
 import com.ruanmeng.view.FullyLinearLayoutManager
 import kotlinx.android.synthetic.main.activity_client_add.*
 import net.idik.lib.slimadapter.SlimAdapter
+import org.jetbrains.anko.startActivity
 
 class ClientAddActivity : BaseActivity() {
 

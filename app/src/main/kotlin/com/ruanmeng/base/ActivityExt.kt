@@ -47,7 +47,7 @@ import java.io.Serializable
  */
 inline fun <reified T : View> Activity.find(@IdRes id: Int): T = findViewById(id)
 
-inline fun <reified T : Activity> Context.startActivity(vararg params: Pair<String, Any?>) =
+inline fun <reified T : Activity> Context.startActivityEx(vararg params: Pair<String, Any?>) =
         startActivity(Intent(this, T::class.java).apply {
             if (params.isNotEmpty()) {
                 params.forEach {

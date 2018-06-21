@@ -37,7 +37,7 @@
                     android:id="@+id/card_img"
                     android:layout_width="@dimen/dimen_size_60"
                     android:layout_height="@dimen/dimen_size_60"
-                    android:src="@mipmap/personal_tx"
+                    android:src="@mipmap/default_user"
                     app:riv_is_circle="true" />
 
                 <LinearLayout

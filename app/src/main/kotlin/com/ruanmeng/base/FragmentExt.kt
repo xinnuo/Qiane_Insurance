@@ -40,7 +40,7 @@ import com.ruanmeng.utils.DialogHelper
 import com.ruanmeng.utils.PreferencesUtils
 import java.io.Serializable
 
-inline fun <reified T : Activity> Fragment.startActivity(vararg params: Pair<String, Any?>) =
+inline fun <reified T : Activity> Fragment.startActivityEx(vararg params: Pair<String, Any?>) =
         startActivity(Intent(this.activity, T::class.java).apply {
             if (params.isNotEmpty()) {
                 params.forEach {

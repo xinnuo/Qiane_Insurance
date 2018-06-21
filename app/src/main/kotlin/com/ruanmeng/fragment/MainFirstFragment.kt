@@ -9,34 +9,40 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.jude.rollviewpager.RollPagerView
+import com.lzg.extend.BaseResponse
+import com.lzg.extend.jackson.JacksonDialogCallback
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.model.Response
 import com.ruanmeng.adapter.LoopAdapter
-import com.ruanmeng.base.BaseFragment
-import com.ruanmeng.base.load_Linear
-import com.ruanmeng.base.refresh
-import com.ruanmeng.base.startActivity
+import com.ruanmeng.base.*
 import com.ruanmeng.model.CommonData
+import com.ruanmeng.model.CommonModel
+import com.ruanmeng.model.RefreshMessageEvent
 import com.ruanmeng.qiane_insurance.NewsActivity
 import com.ruanmeng.qiane_insurance.PlanDetailActivity
 import com.ruanmeng.qiane_insurance.PlanMakeActivity
 import com.ruanmeng.qiane_insurance.R
-import com.ruanmeng.utils.DensityUtil
-import com.ruanmeng.view.SwitcherTextView
+import com.ruanmeng.share.BaseHttp
 import kotlinx.android.synthetic.main.fragment_main_first.*
+import kotlinx.android.synthetic.main.header_first.*
 import kotlinx.android.synthetic.main.layout_list.*
 import net.idik.lib.slimadapter.SlimAdapter
 import net.idik.lib.slimadapter.SlimAdapterEx
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.support.v4.dip
+import org.jetbrains.anko.support.v4.startActivity
 import java.util.ArrayList
 
 class MainFirstFragment : BaseFragment() {
 
     private lateinit var banner: RollPagerView
     private lateinit var mLoopAdapter: LoopAdapter
-    private lateinit var mSwitchText: SwitcherTextView
 
     private val list = ArrayList<Any>()
     private val listSlider = ArrayList<CommonData>()
     private val listNotice = ArrayList<CommonData>()
+    private var companyId = ""
 
     //调用这个方法切换时不会释放掉Fragment
     override fun setMenuVisibility(menuVisible: Boolean) {
@@ -53,6 +59,10 @@ class MainFirstFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         init_title()
 
+        EventBus.getDefault().register(this@MainFirstFragment)
+
+        swipe_refresh.isRefreshing = true
+        getHeaderData()
         getData()
     }
 
@@ -62,7 +72,10 @@ class MainFirstFragment : BaseFragment() {
                 false,
                 swipe_refresh.progressViewStartOffset + dip(60),
                 swipe_refresh.progressViewEndOffset + dip(25))
-        swipe_refresh.refresh { getData() }
+        swipe_refresh.refresh {
+            getHeaderData()
+            getData()
+        }
         recycle_list.load_Linear(activity!!, swipe_refresh)
 
         recycle_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -96,7 +109,6 @@ class MainFirstFragment : BaseFragment() {
                 .apply {
                     val view = LayoutInflater.from(activity).inflate(R.layout.header_first, null)
                     banner = view.findViewById(R.id.first_banner)
-                    mSwitchText = view.findViewById(R.id.first_notice)
 
                     mLoopAdapter = LoopAdapter(activity, banner)
                     banner.apply {
@@ -110,82 +122,115 @@ class MainFirstFragment : BaseFragment() {
                     val isLast = list.indexOf(data) == list.size - 1
 
                     injector.text(R.id.item_first_name, data.title)
-                            .text(R.id.item_first_price, "${data.price}元")
-                            .text(R.id.item_first_content, data.content)
-                            .text(R.id.item_first_tui, "推广费${data.percent}%")
+                            .text(R.id.item_first_price, "${data.productSum}元")
+                            .text(R.id.item_first_content, data.synopsis)
+                            .text(R.id.item_first_tui,
+                                    "推广费${if (data.recommendSum.isEmpty()) 0 else (data.recommendSum.toDouble() * 100).toInt()}%")
 
-                            .with<ImageView>(R.id.item_first_img) {}
+                            .with<ImageView>(R.id.item_first_img) {
+                                it.setImageURL(BaseHttp.baseImg + data.img)
+                            }
 
-                            .visibility(R.id.item_first_price, if (data.price.isEmpty()) View.GONE else View.VISIBLE)
-                            .visibility(R.id.item_first_tui, if (data.percent.isEmpty()) View.GONE else View.VISIBLE)
+                            .visibility(R.id.item_first_price, if (data.type == "1") View.GONE else View.VISIBLE)
+                            .visibility(R.id.item_first_tui, if (data.type == "1") View.GONE else View.VISIBLE)
                             .visibility(R.id.item_first_divider1, if (isLast) View.GONE else View.VISIBLE)
                             .visibility(R.id.item_first_divider2, if (!isLast) View.GONE else View.VISIBLE)
                             .visibility(R.id.item_first_divider3, if (!isLast) View.GONE else View.VISIBLE)
 
                             .clicked(R.id.item_first) {
-                                if (data.type == "2") startActivity<PlanMakeActivity>()
+                                if (data.type == "1") startActivity<PlanMakeActivity>()
                                 else startActivity<PlanDetailActivity>()
                             }
                 }
                 .attachTo(recycle_list)
     }
 
+    private fun getHeaderData() {
+        OkGo.post<BaseResponse<CommonModel>>(BaseHttp.index_data)
+                .tag(this@MainFirstFragment)
+                .headers("token", getString("token"))
+                .execute(object : JacksonDialogCallback<BaseResponse<CommonModel>>(activity) {
+
+                    override fun onSuccess(response: Response<BaseResponse<CommonModel>>) {
+
+                        listSlider.apply {
+                            clear()
+                            addItems(response.body().`object`.slider)
+                        }
+
+                        listNotice.apply {
+                            clear()
+                            addItems(response.body().`object`.news)
+                        }
+
+                        val imgs = ArrayList<String>()
+                        listSlider.mapTo(imgs) { it.sliderImg }
+                        mLoopAdapter.setImgs(imgs)
+                        if (imgs.size < 2) {
+                            banner.pause()
+                            banner.setHintViewVisibility(false)
+                        } else {
+                            banner.resume()
+                            banner.setHintViewVisibility(true)
+                        }
+
+                        if (listNotice.isNotEmpty()) {
+                            first_notice.setData(listNotice, {
+                                startActivity<NewsActivity>()
+                            }, first_notice)
+                        }
+                    }
+
+                })
+    }
+
     override fun getData() {
-        listSlider.clear()
-        listNotice.clear()
-        list.clear()
+        OkGo.post<BaseResponse<ArrayList<CommonData>>>(BaseHttp.index_productprospectus)
+                .tag(this@MainFirstFragment)
+                .params("companyId", companyId)
+                .execute(object : JacksonDialogCallback<BaseResponse<ArrayList<CommonData>>>(activity) {
 
-        listSlider.add(CommonData().apply { sliderImg = "http://122.114.212.120:8097/upload/slider/370B45323DDA4661B2A80F2B395AA9F3.jpg" })
-        listNotice.add(CommonData().apply { title = "为了孩子的健康，您选对保险了吗？" })
-        list.add(CommonData().apply {
-            title = "平安e生保2108版"
-            content = "1万住院医疗+1万意外医疗+10万身价保"
-            price = "228"
-            percent = "20"
-            type = "1"
-        })
-        list.add(CommonData().apply {
-            title = "平安住院保"
-            content = "30万身价+3万意外医疗+150元津贴"
-            price = "189"
-            percent = "15"
-            type = "1"
-        })
-        list.add(CommonData().apply {
-            title = "少儿平安福2018（至尊版）"
-            content = "开门红客户回馈，免交1年保费"
-            type = "2"
-        })
-        list.add(CommonData().apply {
-            title = "平安意外险2018"
-            content = "旗舰产品，强势升级"
-            type = "2"
-        })
-        list.add(CommonData().apply {
-            title = "少儿平安福2018"
-            content = "凸显保障，期满领取保费"
-            type = "2"
-        })
+                    override fun onSuccess(response: Response<BaseResponse<ArrayList<CommonData>>>) {
 
-        mAdapterEx.updateData(list)
+                        list.apply {
+                            clear()
+                            addItems(response.body().`object`)
+                        }
 
-        val imgs = ArrayList<String>()
-        listSlider.mapTo(imgs) { it.sliderImg }
-        mLoopAdapter.setImgs(imgs)
-        if (imgs.size < 2) {
-            banner.pause()
-            banner.setHintViewVisibility(false)
-        } else {
-            banner.resume()
-            banner.setHintViewVisibility(true)
+                        mAdapterEx.updateData(list)
+                    }
+
+                    override fun onFinish() {
+                        super.onFinish()
+                        swipe_refresh.isRefreshing = false
+                        isLoadingMore = false
+                    }
+
+                })
+
+    }
+
+    override fun onDestroy() {
+        EventBus.getDefault().unregister(this@MainFirstFragment)
+        super.onDestroy()
+    }
+
+    @Subscribe
+    fun onMessageEvent(event: RefreshMessageEvent) {
+        when (event.type) {
+            "选择公司" -> {
+                companyId = event.id
+                first_company_name.text = event.name
+
+                swipe_refresh.isRefreshing = true
+                if (list.isNotEmpty()) {
+                    list.clear()
+                    mAdapterEx.notifyDataSetChanged()
+                }
+
+                getHeaderData()
+                getData()
+            }
         }
-
-        if (listNotice.size > 0) {
-            mSwitchText.setData(listNotice, {
-                startActivity<NewsActivity>()
-            }, mSwitchText)
-        }
-
-        swipe_refresh.isRefreshing = false
     }
 }

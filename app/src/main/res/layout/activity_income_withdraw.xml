@@ -32,7 +32,9 @@
             android:id="@+id/withdraw_type"
             style="@style/Font14_black"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:hint="请选择提现方式" />
 
         <ImageView
             android:layout_width="@dimen/dimen_size_12"

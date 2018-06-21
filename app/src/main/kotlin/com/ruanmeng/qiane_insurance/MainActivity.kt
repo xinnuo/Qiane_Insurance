@@ -7,11 +7,11 @@ import android.view.View
 import android.widget.CompoundButton
 import com.ruanmeng.base.BaseActivity
 import com.ruanmeng.base.showToast
-import com.ruanmeng.base.startActivity
 import com.ruanmeng.fragment.MainFirstFragment
 import com.ruanmeng.fragment.MainSecondFragment
 import com.ruanmeng.fragment.MainThirdFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.startActivity
 
 class MainActivity : BaseActivity() {
 

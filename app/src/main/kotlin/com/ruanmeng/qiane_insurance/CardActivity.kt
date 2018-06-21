@@ -8,6 +8,7 @@ import com.lzy.okgo.model.Response
 import com.ruanmeng.base.*
 import com.ruanmeng.share.BaseHttp
 import kotlinx.android.synthetic.main.activity_card.*
+import org.jetbrains.anko.startActivity
 import org.json.JSONObject
 
 class CardActivity : BaseActivity() {

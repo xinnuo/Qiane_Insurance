@@ -10,7 +10,6 @@ import android.widget.ImageView
 import com.ruanmeng.base.BaseActivity
 import com.ruanmeng.base.getBoolean
 import com.ruanmeng.base.showToast
-import com.ruanmeng.base.startActivity
 import com.ruanmeng.utils.ActivityStack
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.PermissionListener

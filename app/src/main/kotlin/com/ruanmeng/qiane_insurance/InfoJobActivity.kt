@@ -8,13 +8,13 @@ import com.lzy.okgo.model.Response
 import com.ruanmeng.base.BaseActivity
 import com.ruanmeng.base.getString
 import com.ruanmeng.base.showToast
-import com.ruanmeng.base.startActivity
 import com.ruanmeng.model.RefreshMessageEvent
 import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.utils.ActivityStack
 import kotlinx.android.synthetic.main.activity_info_job.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.jetbrains.anko.startActivity
 import org.json.JSONObject
 
 class InfoJobActivity : BaseActivity() {

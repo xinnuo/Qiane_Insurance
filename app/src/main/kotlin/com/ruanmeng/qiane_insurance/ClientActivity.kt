@@ -7,7 +7,6 @@ import android.view.View
 import com.ruanmeng.base.BaseActivity
 import com.ruanmeng.base.load_Linear
 import com.ruanmeng.base.refresh
-import com.ruanmeng.base.startActivity
 import com.ruanmeng.model.CommonData
 import com.ruanmeng.view.NormalDecoration
 import kotlinx.android.synthetic.main.layout_list.*
@@ -15,6 +14,7 @@ import net.idik.lib.slimadapter.SlimAdapter
 import net.idik.lib.slimadapter.SlimAdapterEx
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.sp
+import org.jetbrains.anko.startActivity
 import java.util.ArrayList
 
 class ClientActivity : BaseActivity() {

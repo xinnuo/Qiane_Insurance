@@ -149,12 +149,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:padding="@dimen/dimen_size_15">
+        android:gravity="center_vertical">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dimen_size_17"
+            android:layout_marginBottom="@dimen/dimen_size_15"
+            android:layout_marginStart="@dimen/dimen_size_15"
+            android:layout_marginTop="@dimen/dimen_size_15"
             android:adjustViewBounds="true"
             android:src="@mipmap/index_title"
             tools:ignore="ContentDescription" />
@@ -162,14 +164,17 @@
         <View
             android:layout_width="@dimen/divider_height"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dimen_size_12"
             android:layout_marginEnd="@dimen/dimen_size_10"
             android:layout_marginStart="@dimen/dimen_size_10"
+            android:layout_marginTop="@dimen/dimen_size_12"
             android:background="@color/divider" />
 
         <com.ruanmeng.view.SwitcherTextView
             android:id="@+id/first_notice"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/dimen_size_15"
             android:layout_weight="1" />
 
     </LinearLayout>

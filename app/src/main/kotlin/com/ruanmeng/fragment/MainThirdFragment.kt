@@ -64,7 +64,7 @@ class MainThirdFragment : BaseFragment() {
 
                     override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
 
-                        val obj = JSONObject(response.body()).getJSONObject("userMsg") ?: JSONObject()
+                        val obj = JSONObject(response.body()).optJSONObject("userMsg") ?: JSONObject()
                         putString("nickName", Tools.decodeUnicode(obj.optString("nickName")))
                         putString("realName", obj.optString("realName"))
                         putString("userhead", obj.optString("userhead"))

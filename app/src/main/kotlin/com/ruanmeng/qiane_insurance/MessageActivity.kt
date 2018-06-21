@@ -2,10 +2,13 @@ package com.ruanmeng.qiane_insurance
 
 import android.os.Bundle
 import android.view.View
-import com.ruanmeng.base.BaseActivity
-import com.ruanmeng.base.load_Linear
-import com.ruanmeng.base.refresh
+import com.lzg.extend.BaseResponse
+import com.lzg.extend.jackson.JacksonDialogCallback
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.model.Response
+import com.ruanmeng.base.*
 import com.ruanmeng.model.CommonData
+import com.ruanmeng.share.BaseHttp
 import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_list.*
 import net.idik.lib.slimadapter.SlimAdapter
@@ -22,20 +25,8 @@ class MessageActivity : BaseActivity() {
         verticalLayout { include<View>(R.layout.layout_list) }
         init_title("消息")
 
-        list.add(CommonData().apply {
-            title = "2018-05-29"
-            content = "邀请好友成功，您有20元红包到账，请及时查收。"
-        })
-        list.add(CommonData().apply {
-            title = "2018-04-26"
-            content = "恭喜您，资质认证已通过，赶快去推广吧，高奖励再向您招手，立即行动吧！"
-        })
-        list.add(CommonData().apply {
-            title = "2018-04-26"
-            content = "恭喜您，您已注册成功！"
-        })
-
-        mAdapter.updateData(list)
+        swipe_refresh.isRefreshing = true
+        getData(pageNum)
     }
 
     override fun init_title() {
@@ -54,7 +45,7 @@ class MessageActivity : BaseActivity() {
 
                     val isLast = list.indexOf(data) == list.size - 1
 
-                    injector.text(R.id.item_msg_time, data.title)
+                    injector.text(R.id.item_msg_time, data.sendDate)
                             .text(R.id.item_msg_content, data.content)
 
                             .visibility(R.id.item_msg_divider1, if (isLast) View.GONE else View.VISIBLE)
@@ -64,6 +55,34 @@ class MessageActivity : BaseActivity() {
     }
 
     override fun getData(pindex: Int) {
-        swipe_refresh.isRefreshing = false
+        OkGo.post<BaseResponse<ArrayList<CommonData>>>(BaseHttp.msg_list_data)
+                .tag(this@MessageActivity)
+                .headers("token", getString("token"))
+                .params("page", pindex)
+                .execute(object : JacksonDialogCallback<BaseResponse<ArrayList<CommonData>>>(baseContext) {
+
+                    override fun onSuccess(response: Response<BaseResponse<ArrayList<CommonData>>>) {
+
+                        list.apply {
+                            if (pindex == 1) {
+                                clear()
+                                pageNum = pindex
+                            }
+                            addItems(response.body().`object`)
+                            if (count(response.body().`object`) > 0) pageNum++
+                        }
+
+                        mAdapter.updateData(list)
+                    }
+
+                    override fun onFinish() {
+                        super.onFinish()
+                        swipe_refresh.isRefreshing = false
+                        isLoadingMore = false
+
+                        empty_view.apply { if (list.isEmpty()) visible() else gone() }
+                    }
+
+                })
     }
 }

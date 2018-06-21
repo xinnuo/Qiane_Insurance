@@ -2,10 +2,13 @@ package com.ruanmeng.qiane_insurance
 
 import android.os.Bundle
 import android.view.View
-import com.ruanmeng.base.BaseActivity
-import com.ruanmeng.base.load_Linear
-import com.ruanmeng.base.refresh
+import com.lzg.extend.BaseResponse
+import com.lzg.extend.jackson.JacksonDialogCallback
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.model.Response
+import com.ruanmeng.base.*
 import com.ruanmeng.model.CommonData
+import com.ruanmeng.share.BaseHttp
 import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_list.*
 import net.idik.lib.slimadapter.SlimAdapter
@@ -22,35 +25,20 @@ class IncomeDetailActivity : BaseActivity() {
         verticalLayout { include<View>(R.layout.layout_list) }
         init_title("收入明细")
 
-        list.add(CommonData().apply {
-            title = "2018-05-18 16:56"
-            content = "账户提现"
-            price = "160"
-        })
-        list.add(CommonData().apply {
-            title = "2018-03-28 13:23"
-            content = "账户提现"
-            price = "230"
-        })
-        list.add(CommonData().apply {
-            title = "2018-02-02 09:45"
-            content = "账户提现"
-            price = "100"
-        })
-        list.add(CommonData().apply {
-            title = "2018-01-06 20:26"
-            content = "账户提现"
-            price = "400"
-        })
-
-        mAdapter.updateData(list)
+        swipe_refresh.isRefreshing = true
+        getData(pageNum)
     }
 
     override fun init_title() {
         super.init_title()
         empty_hint.text = "暂无相关收入明细！"
         swipe_refresh.refresh { getData(1) }
-        recycle_list.load_Linear(baseContext, swipe_refresh)
+        recycle_list.load_Linear(baseContext, swipe_refresh) {
+            if (!isLoadingMore) {
+                isLoadingMore = true
+                getData(pageNum)
+            }
+        }
 
         mAdapter = SlimAdapter.create()
                 .register<CommonData>(R.layout.item_income_list) { data, injector ->
@@ -68,6 +56,34 @@ class IncomeDetailActivity : BaseActivity() {
     }
 
     override fun getData(pindex: Int) {
-        swipe_refresh.isRefreshing = false
+        OkGo.post<BaseResponse<ArrayList<CommonData>>>(BaseHttp.profit_list_data)
+                .tag(this@IncomeDetailActivity)
+                .headers("token", getString("token"))
+                .params("page", pindex)
+                .execute(object : JacksonDialogCallback<BaseResponse<ArrayList<CommonData>>>(baseContext) {
+
+                    override fun onSuccess(response: Response<BaseResponse<ArrayList<CommonData>>>) {
+
+                        list.apply {
+                            if (pindex == 1) {
+                                clear()
+                                pageNum = pindex
+                            }
+                            addItems(response.body().`object`)
+                            if (count(response.body().`object`) > 0) pageNum++
+                        }
+
+                        mAdapter.updateData(list)
+                    }
+
+                    override fun onFinish() {
+                        super.onFinish()
+                        swipe_refresh.isRefreshing = false
+                        isLoadingMore = false
+
+                        empty_view.apply { if (list.isEmpty()) visible() else gone() }
+                    }
+
+                })
     }
 }

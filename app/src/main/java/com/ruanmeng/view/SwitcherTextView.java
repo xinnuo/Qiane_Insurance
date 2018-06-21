@@ -65,7 +65,7 @@ public class SwitcherTextView extends ViewSwitcher implements ViewSwitcher.ViewF
 
                     if (demoBeans.size() > 0) {
                         mHandler.sendEmptyMessageDelayed(AUTO_RUN_FLIP_TEXT, WAIT_TIME);
-                        setText(demoBeans.get(mIndex).getTitle());
+                        setText(demoBeans.get(mIndex).getInformationTitle());
                     }
                     mIndex++;
                     if (mIndex > demoBeans.size() - 1) {

@@ -5,12 +5,12 @@ import android.view.View
 import com.ruanmeng.base.BaseActivity
 import com.ruanmeng.base.load_Linear
 import com.ruanmeng.base.refresh
-import com.ruanmeng.base.startActivity
 import com.ruanmeng.model.CommonData
 import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_list.*
 import net.idik.lib.slimadapter.SlimAdapter
 import org.jetbrains.anko.include
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.verticalLayout
 import java.util.ArrayList
 

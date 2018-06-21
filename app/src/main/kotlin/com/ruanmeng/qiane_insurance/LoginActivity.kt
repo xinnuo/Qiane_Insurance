@@ -13,6 +13,7 @@ import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.utils.ActivityStack
 import com.ruanmeng.utils.CommonUtil
 import kotlinx.android.synthetic.main.activity_login.*
+import org.jetbrains.anko.startActivity
 import org.json.JSONObject
 
 class LoginActivity : BaseActivity() {

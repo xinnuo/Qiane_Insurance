@@ -1,17 +1,23 @@
 package com.ruanmeng.qiane_insurance
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
-import com.ruanmeng.base.BaseActivity
-import com.ruanmeng.base.load_Linear
-import com.ruanmeng.base.refresh
+import com.lzg.extend.BaseResponse
+import com.lzg.extend.StringDialogCallback
+import com.lzg.extend.jackson.JacksonDialogCallback
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.model.Response
+import com.ruanmeng.base.*
 import com.ruanmeng.model.CommonData
+import com.ruanmeng.share.BaseHttp
 import kotlinx.android.synthetic.main.layout_list.*
 import net.idik.lib.slimadapter.SlimAdapter
 import net.idik.lib.slimadapter.SlimAdapterEx
 import org.jetbrains.anko.*
+import org.json.JSONObject
 import java.util.ArrayList
 
 class PointActivity : BaseActivity() {
@@ -24,39 +30,20 @@ class PointActivity : BaseActivity() {
         verticalLayout { include<View>(R.layout.layout_list) }
         init_title("我的积分", "积分规则")
 
-        list.add(CommonData().apply {
-            title = "2018-05-18 16:56"
-            content = "分享成功"
-            price = "10"
-        })
-        list.add(CommonData().apply {
-            title = "2018-03-28 13:23"
-            content = "分享成功"
-            price = "10"
-        })
-        list.add(CommonData().apply {
-            title = "2018-02-02 09:45"
-            content = "分享成功"
-            price = "10"
-        })
-        list.add(CommonData().apply {
-            title = "2018-01-06 20:26"
-            content = "分享成功"
-            price = "10"
-        })
-        list.add(CommonData().apply {
-            title = "2018-03-18 11:06"
-            content = "注册成功"
-            price = "30"
-        })
-
-        mAdapterEx.updateData(list)
+        swipe_refresh.isRefreshing = false
+        getData()
+        getData(pageNum)
     }
 
     override fun init_title() {
         super.init_title()
         swipe_refresh.refresh { getData(1) }
-        recycle_list.load_Linear(baseContext, swipe_refresh)
+        recycle_list.load_Linear(baseContext, swipe_refresh) {
+            if (!isLoadingMore) {
+                isLoadingMore = true
+                getData(pageNum)
+            }
+        }
 
         mAdapterEx = SlimAdapter.create(SlimAdapterEx::class.java)
                 .addHeader(createView())
@@ -121,7 +108,49 @@ class PointActivity : BaseActivity() {
         }
     }
 
+    override fun getData() {
+        OkGo.post<String>(BaseHttp.integral_info)
+                .tag(this@PointActivity)
+                .headers("token", getString("token"))
+                .execute(object : StringDialogCallback(baseContext, false) {
+
+                    @SuppressLint("SetTextI18n")
+                    override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
+
+                        val obj = JSONObject(response.body()).optJSONObject("object") ?: JSONObject()
+                        pointTV.text = obj.optStringNotEmpty("integral", "0")
+                    }
+
+                })
+    }
+
     override fun getData(pindex: Int) {
-        swipe_refresh.isRefreshing = false
+        OkGo.post<BaseResponse<ArrayList<CommonData>>>(BaseHttp.integral_list_data)
+                .tag(this@PointActivity)
+                .headers("token", getString("token"))
+                .params("page", pindex)
+                .execute(object : JacksonDialogCallback<BaseResponse<ArrayList<CommonData>>>(baseContext) {
+
+                    override fun onSuccess(response: Response<BaseResponse<ArrayList<CommonData>>>) {
+
+                        list.apply {
+                            if (pindex == 1) {
+                                clear()
+                                pageNum = pindex
+                            }
+                            addItems(response.body().`object`)
+                            if (count(response.body().`object`) > 0) pageNum++
+                        }
+
+                        mAdapterEx.updateData(list)
+                    }
+
+                    override fun onFinish() {
+                        super.onFinish()
+                        swipe_refresh.isRefreshing = false
+                        isLoadingMore = false
+                    }
+
+                })
     }
 }

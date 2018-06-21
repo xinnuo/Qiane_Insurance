@@ -3,8 +3,7 @@ package com.ruanmeng.qiane_insurance
 import android.os.Bundle
 import android.view.View
 import com.ruanmeng.base.BaseActivity
-import com.ruanmeng.base.startActivity
-import org.jetbrains.anko.alert
+import org.jetbrains.anko.*
 
 class SettingActivity : BaseActivity() {
 

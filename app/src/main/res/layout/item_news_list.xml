@@ -48,7 +48,7 @@
                     android:layout_weight="1" />
 
                 <TextView
-                    android:id="@+id/item_news_plan"
+                    android:id="@+id/item_news_time"
                     style="@style/Font13_gray"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

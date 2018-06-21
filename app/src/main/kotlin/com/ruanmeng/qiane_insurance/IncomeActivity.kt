@@ -9,9 +9,9 @@ import com.lzy.okgo.model.Response
 import com.ruanmeng.base.BaseActivity
 import com.ruanmeng.base.getString
 import com.ruanmeng.base.optStringNotEmpty
-import com.ruanmeng.base.startActivity
 import com.ruanmeng.share.BaseHttp
 import kotlinx.android.synthetic.main.activity_income.*
+import org.jetbrains.anko.startActivity
 import org.json.JSONObject
 
 class IncomeActivity : BaseActivity() {
@@ -31,7 +31,7 @@ class IncomeActivity : BaseActivity() {
         when (v.id) {
             R.id.income_rule -> startActivity<WebActivity>("title" to "提现规则")
             R.id.tv_nav_right -> startActivity<IncomeDetailActivity>()
-            R.id.bt_withdraw -> startActivity<IncomeWithdrawActivity>()
+            R.id.bt_withdraw -> startActivity<IncomeWithdrawActivity>("balance" to mBalance)
         }
     }
 

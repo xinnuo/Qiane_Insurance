@@ -10,7 +10,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.ruanmeng.base.BaseActivity
-import com.ruanmeng.base.startActivity
 import com.ruanmeng.base.visible
 import com.ruanmeng.model.CommonData
 import com.ruanmeng.utils.DialogHelper
@@ -21,6 +20,7 @@ import com.zhy.view.flowlayout.TagAdapter
 import kotlinx.android.synthetic.main.activity_plan_detail.*
 import net.cachapa.expandablelayout.ExpandableLayout
 import net.idik.lib.slimadapter.SlimAdapter
+import org.jetbrains.anko.startActivity
 import java.util.*
 import kotlin.collections.ArrayList
 

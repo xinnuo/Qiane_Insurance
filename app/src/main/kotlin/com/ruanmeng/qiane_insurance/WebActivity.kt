@@ -7,12 +7,17 @@ import android.view.View
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import com.lzg.extend.StringDialogCallback
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.model.Response
 import com.ruanmeng.base.BaseActivity
 import com.ruanmeng.base.cancelLoadingDialog
 import com.ruanmeng.base.showLoadingDialog
+import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.utils.CommonUtil
 import org.jetbrains.anko.browse
 import org.jetbrains.anko.webView
+import org.json.JSONObject
 
 
 class WebActivity : BaseActivity() {
@@ -99,7 +104,42 @@ class WebActivity : BaseActivity() {
                 webView.loadUrl("https://www.baidu.com/")
             }
             "资讯详情" -> {
-                webView.loadUrl("https://www.baidu.com/")
+                OkGo.post<String>(BaseHttp.information_detail)
+                        .tag(this@WebActivity)
+                        .params("informationId", intent.getStringExtra("informationId"))
+                        .execute(object : StringDialogCallback(baseContext) {
+
+                            override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
+
+                                val obj = JSONObject(response.body()).optJSONObject("object") ?: JSONObject()
+                                val str = "<!doctype html><html>\n" +
+                                        "<meta charset=\"utf-8\">" +
+                                        "<style type=\"text/css\">" +
+                                        "body{ padding:0; margin:0; }\n" +
+                                        ".view_h1{ width:95%; margin:5px auto 0; display:block; overflow:hidden;  font-size:1.1em; color:#333; padding:0.5em 0; line-height:1.0em; }\n" +
+                                        ".view_time{ width:95%; margin:0 auto; display:block; overflow:hidden; font-size:0.8em; color:#999; }\n" +
+                                        ".con{ width:95%; margin:0 auto; color:#666; padding:0.5em 0; overflow:hidden; display:block; font-size:0.92em; line-height:1.8em; }\n" +
+                                        ".con h1,h2,h3,h4,h5,h6{ font-size:1em;}\n " +
+                                        "img{ width:auto; max-width: 100% !important; height:auto !important; margin:0 auto; display:block; }\n" +
+                                        "*{ max-width:100% !important; }\n" +
+                                        "</style>\n" +
+                                        "<body style=\"padding:0; margin:0; \">" +
+                                        "<div class=\"view_h1\">" +
+                                        obj.optString("informationTitle") +
+                                        "</div>" +
+                                        "<div class=\"view_time\" style=\"border-bottom:0.5px solid #ededed; padding-bottom:10px;\">" +
+                                        obj.optString("createDate") +
+                                        "</div>" +
+                                        "<div class=\"con\">" +
+                                        obj.optString("informationContent") +
+                                        "</div>" +
+                                        "</body>" +
+                                        "</html>"
+
+                                webView.loadDataWithBaseURL(BaseHttp.baseImg, str, "text/html", "utf-8", "")
+                            }
+
+                        })
             }
         }
     }

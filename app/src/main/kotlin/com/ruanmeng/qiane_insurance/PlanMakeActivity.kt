@@ -11,6 +11,7 @@ import com.ruanmeng.utils.DialogHelper
 import com.ruanmeng.view.FullyLinearLayoutManager
 import kotlinx.android.synthetic.main.activity_plan_make.*
 import net.idik.lib.slimadapter.SlimAdapter
+import org.jetbrains.anko.startActivity
 import win.smartown.android.library.tableLayout.TableAdapter
 import java.util.*
 import kotlin.collections.ArrayList
