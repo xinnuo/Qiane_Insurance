@@ -14,10 +14,12 @@ import com.lzy.okgo.model.Response
 import com.ruanmeng.base.BaseActivity
 import com.ruanmeng.base.addItems
 import com.ruanmeng.model.CommonData
+import com.ruanmeng.model.RefreshMessageEvent
 import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.utils.ActivityStack
 import com.ruanmeng.utils.MultiGapDecoration
 import net.idik.lib.slimadapter.SlimAdapter
+import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.*
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.sdk25.listeners.onClick
@@ -97,6 +99,19 @@ class FilterCompanyActivity : BaseActivity() {
         }
 
         sureBT.onClick {
+            val itemIds = ArrayList<String>()
+            val itemNames = ArrayList<String>()
+
+            list.filter { it.isChecked }.forEach {
+                itemIds.add(it.companyId)
+                itemNames.add(it.companyName)
+            }
+
+            EventBus.getDefault().post(RefreshMessageEvent(
+                    "公司",
+                    itemIds.joinToString(","),
+                    itemNames.joinToString(",")))
+
             ActivityStack.screenManager.popActivities(this::class.java)
         }
     }

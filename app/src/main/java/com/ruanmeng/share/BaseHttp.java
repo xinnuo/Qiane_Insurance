@@ -34,12 +34,15 @@ public class BaseHttp {
 
     public static String index_data = baseIp + "/index_data.rm"; //首页√
     public static String index_productprospectus = baseIp + "/index_productprospectus.rm"; //首页列表√
-    public static String prospectus_list_data = baseIp + "/prospectus_list_data.rm"; //计划列表√
+    public static String prospectus_list_data = baseIp + "/prospectus_list_data.rm"; //计划书列表√
+    public static String prospectus_detils = baseIp + "/prospectus_detils.rm"; //计划书详情√
     public static String product_list_data = baseIp + "/product_list_data.rm"; //产品列表√
     public static String read_user_ctn_data = baseIp + "/read_user_ctn_data.rm"; //阅读数、获客数√
     public static String company_list_data = baseIp + "/company_list_data.rm"; //公司列表√
+    public static String insurancetype_list_data = baseIp + "/insurancetype_list_data.rm"; //保险种类√
 
     public static String msg_list_data = baseIp + "/msg_list_data.rm"; //资讯列表√
     public static String information_list_data = baseIp + "/information_list_data.rm"; //资讯列表√
     public static String information_detail = baseIp + "/information_detail.rm"; //资讯详情√
+    public static String leave_message_sub = baseIp + "/leave_message_sub.rm"; //意见反馈√
 }

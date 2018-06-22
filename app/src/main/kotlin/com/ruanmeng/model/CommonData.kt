@@ -49,10 +49,29 @@ data class CommonData(
         var content: String = "",
         var price: String = "",
 
-        //计划列表
+        //计划书列表
         var prospectusId: String = "",
         var prospectusImg: String = "",
         var prospectusTitle: String = "",
+
+        //险种列表
+        var insuranceKindId: String = "",
+        var insuranceKindName: String = "",
+
+        //险种选项列表
+        var insuranceOptDictionaryId: String = "",
+        var optDictionaryName: String = "",
+
+        //险种选项选择列表
+        var insuranceItemId: String = "",
+        var itemName: String = "",
+        var checkItem: String = "",
+
+        //险种项与保额保费关系列表
+        var insuranceKindItemRefId: String = "",
+        var item1: String = "",
+        var item2: String = "",
+        var proportion: String = "",
 
         //产品列表
         var productinId: String = "",
@@ -61,6 +80,10 @@ data class CommonData(
         var synopsis: String = "",
         var productSum: String = "",
         var recommendSum: String = "",
+
+        //保险种类
+        var insuranceTypeId: String = "",
+        var insuranceTypeName: String = "",
 
         //资讯列表
         var informationId: String = "",
@@ -72,7 +95,7 @@ data class CommonData(
         var companyId: String = "",
         var companyName: String = "",
 
-        //公司列表
+        //消息列表
         var msgReceiveId: String = "",
         var sendDate: String = "",
 

@@ -138,7 +138,10 @@ class MainFirstFragment : BaseFragment() {
                             .visibility(R.id.item_first_divider3, if (!isLast) View.GONE else View.VISIBLE)
 
                             .clicked(R.id.item_first) {
-                                if (data.type == "1") startActivity<PlanMakeActivity>()
+                                if (data.type == "1")
+                                    startActivity<PlanMakeActivity>(
+                                            "title" to data.title,
+                                            "prospectusId" to data.productprospectusId)
                                 else startActivity<PlanDetailActivity>()
                             }
                 }

@@ -9,17 +9,21 @@ import com.ruanmeng.base.BaseActivity
 import com.ruanmeng.base.gone
 import com.ruanmeng.base.visible
 import com.ruanmeng.model.CommonData
+import com.ruanmeng.model.RefreshMessageEvent
 import com.ruanmeng.utils.ActivityStack
 import com.ruanmeng.utils.DialogHelper
 import com.ruanmeng.utils.MultiGapDecoration
 import kotlinx.android.synthetic.main.activity_filter_age.*
 import net.idik.lib.slimadapter.SlimAdapter
+import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.backgroundResource
 import java.util.*
 
 class FilterAgeActivity : BaseActivity() {
 
     private val list = ArrayList<CommonData>()
+    private var ageId = ""
+    private var ageName = "年龄"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,10 +31,22 @@ class FilterAgeActivity : BaseActivity() {
         init_title("年龄")
 
         list.add(CommonData().apply { title = "不限年龄" })
-        list.add(CommonData().apply { title = "0-17周岁" })
-        list.add(CommonData().apply { title = "18-65周岁" })
-        list.add(CommonData().apply { title = "66-100周岁" })
-        list.add(CommonData().apply { title = "自定义年龄" })
+        list.add(CommonData().apply {
+            title = "0-17周岁"
+            type = "0,17"
+        })
+        list.add(CommonData().apply {
+            title = "18-65周岁"
+            type = "18,65"
+        })
+        list.add(CommonData().apply {
+            title = "66-100周岁"
+            type = "66,100"
+        })
+        list.add(CommonData().apply {
+            title = "自定义年龄"
+            type = "-1"
+        })
 
         mAdapter.updateData(list)
     }
@@ -77,7 +93,7 @@ class FilterAgeActivity : BaseActivity() {
         when (v.id) {
             R.id.age_num_ll -> {
                 val items = ArrayList<String>()
-                (1 until 71).forEach { items.add("${it}周岁") }
+                (0 until 101).forEach { items.add("${it}周岁") }
                 DialogHelper.showItemDialog(
                         baseContext,
                         "选择年龄",
@@ -92,8 +108,8 @@ class FilterAgeActivity : BaseActivity() {
                         yearNow - 70,
                         yearNow, 3,
                         "选择生日",
-                        true, false) { year, _, _, _, _, date ->
-                    age_num.text = "${yearNow - year + 1}周岁"
+                        true, false) { year, _, _, _, _, _ ->
+                    age_num.text = "${yearNow - year}周岁"
                 }
             }
             R.id.age_clear -> {
@@ -104,6 +120,25 @@ class FilterAgeActivity : BaseActivity() {
                 age_custom.gone()
             }
             R.id.age_sure -> {
+                val data = list.firstOrNull { it.isChecked }
+                when {
+                    data == null || data.type.isEmpty() -> {
+                        ageId = ""
+                        ageName = "年龄"
+                    }
+                    data.type == "-1" -> {
+                        val hint = age_num.text.toString().replace("周岁", "")
+                        ageId = "$hint,$hint"
+                        ageName = age_num.text.toString()
+                    }
+                    else -> {
+                        ageId = data.type
+                        ageName = data.title
+                    }
+                }
+
+                EventBus.getDefault().post(RefreshMessageEvent("年龄", ageId, ageName))
+
                 ActivityStack.screenManager.popActivities(this::class.java)
             }
         }

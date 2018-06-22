@@ -7,11 +7,20 @@ import android.view.Gravity
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import com.lzg.extend.BaseResponse
+import com.lzg.extend.jackson.JacksonDialogCallback
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.model.Response
 import com.ruanmeng.base.BaseActivity
+import com.ruanmeng.base.addItems
 import com.ruanmeng.model.CommonData
+import com.ruanmeng.model.CommonModel
+import com.ruanmeng.model.RefreshMessageEvent
+import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.utils.ActivityStack
 import com.ruanmeng.utils.MultiGapDecoration
 import net.idik.lib.slimadapter.SlimAdapter
+import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.*
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.sdk25.listeners.onClick
@@ -78,7 +87,7 @@ class FilterKindActivity : BaseActivity() {
                 }
                 .register<CommonData>(R.layout.item_company_grid) { data, injector ->
                     @Suppress("DEPRECATION")
-                    injector.text(R.id.item_company, data.title)
+                    injector.text(R.id.item_company, data.insuranceTypeName)
                             .with<TextView>(R.id.item_company) {
                                 if (data.isChecked) {
                                     it.setTextColor(resources.getColor(R.color.colorAccent))
@@ -105,80 +114,46 @@ class FilterKindActivity : BaseActivity() {
         }
 
         sureBT.onClick {
+            val itemIds = ArrayList<String>()
+            val itemNames = ArrayList<String>()
+
+            list.filter { it is CommonData && it.isChecked }.forEach {
+                it as CommonData
+                itemIds.add(it.insuranceTypeId)
+                itemNames.add(it.insuranceTypeName)
+            }
+
+            EventBus.getDefault().post(RefreshMessageEvent(
+                    "保险种类",
+                    itemIds.joinToString(","),
+                    itemNames.joinToString(",")))
+
             ActivityStack.screenManager.popActivities(this::class.java)
         }
     }
 
     override fun getData() {
-        list.add("意外")
-        list.add(CommonData().apply {
-            title = "综合意外"
-            type = "意外"
-        })
-        list.add(CommonData().apply {
-            title = "意外身故"
-            type = "意外"
-        })
-        list.add(CommonData().apply {
-            title = "意外残疾"
-            type = "意外"
-        })
-        list.add(CommonData().apply {
-            title = "烧烫伤"
-            type = "意外"
-        })
-        list.add("医疗")
-        list.add(CommonData().apply {
-            title = "百万医疗"
-            type = "医疗"
-        })
-        list.add(CommonData().apply {
-            title = "疾病住院医疗"
-            type = "医疗"
-        })
-        list.add(CommonData().apply {
-            title = "疾病门诊"
-            type = "医疗"
-        })
-        list.add(CommonData().apply {
-            title = "意外医疗"
-            type = "医疗"
-        })
-        list.add("人寿")
-        list.add(CommonData().apply {
-            title = "定期寿险"
-            type = "人寿"
-        })
-        list.add(CommonData().apply {
-            title = "终身寿险"
-            type = "人寿"
-        })
-        list.add(CommonData().apply {
-            title = "两全保险"
-            type = "人寿"
-        })
-        list.add(CommonData().apply {
-            title = "年金保险"
-            type = "人寿"
-        })
-        list.add("其他")
-        list.add(CommonData().apply {
-            title = "旅游险"
-            type = "其他"
-        })
-        list.add(CommonData().apply {
-            title = "家财险"
-            type = "其他"
-        })
-        list.add(CommonData().apply {
-            title = "责任险"
-            type = "其他"
-        })
-        list.add(CommonData().apply {
-            title = "其他"
-            type = "其他"
-        })
+        OkGo.post<BaseResponse<ArrayList<CommonModel>>>(BaseHttp.insurancetype_list_data)
+                .tag(this@FilterKindActivity)
+                .execute(object : JacksonDialogCallback<BaseResponse<ArrayList<CommonModel>>>(baseContext, true) {
 
-        mAdapter.updateData(list)
+                    override fun onSuccess(response: Response<BaseResponse<ArrayList<CommonModel>>>) {
+
+                        val items = ArrayList<CommonModel>()
+                        items.addItems(response.body().`object`)
+
+                        items.forEach { item ->
+                            list.add(item.insuranceTypeName)
+
+                            val datas = ArrayList<CommonData>()
+                            datas.addItems(item.lcs)
+                            datas.forEach { it.type = item.insuranceTypeName }
+                            list.addAll(datas)
+                        }
+
+                        mAdapter.updateData(list)
+                    }
+
+                })
     }
 }

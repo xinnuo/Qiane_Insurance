@@ -5,8 +5,14 @@ import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.*
+import com.lzg.extend.BaseResponse
+import com.lzg.extend.jackson.JacksonDialogCallback
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.model.Response
 import com.ruanmeng.base.*
 import com.ruanmeng.model.CommonData
+import com.ruanmeng.model.CommonModel
+import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.utils.DialogHelper
 import com.ruanmeng.view.FullyLinearLayoutManager
 import kotlinx.android.synthetic.main.activity_plan_make.*
@@ -18,10 +24,14 @@ import kotlin.collections.ArrayList
 
 class PlanMakeActivity : BaseActivity() {
 
+    private val listKind = ArrayList<CommonData>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_plan_make)
         init_title("计划书")
+
+        getData()
     }
 
     override fun init_title() {
@@ -41,7 +51,13 @@ class PlanMakeActivity : BaseActivity() {
         planed_check.check(R.id.planed_check1)
         planer_check.check(R.id.planer_check1)
 
-        plan_title_ll.gone()
+        plan_title.text = intent.getStringExtra("title")
+        plan_title2.text = intent.getStringExtra("title")
+        plan_title_ll.visible()
+        plan_insurance.gone()
+        plan_table.gone()
+        plan_append.gone()
+        /*plan_title_ll.gone()
         plan_append.visible()
         val contentList = ArrayList<Array<String>>()
         contentList.add(arrayOf("险种", "保额", "保费", "交费期间"))
@@ -57,7 +73,7 @@ class PlanMakeActivity : BaseActivity() {
                 return items
             }
 
-        })
+        })*/
     }
 
     override fun doClick(v: View) {
@@ -213,5 +229,18 @@ class PlanMakeActivity : BaseActivity() {
                 dialog.show()
             }
         }
+    }
+
+    override fun getData() {
+        OkGo.post<BaseResponse<CommonModel>>(BaseHttp.prospectus_detils)
+                .tag(this@PlanMakeActivity)
+                .params("prospectusId", intent.getStringExtra("prospectusId"))
+                .execute(object : JacksonDialogCallback<BaseResponse<CommonModel>>(baseContext, true) {
+
+                    override fun onSuccess(response: Response<BaseResponse<CommonModel>>) {
+                        listKind.addItems(response.body().`object`.lks)
+                    }
+
+                })
     }
 }

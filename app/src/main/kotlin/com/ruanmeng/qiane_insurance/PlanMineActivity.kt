@@ -45,7 +45,9 @@ class PlanMineActivity : BaseActivity() {
                             .visibility(R.id.item_plan_divider3, if (position != 0) View.GONE else View.VISIBLE)
 
                             .clicked(R.id.item_plan) {
-                                startActivity<PlanMakeActivity>()
+                                startActivity<PlanMakeActivity>(
+                                        "title" to data.prospectusTitle,
+                                        "prospectusId" to data.prospectusId)
                             }
                 }
                 .attachTo(recycle_list)

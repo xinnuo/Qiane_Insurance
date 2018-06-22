@@ -168,8 +168,16 @@ class MainSecondFragment : BaseFragment() {
     @Subscribe
     fun onMessageEvent(event: RefreshMessageEvent) {
         when (event.type) {
+            "保险种类" -> {
+                insuranceTypeIds = event.id
+                updateList()
+            }
             "公司" -> {
                 companyId = event.id
+                updateList()
+            }
+            "年龄" -> {
+                age = event.id
                 updateList()
             }
         }

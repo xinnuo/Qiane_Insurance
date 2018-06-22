@@ -82,7 +82,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:support-v4:27.1.1'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
@@ -91,7 +90,7 @@ dependencies {
     support.each { implementation 'com.android.support:' + it + versions.supportLibraryVersion }
 
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:' + versions.kotlinPlugin
-    implementation 'com.android.support.constraint:constraint-layout:1.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:' + versions.constraintLayoutVersion
     implementation 'com.android.support:multidex:' + versions.multidexVersion
     testImplementation 'junit:junit:4.12'
 
