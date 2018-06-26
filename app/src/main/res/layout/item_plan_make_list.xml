@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingEnd="@dimen/dimen_size_10"
+        android:paddingStart="@dimen/dimen_size_10"
+        android:paddingTop="@dimen/dimen_size_10">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/Font12_white"
+                    android:layout_width="@dimen/dimen_size_18"
+                    android:layout_height="@dimen/dimen_size_18"
+                    android:background="@drawable/rec_bg_red"
+                    android:gravity="center"
+                    android:text="主" />
+
+                <TextView
+                    android:id="@+id/item_plan_title"
+                    style="@style/Font14_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_size_5"
+                    android:text="标题" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/item_plan_total"
+                style="@style/Font14_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_size_23"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:text="首年保费：0.00" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimen_size_1"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/item_plan_modify"
+            style="@style/Font14_white_borderless"
+            android:layout_width="@dimen/dimen_size_50"
+            android:layout_height="@dimen/dimen_size_25"
+            android:background="@drawable/rec_bg_red"
+            android:text="修改" />
+
+        <Button
+            android:id="@+id/item_plan_del"
+            style="@style/Font14_white_borderless"
+            android:layout_width="@dimen/dimen_size_50"
+            android:layout_height="@dimen/dimen_size_25"
+            android:layout_marginStart="@dimen/dimen_size_10"
+            android:background="@drawable/rec_bg_trans_stroke_red"
+            android:text="删除"
+            android:textColor="@color/colorAccent" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/item_plan_table"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dimen_size_10"
+        android:layout_marginStart="@dimen/dimen_size_10"
+        android:layout_marginTop="@dimen/dimen_size_10"
+        android:background="@drawable/rec_bg_white_stroke_divider"
+        android:overScrollMode="never" />
+
+</LinearLayout>

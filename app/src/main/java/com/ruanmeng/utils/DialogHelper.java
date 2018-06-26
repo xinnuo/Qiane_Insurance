@@ -47,6 +47,14 @@ public class DialogHelper {
             final String title,
             final List<String> items,
             final ItemCallBack callBack) {
+        showItemDialog(context, title, 0, items, callBack);
+    }
+    public static void showItemDialog(
+            final Context context,
+            final String title,
+            final int position,
+            final List<String> items,
+            final ItemCallBack callBack) {
 
         BottomBaseDialog dialog = new BottomBaseDialog(context) {
 
@@ -87,6 +95,7 @@ public class DialogHelper {
             @Override
             public void setUiBeforShow() {
                 loopView.setItems(items);
+                loopView.setInitPosition(position);
             }
 
         };
@@ -100,6 +109,38 @@ public class DialogHelper {
             final int maxYearValue,
             final int count,
             final String title,
+            final boolean isCurrentDate,
+            final boolean isLimited,
+            final DateItemCallBack callback) {
+        showDateDialog(context, minYearValue, maxYearValue, count, title, -1, -1 ,
+                -1, -1, -1, isCurrentDate, isLimited, callback);
+    }
+
+    public static void showDateDialog(
+            final Context context,
+            final int minYearValue,
+            final int maxYearValue,
+            final String title,
+            final int initYear,
+            final int initMonth,
+            final int initDay,
+            final boolean isLimited,
+            final DateItemCallBack callback) {
+        showDateDialog(context, minYearValue, maxYearValue, 3, title, initYear, initMonth ,
+                initDay, 0, 0, false, isLimited, callback);
+    }
+
+    public static void showDateDialog(
+            final Context context,
+            final int minYearValue,
+            final int maxYearValue,
+            final int count,
+            final String title,
+            final int initYear,
+            final int initMonth,
+            final int initDay,
+            final int initHour,
+            final int initMinute,
             final boolean isCurrentDate,
             final boolean isLimited,
             final DateItemCallBack callback) {
@@ -251,6 +292,14 @@ public class DialogHelper {
                     loop_year.setInitPosition(Calendar.getInstance().get(Calendar.YEAR) - minYearValue);
                     loop_month.setInitPosition(Calendar.getInstance().get(Calendar.MONTH));
                     loop_day.setInitPosition(Calendar.getInstance().get(Calendar.DAY_OF_MONTH) - 1);
+                } else {
+                    if (initYear > -1 && initMonth > -1 && initDay > -1 && initHour > -1 && initMinute > -1) {
+                        loop_year.setInitPosition(initYear - minYearValue);
+                        loop_month.setInitPosition(initMonth);
+                        loop_day.setInitPosition(initDay - 1);
+                        loop_hour.setInitPosition(initHour);
+                        loop_minute.setInitPosition(initMinute);
+                    }
                 }
 
                 String[] months_big = {"1", "3", "5", "7", "8", "10", "12"};

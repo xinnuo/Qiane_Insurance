@@ -71,6 +71,8 @@ data class CommonData(
         var insuranceKindItemRefId: String = "",
         var item1: String = "",
         var item2: String = "",
+        var item3: String = "",
+        var item4: String = "",
         var proportion: String = "",
 
         //产品列表
@@ -101,6 +103,5 @@ data class CommonData(
 
         var position: Int = -1,
         var letter: String = "",
-        var isClickable: Boolean = true,
         var isChecked: Boolean = false
 ) : Serializable
