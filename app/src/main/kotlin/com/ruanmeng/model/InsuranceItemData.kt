@@ -1,5 +1,5 @@
 /**
- * created by 小卷毛, 2018/6/25
+ * created by 小卷毛, 2018/6/26
  * Copyright (c) 2018, 416143467@qq.com All Rights Reserved.
  * #                   *********                            #
  * #                  ************                          #
@@ -32,22 +32,12 @@ import java.io.Serializable
 /**
  * 项目名称：Qiane_Insurance
  * 创建人：小卷毛
- * 创建时间：2018-06-25 11:17
+ * 创建时间：2018-06-26 18:05
  */
-data class InsuranceData(
-        //险种选择
-        var insuranceKindId: String = "",      //险种id
-        var insuranceKindName: String = "",    //险种
-        var insuredTotalAmount: Double = 0.00, //总保额
-        var insuredTotalFee: Double = 0.00,    //总保费
-        var isDelete: Boolean = true,          //是否删除
-        var insuredTable: ArrayList<TableData> = ArrayList(),
-        var insuredItem: ArrayList<InsuranceItemData> = ArrayList(),
-
-        var insuredPosition: Int = 0,
-        var insuranceOptDictionaryId: String = "",
-        var optDictionaryName: String = "",
-        var type: String = "",
-        var checkName: String = "",
-        var insuredParentPosition: Int = 0
+data class InsuranceItemData(
+        var insuranceItem: InsuranceModel = InsuranceModel(), //险种
+        var insuredAmount: String = "",                       //保额
+        var insuredFee: String = "",                          //保费
+        var insuredPeriod: String = "",                       //保险期间
+        var insuredRange: String = ""                         //交费期间
 ): Serializable

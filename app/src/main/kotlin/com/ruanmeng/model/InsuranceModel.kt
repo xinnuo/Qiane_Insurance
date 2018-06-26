@@ -35,13 +35,13 @@ import java.io.Serializable
  * 创建时间：2018-06-22 15:51
  */
 data class InsuranceModel( //险种详情
-        var addAge: String = "",
+        var addAge: String = "0", //大
         var tlMedianAgeRule: String = "",
-        var addAge2: String = "",
+        var addAge2: String = "", //小
         var gtMedianAgeRule: String = "",
         var femaleRule: String = "",
         var startAge: String = "",
-        var medianAge: String = "",
+        var medianAge: String = "0",
         var endAge: String = "",
         var dfInsuredAmount: String = "",
         var dfcopies: String = "",
@@ -54,10 +54,14 @@ data class InsuranceModel( //险种详情
         var insuranceKindName: String = "",
         var pinsuranceKindItemIds: String = "",
         var type: String = "",                    // "1":"主险", "2":"附加险", "3":"豁免相关", "4":"双豁免"
+        var baseProportion: Double = 0.00,        //基准费率
+        var proportion: Double = 0.00,            //选择费率
         var lds: List<CommonData>? = ArrayList(), //险种选项列表
         var lis: List<CommonData>? = ArrayList(), //险种选项选择列表
         var lrs: List<CommonData>? = ArrayList(), //险种项与保额保费关系列表
-        var isClickable: Boolean = true,
-        var isExpand: Boolean = true,
-        var isChecked: Boolean = false
+        var insuredParentPosition: Int = 0,
+        var isGray: Boolean = false,      //是否灰色
+        var isClickable: Boolean = true,  //是否点击
+        var isExpand: Boolean = true,     //是否展开
+        var isChecked: Boolean = false    //是否选中
 ): Serializable

@@ -56,4 +56,10 @@
 
     </LinearLayout>
 
+    <View
+        android:id="@+id/dialog_type_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_10"
+        android:background="@color/background" />
+
 </LinearLayout>

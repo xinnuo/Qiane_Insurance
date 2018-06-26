@@ -61,6 +61,9 @@ data class CommonData(
         //险种选项列表
         var insuranceOptDictionaryId: String = "",
         var optDictionaryName: String = "",
+        var insuredParentPosition: Int = 0,
+        var checkName: String = "",
+        var checkItemId: String = "",
 
         //险种选项选择列表
         var insuranceItemId: String = "",
