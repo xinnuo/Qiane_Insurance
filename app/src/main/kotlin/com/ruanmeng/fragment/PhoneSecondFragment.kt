@@ -10,6 +10,7 @@ import com.ruanmeng.base.showToast
 import com.ruanmeng.qiane_insurance.R
 import com.ruanmeng.utils.CommonUtil
 import kotlinx.android.synthetic.main.fragment_phone_second.*
+import org.jetbrains.anko.sdk25.listeners.onClick
 
 class PhoneSecondFragment : BaseFragment() {
 
@@ -37,18 +38,18 @@ class PhoneSecondFragment : BaseFragment() {
         et_tel.addTextChangedListener(this)
         et_yzm.addTextChangedListener(this)
 
-        bt_yzm.setOnClickListener {
+        bt_yzm.onClick {
             if (et_tel.text.isBlank()) {
                 et_tel.requestFocus()
                 showToast("请输入手机号")
-                return@setOnClickListener
+                return@onClick
             }
 
             if (!CommonUtil.isMobile(et_tel.text.toString())) {
                 et_tel.requestFocus()
                 et_tel.setText("")
                 showToast("手机号码格式错误，请重新输入")
-                return@setOnClickListener
+                return@onClick
             }
 
             thread = Runnable {
@@ -64,7 +65,7 @@ class PhoneSecondFragment : BaseFragment() {
             }
         }
 
-        bt_ok.setOnClickListener {
+        bt_ok.onClick {
             (activity as OnFragmentItemSelectListener).onitemSelected(
                     "确定", "", "")
         }

@@ -20,6 +20,7 @@ import com.zhy.view.flowlayout.TagAdapter
 import kotlinx.android.synthetic.main.activity_plan_detail.*
 import net.cachapa.expandablelayout.ExpandableLayout
 import net.idik.lib.slimadapter.SlimAdapter
+import org.jetbrains.anko.sdk25.listeners.onClick
 import org.jetbrains.anko.startActivity
 import java.util.*
 import kotlin.collections.ArrayList
@@ -135,18 +136,11 @@ class PlanDetailActivity : BaseActivity() {
                 val cancel = view.findViewById<Button>(R.id.dialog_share_cancel)
                 val dialog = BottomSheetDialog(baseContext, R.style.BottomSheetDialogStyle)
 
-                wechat.setOnClickListener {
-                    dialog.dismiss()}
-                circle.setOnClickListener {
-                    dialog.dismiss()
-                }
-                qq.setOnClickListener {
-                    dialog.dismiss()
-                }
-                space.setOnClickListener {
-                    dialog.dismiss()
-                }
-                cancel.setOnClickListener { dialog.dismiss() }
+                wechat.onClick { dialog.dismiss() }
+                circle.onClick { dialog.dismiss() }
+                qq.onClick { dialog.dismiss() }
+                space.onClick { dialog.dismiss() }
+                cancel.onClick { dialog.dismiss() }
 
                 dialog.setContentView(view)
                 dialog.show()

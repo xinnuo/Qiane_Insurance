@@ -51,7 +51,7 @@ android {
         release {
             //不显示Log打印输出
             buildConfigField "boolean", "LOG_DEBUG", "false"
-            buildConfigField "String", "API_HOST", "\"https://ebringhome.com\""
+            buildConfigField "String", "API_HOST", "\"http://122.114.212.120:8097\""
             minifyEnabled false  //混淆编译
             zipAlignEnabled true //Zip代码压缩优化
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

@@ -19,7 +19,7 @@ import com.ruanmeng.model.CommonData
 import com.ruanmeng.model.CommonModel
 import com.ruanmeng.model.RefreshMessageEvent
 import com.ruanmeng.qiane_insurance.NewsActivity
-import com.ruanmeng.qiane_insurance.PlanDetailActivity
+import com.ruanmeng.qiane_insurance.PlanLookActivity
 import com.ruanmeng.qiane_insurance.PlanMakeActivity
 import com.ruanmeng.qiane_insurance.R
 import com.ruanmeng.share.BaseHttp
@@ -32,7 +32,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.support.v4.dip
 import org.jetbrains.anko.support.v4.startActivity
-import java.util.ArrayList
+import java.util.*
 
 class MainFirstFragment : BaseFragment() {
 
@@ -142,7 +142,9 @@ class MainFirstFragment : BaseFragment() {
                                     startActivity<PlanMakeActivity>(
                                             "title" to data.title,
                                             "prospectusId" to data.productprospectusId)
-                                else startActivity<PlanDetailActivity>()
+                                else startActivity<PlanLookActivity>(
+                                        "productinId" to data.productprospectusId,
+                                        "type" to "产品详情")
                             }
                 }
                 .attachTo(recycle_list)

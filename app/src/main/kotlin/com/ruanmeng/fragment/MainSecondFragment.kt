@@ -14,7 +14,7 @@ import com.lzy.okgo.model.Response
 import com.ruanmeng.base.*
 import com.ruanmeng.model.CommonData
 import com.ruanmeng.model.RefreshMessageEvent
-import com.ruanmeng.qiane_insurance.PlanDetailActivity
+import com.ruanmeng.qiane_insurance.PlanLookActivity
 import com.ruanmeng.qiane_insurance.R
 import com.ruanmeng.share.BaseHttp
 import kotlinx.android.synthetic.main.fragment_main_second.*
@@ -89,7 +89,9 @@ class MainSecondFragment : BaseFragment() {
                             .visibility(R.id.item_first_divider3, if (!isLast) View.GONE else View.VISIBLE)
 
                             .clicked(R.id.item_first) {
-                                startActivity<PlanDetailActivity>()
+                                startActivity<PlanLookActivity>(
+                                        "productinId" to data.productinId,
+                                        "type" to "产品详情")
                             }
                 }
                 .attachTo(recycle_list)
