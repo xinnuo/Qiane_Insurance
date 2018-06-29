@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:background="@color/white">
+
+        <TextView
+            style="@style/Font15_black"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="添加计划" />
+
+        <ImageView
+            android:id="@+id/dialog_plan_close"
+            android:layout_width="@dimen/dimen_size_45"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:onClick="doClick"
+            android:padding="@dimen/dimen_size_15"
+            android:src="@mipmap/plan_del02"
+            tools:ignore="ContentDescription" />
+
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/dialog_plan_list"
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:overScrollMode="never" />
+
+</LinearLayout>

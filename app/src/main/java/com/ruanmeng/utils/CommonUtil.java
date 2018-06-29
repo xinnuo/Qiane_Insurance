@@ -1,5 +1,6 @@
 package com.ruanmeng.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -22,7 +23,7 @@ public class CommonUtil {
         boolean netstate = false;
         ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity != null) {
-            @SuppressWarnings("deprecation")
+            @SuppressLint("MissingPermission")
             NetworkInfo[] info = connectivity.getAllNetworkInfo();
             if (info != null) {
                 for (NetworkInfo anInfo : info) {
@@ -38,32 +39,26 @@ public class CommonUtil {
 
     public static int getScreenWidth(Context context) {
         WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display display = manager.getDefaultDisplay();
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        display.getMetrics(outMetrics);
-        return outMetrics.widthPixels;
-        //return display.getWidth();
+        if (manager != null) {
+            Display display = manager.getDefaultDisplay();
+            DisplayMetrics outMetrics = new DisplayMetrics();
+            display.getMetrics(outMetrics);
+            return outMetrics.widthPixels;
+            //return display.getWidth();
+        }
+        return 0;
     }
 
     public static int getScreenHeight(Context context) {
         WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display display = manager.getDefaultDisplay();
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        display.getMetrics(outMetrics);
-        return outMetrics.heightPixels;
-        //return display.getHeight();
-    }
-
-    //dip转像素值
-    public static int dip2px(Context context, double d) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (d * scale + 0.5f);
-    }
-
-    //像素值转dip
-    public static int px2dip(Context context, float pxValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (pxValue / scale + 0.5f);
+        if (manager != null) {
+            Display display = manager.getDefaultDisplay();
+            DisplayMetrics outMetrics = new DisplayMetrics();
+            display.getMetrics(outMetrics);
+            return outMetrics.heightPixels;
+            //return display.getHeight();
+        }
+        return 0;
     }
 
     /**
@@ -120,80 +115,6 @@ public class CommonUtil {
         Pattern p = Pattern.compile(strPattern);
         Matcher m = p.matcher(strWeb);
         return m.matches();
-    }
-
-    /**
-     * 实际替换动作
-     *
-     * @param str     username
-     * @param regular 正则
-     */
-    public static String replaceAction(String str, String regular) {
-        return str.replaceAll(regular, "*");
-    }
-
-    /**
-     * 姓名替换，保留姓氏
-     * 如果身姓名为空 或者 null ,返回null ；否则，返回替换后的字符串；
-     *
-     * @param name 身份证号
-     */
-    public static String nameReplaceWithStar(String name) {
-
-        if (name == null || name.isEmpty()) return "";
-        else return replaceAction(name, "(?<=[\\u4e00-\\u9fa5]{" + (name.length() > 3 ? "2" : "1") + "})[\\u4e00-\\u9fa5](?=[\\u4e00-\\u9fa5]{0})");
-    }
-
-    /**
-     * 手机号号替换，保留前三位和后四位
-     * 如果身手机号为空 或者 null ,返回null ；否则，返回替换后的字符串；
-     *
-     * @param phone 手机号
-     */
-    public static String phoneReplaceWithStar(String phone) {
-
-        if (phone == null || phone.isEmpty()) return "";
-        if (phone.length() < 7) return phone;
-        else return replaceAction(phone, "(?<=\\d{3})\\d(?=\\d{4})");
-    }
-
-    /**
-     * 身份证号替换，保留前四位和后四位
-     * 如果身份证号为空 或者 null ,返回null ；否则，返回替换后的字符串；
-     *
-     * @param idCard 身份证号
-     */
-    public static String idCardReplaceWithStar(String idCard) {
-
-        if (idCard == null || idCard.isEmpty()) return "";
-        if (idCard.length() < 8) return idCard;
-        else return replaceAction(idCard, "(?<=\\d{4})\\d(?=\\d{4})");
-    }
-
-    /**
-     * 银行卡替换，保留后四位
-     * 如果银行卡号为空 或者 null ,返回null ；否则，返回替换后的字符串；
-     *
-     * @param bankCard 银行卡号
-     */
-    public static String bankCardReplaceWithStar(String bankCard) {
-
-        if (bankCard == null || bankCard.isEmpty()) return "";
-        if (bankCard.length() < 4) return bankCard;
-        else return replaceAction(bankCard, "(?<=\\d{0})\\d(?=\\d{4})");
-    }
-
-    /**
-     * 银行卡替换，保留后四位
-     * 如果银行卡号为空 或者 null ,返回null ；否则，返回替换后的字符串；
-     *
-     * @param bankCard 银行卡号
-     */
-    public static String bankCardReplaceHeaderWithStar(String bankCard) {
-
-        if (bankCard == null || bankCard.isEmpty()) return "";
-        if (bankCard.length() < 10) return bankCard;
-        return replaceAction(bankCard, "(?<=\\d{6})\\d(?=\\d{4})");
     }
 
     /**

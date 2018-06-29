@@ -4,45 +4,50 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SimpleItemAnimator
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
 import com.lzg.extend.BaseResponse
+import com.lzg.extend.StringDialogCallback
 import com.lzg.extend.jackson.JacksonDialogCallback
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.model.Response
 import com.ruanmeng.base.*
 import com.ruanmeng.model.*
 import com.ruanmeng.share.BaseHttp
+import com.ruanmeng.utils.ActivityStack
 import com.ruanmeng.utils.DialogHelper
 import com.ruanmeng.view.FullyLinearLayoutManager
+import io.reactivex.Flowable
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_plan_make.*
 import net.idik.lib.slimadapter.SlimAdapter
 import org.jetbrains.anko.collections.forEachWithIndex
 import org.jetbrains.anko.sdk25.listeners.onCheckedChange
+import org.jetbrains.anko.sdk25.listeners.onClick
 import org.jetbrains.anko.startActivity
+import org.json.JSONArray
+import org.json.JSONObject
 import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import android.support.v7.widget.SimpleItemAnimator
-import com.lzg.extend.StringDialogCallback
-import com.ruanmeng.utils.ActivityStack
-import io.reactivex.Flowable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import org.jetbrains.anko.sdk25.listeners.onClick
-import org.json.JSONArray
-import org.json.JSONObject
-
 
 class PlanMakeActivity : BaseActivity() {
 
     private val listKind = ArrayList<CommonData>()
     private val listChecked = ArrayList<InsuranceData>()
     private val mapKind = HashMap<String, List<InsuranceModel>>()
+    private val mapChecked = HashMap<String, ArrayList<Any>>()
     private var mProductId = ""
     //被保人
     private var mPlanedSex = 1
@@ -73,9 +78,10 @@ class PlanMakeActivity : BaseActivity() {
     private var mCheckAge2 = 0
 
     private var mPlanerSex = 1
+    private var mFocusPosition = -1
 
     @SuppressLint("HandlerLeak")
-    private var handler = object : Handler() {
+    private var mHandler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             when (msg.what) {
@@ -84,6 +90,10 @@ class PlanMakeActivity : BaseActivity() {
 
                     updateCheckedList()
                     updateList()
+                }
+                3 -> { //险种信息
+                    val kindId = msg.obj as String
+                    getInsuranceData(kindId)
                 }
             }
         }
@@ -127,7 +137,7 @@ class PlanMakeActivity : BaseActivity() {
                 R.id.planed_check2 -> mPlanedSex = 0
             }
 
-            handler.sendEmptyMessage(0)
+            mHandler.sendEmptyMessage(0)
         }
 
         plan_check.onCheckedChange { _, checkedId ->
@@ -135,6 +145,9 @@ class PlanMakeActivity : BaseActivity() {
                 R.id.plan_check1 -> mPlanSex = 1
                 R.id.plan_check2 -> mPlanSex = 0
             }
+
+            mHandler.sendEmptyMessage(0)
+
         }
 
         plane_check.onCheckedChange { _, checkedId ->
@@ -142,6 +155,9 @@ class PlanMakeActivity : BaseActivity() {
                 R.id.plane_check1 -> mPlaneSex = 1
                 R.id.plane_check2 -> mPlaneSex = 0
             }
+
+            mHandler.sendEmptyMessage(0)
+
         }
 
         planer_check.onCheckedChange { _, checkedId ->
@@ -191,7 +207,8 @@ class PlanMakeActivity : BaseActivity() {
                                 }
 
                                 .clicked(R.id.item_plan_modify) {
-                                    showInsuranceDialog(data.insuranceKindId)
+                                    val items = mapChecked[data.insuranceKindId]!!
+                                    showInsuranceDialog(data.insuranceKindId, items)
                                 }
 
                                 .clicked(R.id.item_plan_del) {
@@ -258,7 +275,8 @@ class PlanMakeActivity : BaseActivity() {
                             override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
 
                                 showToast(msg)
-                                val json = JSONObject(response.body()).optJSONObject("object") ?: JSONObject()
+                                val json = JSONObject(response.body()).optJSONObject("object")
+                                        ?: JSONObject()
                                 val prospectusTitle = json.optString("prospectusTitle")
                                 val prospectusId = json.optString("prospectusId")
                                 startActivity<PlanLookActivity>(
@@ -285,7 +303,7 @@ class PlanMakeActivity : BaseActivity() {
                     mPlanedYear = year - mStartAge - position
                     planed_birth.text = "生日"
 
-                    handler.sendEmptyMessage(1)
+                    mHandler.sendEmptyMessage(1)
                 }
             }
             R.id.plan_age_ll -> {
@@ -302,6 +320,8 @@ class PlanMakeActivity : BaseActivity() {
                     val year = Calendar.getInstance().get(Calendar.YEAR)
                     mPlanYear = year - mStartAge1 - position
                     plan_birth.text = "生日"
+
+                    mHandler.sendEmptyMessage(1)
                 }
             }
             R.id.plane_age_ll -> {
@@ -318,6 +338,8 @@ class PlanMakeActivity : BaseActivity() {
                     val year = Calendar.getInstance().get(Calendar.YEAR)
                     mPlaneYear = year - mStartAge2 - position
                     plane_birth.text = "生日"
+
+                    mHandler.sendEmptyMessage(1)
                 }
             }
             R.id.planed_birth -> {
@@ -339,7 +361,7 @@ class PlanMakeActivity : BaseActivity() {
                     planed_age.text = "${mCheckAge}岁"
                     planed_birth.text = date
 
-                    handler.sendEmptyMessage(2)
+                    mHandler.sendEmptyMessage(2)
                 }
             }
             R.id.plan_birth -> {
@@ -360,6 +382,8 @@ class PlanMakeActivity : BaseActivity() {
                     mCheckAge1 = year - y
                     plan_age.text = "${mCheckAge1}岁"
                     plan_birth.text = date
+
+                    mHandler.sendEmptyMessage(2)
                 }
             }
             R.id.plane_birth -> {
@@ -380,6 +404,8 @@ class PlanMakeActivity : BaseActivity() {
                     mCheckAge2 = year - y
                     plane_age.text = "${mCheckAge2}岁"
                     plane_birth.text = date
+
+                    mHandler.sendEmptyMessage(2)
                 }
             }
             R.id.plan_host -> {
@@ -388,12 +414,60 @@ class PlanMakeActivity : BaseActivity() {
                     return
                 }
 
-                showInsuranceDialog(listKind[0].insuranceKindId)
+                showOptionDialog()
+
+                if (listKind.size == listChecked.size) return
+
+                val itemLbs = ArrayList<InsuranceModel>()
+                itemLbs.addItems(mapKind[listKind[0].insuranceKindId])
+
+                showInsuranceDialog(listKind[0].insuranceKindId, getInsuranceList(itemLbs))
             }
         }
     }
 
-    private fun showInsuranceDialog(kindId: String) {
+    private fun showOptionDialog() {
+        val items = ArrayList<CommonData>()
+        listKind.forEach { item -> if (!listChecked.any { it.insuranceKindId == item.insuranceKindId }) items.add(item) }
+
+        val dialog = object : BottomDialog(baseContext) {
+
+            override fun onCreateView(): View {
+                val view = View.inflate(mContext, R.layout.dialog_plan_option, null)
+                val dialogClose = view.findViewById<ImageView>(R.id.dialog_plan_close)
+                val dialogList = view.findViewById<RecyclerView>(R.id.dialog_plan_list)
+
+                dialogList.apply {
+                    load_Linear(baseContext)
+                    adapter = SlimAdapter.create()
+                            .register<CommonData>(R.layout.item_plan_option_list) { data, injector ->
+                                val isLast = items.indexOf(data) == items.size - 1
+
+                                injector.text(R.id.item_option_title, data.insuranceKindName)
+                                        .visibility(R.id.item_option_divider1, if (isLast) View.GONE else View.VISIBLE)
+                                        .visibility(R.id.item_option_divider2, if (!isLast) View.GONE else View.VISIBLE)
+
+                                        .clicked(R.id.item_option) {
+                                            dismiss()
+                                            mHandler.sendMessageDelayed(Message().apply {
+                                                what = 3
+                                                obj = data.insuranceKindId
+                                            }, 300)
+                                        }
+                            }
+                            .attachTo(this)
+                    (adapter as SlimAdapter).updateData(items)
+                }
+
+                dialogClose.onClick { dismiss() }
+
+                return view
+            }
+        }
+        dialog.show()
+    }
+
+    private fun showInsuranceDialog(kindId: String, items: ArrayList<Any>) {
         @Suppress("DEPRECATION")
         val dialog = object : BottomDialog(baseContext) {
 
@@ -405,16 +479,9 @@ class PlanMakeActivity : BaseActivity() {
                 val dialogList = view.findViewById<RecyclerView>(R.id.dialog_plan_list)
                 val dialogOk = view.findViewById<Button>(R.id.dialog_plan_ok)
 
-                val items = ArrayList<Any>()
-                val itemLbs = ArrayList<InsuranceModel>()
-
-                itemLbs.addItems(mapKind[kindId])
-                items.addAll(getInsuranceList(itemLbs))
-
                 dialogList.apply {
-                    isNestedScrollingEnabled = false
                     (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false //解决notifyItemChanged闪烁
-                    layoutManager = FullyLinearLayoutManager(baseContext)
+                    layoutManager = LinearLayoutManager(baseContext)
                     adapter = SlimAdapter.create()
                             .register<InsuranceModel>(R.layout.item_plan_dialog_list) { data, injector ->
                                 val isFirst = items.indexOf(data) == 0
@@ -449,8 +516,9 @@ class PlanMakeActivity : BaseActivity() {
                                             val options = ArrayList<CommonData>()
                                             val itemStr = ArrayList<String>()
 
-                                            options.addItems(itemLbs[data.insuredParentPosition].lis?.filter {
-                                                it.insuranceOptDictionaryId == data.insuranceOptDictionaryId
+                                            val item = items.first { it is InsuranceModel
+                                                        && it.insuredParentPosition == data.insuredParentPosition } as InsuranceModel
+                                            options.addItems(item.lis?.filter { it.insuranceOptDictionaryId == data.insuranceOptDictionaryId
                                             }).forEach { itemStr.add(it.itemName) }
 
                                             DialogHelper.showItemDialog(
@@ -460,8 +528,9 @@ class PlanMakeActivity : BaseActivity() {
 
                                                 data.checkName = name
                                                 data.checkItemId = options[position].insuranceItemId
-                                                calculateFee(items)
 
+                                                calculateProportion(items)
+                                                calculateFee(items.indexOf(data), data.insuredParentPosition, items)
                                                 (adapter as SlimAdapter).notifyDataSetChanged()
                                             }
                                         }
@@ -473,6 +542,7 @@ class PlanMakeActivity : BaseActivity() {
                                         .visibility(R.id.dialog_type_divider, if (!isLast) View.GONE else View.VISIBLE)
 
                                         .with<EditText>(R.id.dialog_type_num) {
+
                                             if (it.tag != null && it.tag is TextWatcher) {
                                                 it.removeTextChangedListener(it.tag as TextWatcher)
                                             }
@@ -480,10 +550,21 @@ class PlanMakeActivity : BaseActivity() {
                                             it.setText(data.checkName)
                                             it.setSelection(it.text.length)
                                             it.hint = "请输入"
+                                            if (mFocusPosition == items.indexOf(data)) it.requestFocus()
 
                                             val textWatcher = object : TextWatcher {
                                                 override fun afterTextChanged(s: Editable) {
                                                     data.checkName = s.toString()
+                                                    mFocusPosition = items.indexOf(data)
+
+                                                    Observable.create<Int> {
+                                                        calculateFee(mFocusPosition, data.insuredParentPosition, items)
+                                                        it.onNext(mFocusPosition)
+                                                    }
+                                                            //.debounce(600, TimeUnit.MILLISECONDS) //防抖动
+                                                            .subscribeOn(Schedulers.newThread())
+                                                            .observeOn(AndroidSchedulers.mainThread())
+                                                            .subscribe { (adapter as SlimAdapter).notifyDataSetChanged() }
                                                 }
 
                                                 override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -495,20 +576,43 @@ class PlanMakeActivity : BaseActivity() {
                                         }
 
                                         .clicked(R.id.dialog_type_num_clear) {
-                                            data.checkName = ""
-                                            (adapter as SlimAdapter).notifyItemChanged(items.indexOf(data))
+                                            Observable.create<Int> {
+                                                val index = items.indexOf(data)
+                                                data.checkName = ""
+                                                calculateFee(index, data.insuredParentPosition, items)
+                                                it.onNext(index)
+                                            }
+                                                    .subscribeOn(Schedulers.newThread())
+                                                    .observeOn(AndroidSchedulers.mainThread())
+                                                    .subscribe { (adapter as SlimAdapter).notifyDataSetChanged() }
                                         }
                             }
                             .attachTo(this)
+                    (adapter as SlimAdapter).updateData(items)
                 }
-                (dialogList.adapter as SlimAdapter).updateData(items)
 
                 dialogTitle.text = intent.getStringExtra("title")
                 dialogClose.onClick { dismiss() }
                 dialogOk.onClick {
+
+                    items.forEach { item ->
+                        when (item) {
+                            is CommonData -> if (item.checkName.isEmpty()) {
+                                showToast("请选择${item.optDictionaryName}")
+                                return@onClick
+                            }
+                            is InsuranceData -> if (item.checkName.isEmpty()) {
+                                showToast("请输入${item.optDictionaryName}")
+                                return@onClick
+                            }
+                        }
+                    }
+
                     dismiss()
 
                     getCheckedList(items)
+
+                    mapChecked[kindId] = items
                 }
 
                 return view
@@ -571,14 +675,12 @@ class PlanMakeActivity : BaseActivity() {
                     itemLis.addItems(it.lis)
 
                     if (item.type == "0") {
-                        if (itemLis.any {
-                                    it.insuranceOptDictionaryId == item.insuranceOptDictionaryId
-                                            && it.checkItem == "1"
+                        if (itemLis.any { it.checkItem == "1"
+                                            && it.insuranceOptDictionaryId == item.insuranceOptDictionaryId
                                 }) {
-                            val data = itemLis.filter {
-                                it.checkItem == "1"
+                            val data = itemLis.first { it.checkItem == "1"
                                         && it.insuranceOptDictionaryId == item.insuranceOptDictionaryId
-                            }[0]
+                            }
 
                             item.checkItemId = data.insuranceItemId
                             item.checkName = data.itemName
@@ -594,13 +696,16 @@ class PlanMakeActivity : BaseActivity() {
                             type = item.type
 
                             if (item.optDictionaryName == "保额") checkName = it.dfInsuredAmount
+                            if (item.optDictionaryName == "份数") checkName = it.dfcopies
                         })
                     }
                 }
             }
         }
 
-        calculateFee(items)
+        calculateProportion(items)
+        val indexPosition = items.indexOfFirst { it is CommonData }
+        calculateFee(indexPosition, 0, items)
 
         return items
     }
@@ -636,11 +741,11 @@ class PlanMakeActivity : BaseActivity() {
                                             && it.optDictionaryName == "保额"
                                             && it.insuredParentPosition == index
                                 }) {
-                            itemAmount = (inner.filter {
+                            itemAmount = (inner.first {
                                 it is InsuranceData
                                         && it.optDictionaryName == "保额"
                                         && it.insuredParentPosition == index
-                            }[0] as InsuranceData).checkName
+                            } as InsuranceData).checkName
                         }
 
                         if (inner.any {
@@ -648,11 +753,11 @@ class PlanMakeActivity : BaseActivity() {
                                             && it.optDictionaryName == "保费"
                                             && it.insuredParentPosition == index
                                 }) {
-                            itemFee = (inner.filter {
+                            itemFee = (inner.first {
                                 it is InsuranceData
                                         && it.optDictionaryName == "保费"
                                         && it.insuredParentPosition == index
-                            }[0] as InsuranceData).checkName
+                            } as InsuranceData).checkName
 
                             kindFee += itemFee.toDouble()
                         }
@@ -662,11 +767,11 @@ class PlanMakeActivity : BaseActivity() {
                                             && it.optDictionaryName == "交费期间"
                                             && it.insuredParentPosition == index
                                 }) {
-                            itemRange = (inner.filter {
+                            itemRange = (inner.first {
                                 it is CommonData
                                         && it.optDictionaryName == "交费期间"
                                         && it.insuredParentPosition == index
-                            }[0] as CommonData).checkName
+                            } as CommonData).checkName
                         } else {
                             if (data.pinsuranceKindItemIds.isNotEmpty()) {
                                 val itemMainLds = ArrayList<CommonData>()
@@ -682,11 +787,11 @@ class PlanMakeActivity : BaseActivity() {
                                             && it.optDictionaryName == "保险期间"
                                             && it.insuredParentPosition == index
                                 }) {
-                            itemPeriod = (inner.filter {
+                            itemPeriod = (inner.first {
                                 it is CommonData
                                         && it.optDictionaryName == "保险期间"
                                         && it.insuredParentPosition == index
-                            }[0] as CommonData).checkName
+                            } as CommonData).checkName
                         } else {
                             if (data.pinsuranceKindItemIds.isNotEmpty()) {
                                 val itemMainLds = ArrayList<CommonData>()
@@ -698,8 +803,7 @@ class PlanMakeActivity : BaseActivity() {
                         }
 
                         item.insuredTable.add(TableData(itemName, itemAmount, itemFee, itemRange))
-                        item.insuredItem.add(InsuranceItemData(data, itemAmount, itemFee, itemPeriod, itemRange)
-                        )
+                        item.insuredItem.add(InsuranceItemData(data, itemAmount, itemFee, itemPeriod, itemRange))
                     }
 
                     item.insuredTotalFee = kindFee
@@ -719,17 +823,23 @@ class PlanMakeActivity : BaseActivity() {
      * 根据所选年龄计算基准费率
      */
     private fun calculateBaseProportion(item: InsuranceModel) {
+        val checkAge = when (item.type) {
+            "1", "2" -> mCheckAge
+            "3" -> mCheckAge1
+            "4" -> mCheckAge2
+            else -> 0
+        }
         val medianAge = item.medianAge.toInt()
         when {
-            mCheckAge < medianAge -> {
+            checkAge < medianAge -> {
                 val addAge = item.addAge2.toInt()
                 val rule = item.gtMedianAgeRule.toDouble()
-                item.baseProportion = ((medianAge - mCheckAge) / addAge) * rule
+                item.baseProportion = ((medianAge - checkAge) / addAge) * rule
             }
-            mCheckAge > medianAge -> {
+            checkAge > medianAge -> {
                 val addAge = item.addAge.toInt()
                 val rule = item.tlMedianAgeRule.toDouble()
-                item.baseProportion = ((mCheckAge - medianAge) / addAge) * rule
+                item.baseProportion = ((checkAge - medianAge) / addAge) * rule
             }
             else -> item.baseProportion = 0.0
         }
@@ -737,29 +847,23 @@ class PlanMakeActivity : BaseActivity() {
     }
 
     /**
-     * 计算保费
+     * 根据险种选项计算实际费率
      */
-    private fun calculateFee(items: ArrayList<Any>) {
+    private fun calculateProportion(items: ArrayList<Any>) {
         if (items.isEmpty()) return
-        // 主险
-        val dataMain = items.filter { it is InsuranceModel && it.type == "1" }[0] as InsuranceModel
+        val itemMain = items.first { it is InsuranceModel && it.type == "1" } as InsuranceModel //主险种
 
         items.filter { it is InsuranceModel }.forEachWithIndex { index, data ->
-            // 当前所选险种
-            data as InsuranceModel
-            val baseProportion = data.baseProportion
-            var amount = data.dfInsuredAmount
+            data as InsuranceModel  //当前险种
 
             val itemLrs = ArrayList<CommonData>()
-            itemLrs.addItems((items.filter {
-                it is InsuranceModel && it.insuredParentPosition == index
-            }[0] as InsuranceModel).lrs)
+            itemLrs.addItems(data.lrs)
 
             val itemLds = ArrayList<CommonData>()
             if (data.pinsuranceKindItemIds.isNotEmpty()) {
                 val itemIds = data.insuranceKindItemIds
                 val itemMainLds = ArrayList<CommonData>()
-                itemMainLds.addItems(dataMain.lds) //选项列表里已包含初始值
+                itemMainLds.addItems(itemMain.lds) //选项列表里已包含初始值
                 itemMainLds.filter { it.type == "0" }.forEach {
                     if (itemIds.contains(it.insuranceOptDictionaryId)) itemLds.add(it)
                 }
@@ -775,16 +879,19 @@ class PlanMakeActivity : BaseActivity() {
                 2 -> {
                     val itemId1 = itemLds[0].checkItemId
                     val itemId2 = itemLds[1].checkItemId
-                    itemLrs.firstOrNull { it.item1 == itemId1 && it.item2 == itemId2 }?.proportion ?: "0.0"
+                    itemLrs.firstOrNull { it.item1 == itemId1 && it.item2 == itemId2 }?.proportion
+                            ?: "0.0"
                 }
                 3 -> {
                     val itemId1 = itemLds[0].checkItemId
                     val itemId2 = itemLds[1].checkItemId
                     val itemId3 = itemLds[2].checkItemId
 
-                    itemLrs.firstOrNull { it.item1 == itemId1
+                    itemLrs.firstOrNull {
+                        it.item1 == itemId1
                                 && it.item2 == itemId2
-                                && it.item3 == itemId3 }?.proportion ?: "0.0"
+                                && it.item3 == itemId3
+                    }?.proportion ?: "0.0"
                 }
                 4 -> {
                     val itemId1 = itemLds[0].checkItemId
@@ -792,39 +899,125 @@ class PlanMakeActivity : BaseActivity() {
                     val itemId3 = itemLds[2].checkItemId
                     val itemId4 = itemLds[3].checkItemId
 
-                    itemLrs.firstOrNull { it.item1 == itemId1
+                    itemLrs.firstOrNull {
+                        it.item1 == itemId1
                                 && it.item2 == itemId2
                                 && it.item3 == itemId3
-                                && it.item4 == itemId4 }?.proportion ?: "0.0"
+                                && it.item4 == itemId4
+                    }?.proportion ?: "0.0"
                 }
                 else -> "0.0"
             }
 
             data.proportion = proportion.toDouble()
-            val proportionSum = baseProportion + proportion.toDouble()
+        }
+    }
 
-            if (items.any {
-                        it is InsuranceData
-                                && it.optDictionaryName == "保额"
-                                && it.insuredParentPosition == index
-                    }) {
-                amount = (items.filter {
-                    it is InsuranceData
-                            && it.optDictionaryName == "保额"
-                            && it.insuredParentPosition == index
-                }[0] as InsuranceData).checkName
+    /**
+     * 计算保费
+     */
+    private fun calculateFee(currentPos: Int, parentPos: Int, items: ArrayList<Any>) {
+        if (items.isEmpty()) return
+
+        when (items[currentPos]) {
+            is CommonData -> {
+                calculateProportion(items)
+
+                items.filter { it is InsuranceModel }.forEachWithIndex { index, data ->
+                    data as InsuranceModel
+                    val proportionSum = data.baseProportion + data.proportion
+                    var amount = data.dfInsuredAmount
+
+                    if (items.any {
+                                it is InsuranceData
+                                        && it.optDictionaryName == "保额"
+                                        && it.insuredParentPosition == index
+                            }) {
+                        amount = (items.first {
+                            it is InsuranceData
+                                    && it.optDictionaryName == "保额"
+                                    && it.insuredParentPosition == index
+                        } as InsuranceData).checkName
+                    }
+
+                    if (items.any {
+                                it is InsuranceData
+                                        && it.optDictionaryName == "保费"
+                                        && it.insuredParentPosition == index
+                            }) {
+                        (items.first {
+                            it is InsuranceData
+                                    && it.optDictionaryName == "保费"
+                                    && it.insuredParentPosition == index
+                        } as InsuranceData).checkName = if (amount.isEmpty()) ""
+                        else DecimalFormat("0.00").format(amount.toDouble() * proportionSum)
+                    }
+
+                    if (items.any {
+                                it is InsuranceData
+                                        && it.optDictionaryName == "份数"
+                                        && it.insuredParentPosition == index
+                            }) {
+                        val itemData = items.first {
+                            it is InsuranceData
+                                    && it.optDictionaryName == "份数"
+                                    && it.insuredParentPosition == index
+                        } as InsuranceData
+
+                        if (itemData.checkName.isEmpty()) itemData.optDictionaryFee = ""
+                        else {
+                            val copiesSum = data.dfcopiesSum.toDouble()
+                            val copies = itemData.checkName.toInt()
+
+                            itemData.optDictionaryFee = DecimalFormat("0.00").format(copiesSum * copies * proportionSum)
+                        }
+                    }
+                }
             }
+            is InsuranceData -> {
+                val itemData = items.first { it is InsuranceModel && it.insuredParentPosition == parentPos } as InsuranceModel
+                val item = items[currentPos] as InsuranceData
+                when (item.optDictionaryName) {
+                    "保额" -> {
+                        val itemFee = items.firstOrNull {
+                            it is InsuranceData
+                                    && it.optDictionaryName == "保费"
+                                    && it.insuredParentPosition == parentPos
+                        } ?: return
+                        itemFee as InsuranceData
 
-            if (items.any {
-                        it is InsuranceData
-                                && it.optDictionaryName == "保费"
-                                && it.insuredParentPosition == index
-                    }) {
-                (items.filter {
-                    it is InsuranceData
-                            && it.optDictionaryName == "保费"
-                            && it.insuredParentPosition == index
-                }[0] as InsuranceData).checkName = DecimalFormat("0.00").format(amount.toDouble() * proportionSum)
+                        if (item.checkName.isEmpty()) itemFee.checkName = ""
+                        else {
+                            val checkTotal = item.checkName.toDouble()
+                            val optFeeSum = checkTotal * (itemData.baseProportion + itemData.proportion)
+                            itemFee.checkName = DecimalFormat("0.00").format(optFeeSum)
+                        }
+                    }
+                    "保费" -> {
+                        val itemTotal = items.firstOrNull {
+                            it is InsuranceData
+                                    && it.optDictionaryName == "保额"
+                                    && it.insuredParentPosition == parentPos
+                        } ?: return
+                        itemTotal as InsuranceData
+
+                        if (item.checkName.isEmpty()) itemTotal.checkName = ""
+                        else {
+                            val checkTotal = item.checkName.toDouble()
+                            val optTotalSum = checkTotal / (itemData.baseProportion + itemData.proportion)
+                            itemTotal.checkName = DecimalFormat("0.00").format(optTotalSum)
+                        }
+                    }
+                    "份数" -> {
+                        if (item.checkName.isEmpty()) item.optDictionaryFee = ""
+                        else {
+                            val copiesSum = itemData.dfcopiesSum.toDouble()
+                            val copies = item.checkName.toInt()
+                            val optFeeSum = copiesSum * copies * (itemData.baseProportion + itemData.proportion)
+                            item.optDictionaryFee = DecimalFormat("0.00").format(optFeeSum)
+                        }
+                    }
+                }
             }
         }
     }
@@ -851,9 +1044,12 @@ class PlanMakeActivity : BaseActivity() {
 
                         val items = ArrayList<InsuranceModel>()
                         items.addItems(response.body().`object`.lbs)
+                        var kindId = ""
                         listKind.forEach { item ->
-                            if (items.any { it.insuranceKindId == item.insuranceKindId })
+                            if (items.any { it.insuranceKindId == item.insuranceKindId }) {
+                                kindId = item.insuranceKindId
                                 mapKind[item.insuranceKindId] = items
+                            }
                         }
 
                         if (items.isNotEmpty()) {
@@ -907,8 +1103,29 @@ class PlanMakeActivity : BaseActivity() {
                             itemLbs.addItems(items.filter { data.inshow == "1" })
                             itemShow.addAll(getInsuranceList(itemLbs))
 
-                            if (itemShow.isNotEmpty()) getCheckedList(itemShow)
+                            if (itemShow.isNotEmpty()) {
+                                getCheckedList(itemShow)
+                                mapChecked[kindId] = itemShow
+                            }
                         }
+                    }
+
+                })
+    }
+
+    private fun getInsuranceData(kindId: String) {
+        OkGo.post<BaseResponse<ArrayList<InsuranceModel>>>(BaseHttp.insurancekind_detils)
+                .tag(this@PlanMakeActivity)
+                .params("insuranceKindId", kindId)
+                .execute(object : JacksonDialogCallback<BaseResponse<ArrayList<InsuranceModel>>>(baseContext, true) {
+
+                    override fun onSuccess(response: Response<BaseResponse<ArrayList<InsuranceModel>>>) {
+
+                        val itemLbs = ArrayList<InsuranceModel>()
+                        itemLbs.addItems(response.body().`object`)
+                        mapKind[kindId] = itemLbs
+
+                        showInsuranceDialog(kindId, getInsuranceList(itemLbs))
                     }
 
                 })

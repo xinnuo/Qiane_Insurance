@@ -62,10 +62,12 @@ inline fun <reified T : View> T.setOneClickListener(onClickListener: View.OnClic
 }
 
 /**
- * 防抖动点击事件，时间单位秒
+ * 防抖动点击事件，默认时间1s，默认单位秒
  */
-inline fun <reified T : View> T.setOneClickListener(duration: Long, onClickListener: View.OnClickListener) {
-    RxView.clicks(this).throttleFirst(duration, TimeUnit.SECONDS)
+inline fun <reified T : View> T.setOneClickListener(duration: Long = 1,
+                                                    unit: TimeUnit = TimeUnit.SECONDS,
+                                                    onClickListener: View.OnClickListener) {
+    RxView.clicks(this).throttleFirst(duration, unit)
             .subscribe {
                 onClickListener.onClick(this)
             }
