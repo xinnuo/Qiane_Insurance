@@ -27,6 +27,9 @@
  */
 package com.ruanmeng.base
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.View
 import com.jakewharton.rxbinding2.view.RxView
 import org.json.JSONObject
@@ -42,6 +45,18 @@ inline fun <reified T : View> T.invisible() {
 
 inline fun <reified T : View> T.gone() {
     visibility = View.GONE
+}
+
+fun Context.makeCall(number: String): Boolean {
+    return try {
+        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$number"))
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        true
+    } catch (e: Exception) {
+        e.printStackTrace()
+        false
+    }
 }
 
 /**

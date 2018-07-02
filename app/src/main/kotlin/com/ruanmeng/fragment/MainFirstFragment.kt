@@ -158,14 +158,15 @@ class MainFirstFragment : BaseFragment() {
 
                     override fun onSuccess(response: Response<BaseResponse<CommonModel>>) {
 
+                        val obj = response.body().`object` ?: return
                         listSlider.apply {
                             clear()
-                            addItems(response.body().`object`.slider)
+                            addItems(obj.slider)
                         }
 
                         listNotice.apply {
                             clear()
-                            addItems(response.body().`object`.news)
+                            addItems(obj.news)
                         }
 
                         val imgs = ArrayList<String>()

@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_list.*
 import net.idik.lib.slimadapter.SlimAdapter
 import org.jetbrains.anko.startActivity
-import java.util.ArrayList
+import java.util.*
 
 class PlanMineActivity : BaseActivity() {
 
@@ -63,6 +63,13 @@ class PlanMineActivity : BaseActivity() {
                                         "prospectusId" to data.prospectusId,
                                         "type" to "计划书")
                             }
+
+                    /*(injector as DefaultViewInjector).oneClicked(R.id.item_plan, View.OnClickListener {
+                        startActivity<PlanLookActivity>(
+                                "title" to data.prospectusTitle,
+                                "prospectusId" to data.prospectusId,
+                                "type" to "计划书")
+                    })*/
                 }
                 .attachTo(recycle_list)
     }

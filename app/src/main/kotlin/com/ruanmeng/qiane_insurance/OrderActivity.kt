@@ -1,15 +1,18 @@
 package com.ruanmeng.qiane_insurance
 
 import android.os.Bundle
-import com.ruanmeng.base.BaseActivity
 import com.ruanmeng.utils.Tools
 import kotlinx.android.synthetic.main.activity_order.*
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.LinearLayout
-import com.ruanmeng.base.load_Linear
-import com.ruanmeng.base.refresh
+import com.lzg.extend.BaseResponse
+import com.lzg.extend.jackson.JacksonDialogCallback
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.model.Response
+import com.ruanmeng.base.*
 import com.ruanmeng.model.CommonData
+import com.ruanmeng.share.BaseHttp
 import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_list.*
 import net.idik.lib.slimadapter.SlimAdapter
@@ -27,13 +30,6 @@ class OrderActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order)
         init_title("我的订单")
-
-        list.add(CommonData("1"))
-        list.add(CommonData("2"))
-        list.add(CommonData("3"))
-        list.add(CommonData("4"))
-        list.add(CommonData("5"))
-        mAdapter.updateData(list)
     }
 
     override fun init_title() {
@@ -48,7 +44,12 @@ class OrderActivity : BaseActivity() {
             }
 
             onTabSelectedListener {
-                onTabSelected { tab -> }
+                onTabSelected {
+                    mPosition = it!!.position
+
+                    OkGo.getInstance().cancelTag(this@OrderActivity)
+                    window.decorView.postDelayed({ updateList() }, 300)
+                }
             }
 
             addTab(this.newTab().setText("全部"), tabPosition == 0)
@@ -79,6 +80,48 @@ class OrderActivity : BaseActivity() {
     }
 
     override fun getData(pindex: Int) {
-        swipe_refresh.isRefreshing = false
+        OkGo.post<BaseResponse<ArrayList<CommonData>>>(BaseHttp.goodsorder_list_data)
+                .tag(this@OrderActivity)
+                .headers("token", getString("token"))
+                .params("status", mPosition)
+                .params("page", pindex)
+                .execute(object : JacksonDialogCallback<BaseResponse<ArrayList<CommonData>>>(baseContext) {
+
+                    override fun onSuccess(response: Response<BaseResponse<ArrayList<CommonData>>>) {
+
+                        list.apply {
+                            if (pindex == 1) {
+                                clear()
+                                pageNum = pindex
+                            }
+                            addItems(response.body().`object`)
+                            if (count(response.body().`object`) > 0) pageNum++
+                        }
+
+                        mAdapter.updateData(list)
+                    }
+
+                    override fun onFinish() {
+                        super.onFinish()
+                        swipe_refresh.isRefreshing = false
+                        isLoadingMore = false
+
+                        empty_view.apply { if (list.isEmpty()) visible() else gone() }
+                    }
+
+                })
+    }
+
+    private fun updateList() {
+        swipe_refresh.isRefreshing = true
+
+        empty_view.visibility = View.GONE
+        if (list.isNotEmpty()) {
+            list.clear()
+            mAdapter.notifyDataSetChanged()
+        }
+
+        pageNum = 1
+        getData(pageNum)
     }
 }

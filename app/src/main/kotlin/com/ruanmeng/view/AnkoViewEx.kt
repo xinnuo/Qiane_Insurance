@@ -1,5 +1,5 @@
 /**
- * created by 小卷毛, 2018/6/21
+ * created by 小卷毛, 2018/6/30
  * Copyright (c) 2018, 416143467@qq.com All Rights Reserved.
  * #                   *********                            #
  * #                  ************                          #
@@ -25,34 +25,18 @@
  * #          *****       ***        ***      *             #
  * #            **       ****        ****                   #
  */
-package com.ruanmeng.model
+package com.ruanmeng.view
 
-import java.io.Serializable
+import android.view.ViewManager
+import com.tencent.smtt.sdk.WebView
+import org.jetbrains.anko.custom.ankoView
 
 /**
  * 项目名称：Qiane_Insurance
  * 创建人：小卷毛
- * 创建时间：2018-06-21 15:57
+ * 创建时间：2018-06-30 18:02
  */
-data class CommonModel(
-        var slider: List<CommonData> ?= ArrayList(),
-        var news: List<CommonData> ?= ArrayList(),
+inline fun ViewManager.webViewX5(theme: Int = 0) = webViewX5(theme) {}
 
-        //计划书详情
-        var companyId: String = "",
-        var productId: String = "",
-        var prospectusId: String = "",
-        var lbs: List<InsuranceModel>? = ArrayList(),
-        var lks: List<CommonData>? = ArrayList(),
+inline fun ViewManager.webViewX5(theme: Int = 0, init: WebView.() -> Unit) = ankoView({ WebView(it) }, theme, init)
 
-        //计划书阅读
-        var makeSum: String = "",
-        var readSum: String = "",
-        var lwithin: List<CommonData>? = ArrayList(),
-        var lago: List<CommonData>? = ArrayList(),
-
-        //保险种类
-        var insuranceTypeId: String = "",
-        var insuranceTypeName: String = "",
-        var lcs: List<CommonData>? = ArrayList()
-): Serializable

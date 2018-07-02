@@ -18,6 +18,7 @@ class CardActivity : BaseActivity() {
     private var mRealName = ""
     private var mCompany = ""
     private var mUserHead = ""
+    private var mCompanyId = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +31,12 @@ class CardActivity : BaseActivity() {
     override fun doClick(v: View) {
         super.doClick(v)
         when (v.id) {
-            R.id.card_introduce -> startActivity<WebActivity>("title" to "公司介绍")
+            R.id.card_introduce -> {
+                if (mCompanyId.isEmpty()) return
+                startActivity<WebActivity>(
+                        "title" to "公司介绍",
+                        "companyId" to mCompanyId)
+            }
             R.id.card_edit -> startActivity<CardEditActivity>(
                     "head" to mUserHead,
                     "name" to mRealName,
@@ -51,6 +57,7 @@ class CardActivity : BaseActivity() {
 
                         val obj = JSONObject(response.body()).optJSONObject("object") ?: JSONObject()
 
+                        mCompanyId = obj.optString("companyId")
                         mTelephone = obj.optString("telephone")
                         mWechat = obj.optString("wechat")
                         mUserHead = obj.optString("userhead")

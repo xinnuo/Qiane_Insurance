@@ -78,6 +78,12 @@ data class CommonData(
         var item4: String = "",
         var proportion: String = "",
 
+        //计划书阅读列表
+        var coverSex: String = "",
+        var coverAge: String = "",
+        var insuranceSum: String = "",
+        var lastReadTime: String = "",
+
         //产品列表
         var productinId: String = "",
         var productImg: String = "",
