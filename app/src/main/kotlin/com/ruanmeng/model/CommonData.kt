@@ -96,6 +96,15 @@ data class CommonData(
         var insuranceTypeId: String = "",
         var insuranceTypeName: String = "",
 
+        //订单列表
+        var payTime: String = "",
+        var buyName: String = "",
+        var coverName: String = "",
+        var startDate: String = "",
+        var endDate: String = "",
+        var spreadRate: String = "",
+        var payCost: String = "",
+
         //资讯列表
         var informationId: String = "",
         var informationHead: String = "",

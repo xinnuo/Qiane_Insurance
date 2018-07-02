@@ -7,6 +7,7 @@ import com.lzy.okgo.OkGo
 import com.lzy.okgo.model.Response
 import com.ruanmeng.base.BaseActivity
 import com.ruanmeng.base.getString
+import com.ruanmeng.base.putString
 import com.ruanmeng.base.showToast
 import com.ruanmeng.model.RefreshMessageEvent
 import com.ruanmeng.share.BaseHttp
@@ -33,6 +34,8 @@ class InfoJobActivity : BaseActivity() {
 
     override fun init_title() {
         super.init_title()
+        companyId = getString("companyId")
+
         bt_ok.setBackgroundResource(R.drawable.rec_bg_d0d0d0)
         bt_ok.isClickable = false
 
@@ -44,7 +47,9 @@ class InfoJobActivity : BaseActivity() {
         super.doClick(v)
         when (v.id) {
             R.id.job_clear -> job_number.setText("")
-            R.id.job_company_ll -> startActivity<CompanyActivity>("type" to "职业信息")
+            R.id.job_company_ll -> startActivity<CompanyActivity>(
+                    "type" to "职业信息",
+                    "companyId" to companyId)
             R.id.bt_ok -> {
                 OkGo.post<String>(BaseHttp.add_profession_info)
                         .tag(this@InfoJobActivity)
@@ -56,6 +61,9 @@ class InfoJobActivity : BaseActivity() {
                             override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
 
                                 showToast(msg)
+                                putString("companyId", companyId)
+                                putString("companyName", job_company.text.toString())
+                                EventBus.getDefault().post(RefreshMessageEvent("更新公司", companyId, job_company.text.toString()))
                                 ActivityStack.screenManager.popActivities(this@InfoJobActivity::class.java)
                             }
 

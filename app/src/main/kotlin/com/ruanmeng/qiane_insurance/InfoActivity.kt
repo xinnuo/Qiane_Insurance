@@ -208,7 +208,6 @@ class InfoActivity : BaseActivity() {
     private fun getHeadData() {
         OkGo.post<String>(BaseHttp.userinfo_uploadhead_sub)
                 .tag(this@InfoActivity)
-                .isMultipart(true)
                 .headers("token", getString("token"))
                 .params("img", File(selectList[0].compressPath))
                 .execute(object : StringDialogCallback(baseContext) {

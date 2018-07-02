@@ -82,6 +82,11 @@ class CompanyActivity : BaseActivity() {
                             addItems(response.body().`object`)
                         }
 
+                        val companyId = intent.getStringExtra("companyId") ?: ""
+                        if (list.any { it.companyId == companyId }) {
+                            list.first { it.companyId == companyId }.isChecked = true
+                        }
+
                         (mRecyclerView.adapter as SlimAdapter).updateData(list)
                     }
 

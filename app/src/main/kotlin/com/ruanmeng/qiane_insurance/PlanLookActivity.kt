@@ -19,6 +19,10 @@ import com.tencent.smtt.sdk.WebChromeClient
 import com.tencent.smtt.sdk.WebSettings
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
+import com.umeng.socialize.ShareAction
+import com.umeng.socialize.bean.SHARE_MEDIA
+import com.umeng.socialize.media.UMImage
+import com.umeng.socialize.media.UMWeb
 import org.jetbrains.anko.browse
 import org.jetbrains.anko.frameLayout
 import org.jetbrains.anko.sdk25.listeners.onClick
@@ -143,6 +147,14 @@ class PlanLookActivity : BaseActivity() {
         super.doClick(v)
         when (v.id) {
             R.id.iv_nav_right -> {
+                EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
+                val userInfoId = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
+                val urlShare = when (intent.getStringExtra("type")) {
+                    "计划书" -> BaseHttp.prospectus_detil + "${intent.getStringExtra("prospectusId")}&userInfoId=$userInfoId"
+                    "产品详情" -> BaseHttp.product_detils + intent.getStringExtra("productinId") + "&type=1&userInfoId=$userInfoId"
+                    else -> ""
+                }
+
                 val view = LayoutInflater.from(baseContext).inflate(R.layout.dialog_share_bottom, null) as View
                 val wechat = view.findViewById<LinearLayout>(R.id.dialog_share_wechat)
                 val circle = view.findViewById<LinearLayout>(R.id.dialog_share_circle)
@@ -151,10 +163,58 @@ class PlanLookActivity : BaseActivity() {
                 val cancel = view.findViewById<Button>(R.id.dialog_share_cancel)
                 val dialog = BottomSheetDialog(baseContext, R.style.BottomSheetDialogStyle)
 
-                wechat.onClick { dialog.dismiss() }
-                circle.onClick { dialog.dismiss() }
-                qq.onClick { dialog.dismiss() }
-                space.onClick { dialog.dismiss() }
+                wechat.onClick {
+                    dialog.dismiss()
+
+                    ShareAction(baseContext)
+                            .setPlatform(SHARE_MEDIA.WEIXIN)
+                            .withText(getString(R.string.app_name))
+                            .withMedia(UMWeb(urlShare).apply {
+                                title = getString("标题")
+                                description = getString("描述")
+                                setThumb(UMImage(baseContext, R.mipmap.ic_launcher_logo))
+                            })
+                            .share()
+                }
+                circle.onClick {
+                    dialog.dismiss()
+
+                    ShareAction(baseContext)
+                            .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                            .withText(getString(R.string.app_name))
+                            .withMedia(UMWeb(urlShare).apply {
+                                title = getString("标题")
+                                description = getString("描述")
+                                setThumb(UMImage(baseContext, R.mipmap.ic_launcher_logo))
+                            })
+                            .share()
+                }
+                qq.onClick {
+                    dialog.dismiss()
+
+                    ShareAction(baseContext)
+                            .setPlatform(SHARE_MEDIA.QQ)
+                            .withText(getString(R.string.app_name))
+                            .withMedia(UMWeb(urlShare).apply {
+                                title = getString("标题")
+                                description = getString("描述")
+                                setThumb(UMImage(baseContext, R.mipmap.ic_launcher_logo))
+                            })
+                            .share()
+                }
+                space.onClick {
+                    dialog.dismiss()
+
+                    ShareAction(baseContext)
+                            .setPlatform(SHARE_MEDIA.QZONE)
+                            .withText(getString(R.string.app_name))
+                            .withMedia(UMWeb(urlShare).apply {
+                                title = getString("标题")
+                                description = getString("描述")
+                                setThumb(UMImage(baseContext, R.mipmap.ic_launcher_logo))
+                            })
+                            .share()
+                }
                 cancel.onClick { dialog.dismiss() }
 
                 dialog.setContentView(view)

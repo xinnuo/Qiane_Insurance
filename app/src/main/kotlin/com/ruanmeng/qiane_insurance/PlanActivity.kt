@@ -39,6 +39,9 @@ class PlanActivity : BaseActivity() {
 
     override fun init_title() {
         super.init_title()
+        companyId = getString("companyId")
+        plan_company.text = getString("companyName")
+
         empty_hint.text = "暂无相关计划书信息！"
         swipe_refresh.refresh { getData(1) }
         recycle_list.load_Linear(baseContext, swipe_refresh) {
@@ -77,7 +80,9 @@ class PlanActivity : BaseActivity() {
     override fun doClick(v: View) {
         super.doClick(v)
         when (v.id) {
-            R.id.plan_company_ll -> startActivity<CompanyActivity>("type" to "计划书")
+            R.id.plan_company_ll -> startActivity<CompanyActivity>(
+                    "type" to "计划书",
+                    "companyId" to companyId)
         }
     }
 

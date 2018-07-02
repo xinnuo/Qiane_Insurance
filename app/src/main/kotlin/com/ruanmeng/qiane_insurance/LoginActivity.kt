@@ -5,6 +5,7 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.widget.CompoundButton
+import cn.jpush.android.api.JPushInterface
 import com.lzg.extend.StringDialogCallback
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.model.Response
@@ -78,6 +79,8 @@ class LoginActivity : BaseActivity() {
                                 putBoolean("isLogin", true)
                                 putString("token", obj.optString("token"))
                                 putString("mobile", obj.optString("mobile"))
+                                putString("companyId", obj.optString("companyId"))
+                                putString("companyName", obj.optString("companyName"))
 
                                 startActivity<MainActivity>()
                                 ActivityStack.screenManager.popActivities(this@LoginActivity::class.java)
@@ -97,8 +100,13 @@ class LoginActivity : BaseActivity() {
         putString("userhead", "")
         putString("sex", "")
         putString("pass", "")
+        putString("companyId", "")
+        putString("companyName", "")
         putString("balance", "0.00")
         putString("integral", "0")
+
+        JPushInterface.stopPush(applicationContext)
+        JPushInterface.clearAllNotifications(applicationContext)
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {

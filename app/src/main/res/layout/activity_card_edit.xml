@@ -178,14 +178,4 @@
         android:layout_height="@dimen/divider_height"
         android:background="@color/divider" />
 
-    <Button
-        android:id="@+id/bt_save"
-        style="@style/Font15_white"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/btn_height"
-        android:layout_margin="@dimen/dimen_size_20"
-        android:background="@drawable/rec_bg_red"
-        android:onClick="doClick"
-        android:text="保存" />
-
 </LinearLayout>

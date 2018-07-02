@@ -28,6 +28,7 @@
 package com.ruanmeng
 
 import android.support.multidex.MultiDexApplication
+import cn.jpush.android.api.JPushInterface
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.cache.CacheEntity
 import com.lzy.okgo.cache.CacheMode
@@ -37,6 +38,10 @@ import com.lzy.okgo.https.HttpsUtils
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor
 import com.lzy.okgo.utils.OkLogger
 import com.ruanmeng.qiane_insurance.BuildConfig
+import com.ruanmeng.utils.PreferencesUtils
+import com.umeng.commonsdk.UMConfigure
+import com.umeng.socialize.Config
+import com.umeng.socialize.PlatformConfig
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
 import java.util.logging.Level
@@ -52,6 +57,19 @@ class Application : MultiDexApplication() {
         super.onCreate()
 
         initOkGo()
+
+        //极光推送
+        JPushInterface.setDebugMode(BuildConfig.LOG_DEBUG) //设置开启日志,发布时请关闭日志
+        JPushInterface.init(this@Application)              //初始化 JPush
+        if (!PreferencesUtils.getBoolean(this, "isLogin"))
+            JPushInterface.stopPush(this@Application)      //停止推送服务
+
+        //友盟分享
+        UMConfigure.init(this@Application, "5a77bcc9f29d9873ee0000b4", "umeng", UMConfigure.DEVICE_TYPE_PHONE, "")
+        PlatformConfig.setWeixin("wx4df7cabb4727a628", "e08739f5003b3b09f94e403db5ddce3a")
+        PlatformConfig.setQQZone("1106641891", "9rE1bLKqw2biHQ0T")
+        Config.isJumptoAppStore = true
+        UMConfigure.setLogEnabled(BuildConfig.LOG_DEBUG)
     }
 
     private fun initOkGo() {

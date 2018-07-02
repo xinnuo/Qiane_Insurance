@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.jude.rollviewpager.RollPagerView
 import com.lzg.extend.BaseResponse
+import com.lzg.extend.StringDialogCallback
 import com.lzg.extend.jackson.JacksonDialogCallback
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.model.Response
@@ -18,10 +19,7 @@ import com.ruanmeng.base.*
 import com.ruanmeng.model.CommonData
 import com.ruanmeng.model.CommonModel
 import com.ruanmeng.model.RefreshMessageEvent
-import com.ruanmeng.qiane_insurance.NewsActivity
-import com.ruanmeng.qiane_insurance.PlanLookActivity
-import com.ruanmeng.qiane_insurance.PlanMakeActivity
-import com.ruanmeng.qiane_insurance.R
+import com.ruanmeng.qiane_insurance.*
 import com.ruanmeng.share.BaseHttp
 import kotlinx.android.synthetic.main.fragment_main_first.*
 import kotlinx.android.synthetic.main.header_first.*
@@ -32,6 +30,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.support.v4.dip
 import org.jetbrains.anko.support.v4.startActivity
+import org.json.JSONObject
 import java.util.*
 
 class MainFirstFragment : BaseFragment() {
@@ -62,6 +61,7 @@ class MainFirstFragment : BaseFragment() {
         EventBus.getDefault().register(this@MainFirstFragment)
 
         swipe_refresh.isRefreshing = true
+        getCompanyData()
         getHeaderData()
         getData()
     }
@@ -216,6 +216,23 @@ class MainFirstFragment : BaseFragment() {
 
     }
 
+    private fun getCompanyData() {
+        OkGo.post<String>(BaseHttp.user_profession_info)
+                .tag(this@MainFirstFragment)
+                .headers("token", getString("token"))
+                .execute(object : StringDialogCallback(activity) {
+
+                    override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
+
+                        val obj = JSONObject(response.body()).optJSONObject("object") ?: JSONObject()
+
+                        putString("companyName", obj.optString("companyName"))
+                        first_company_name.text = getString("companyName")
+                    }
+
+                })
+    }
+
     override fun onDestroy() {
         EventBus.getDefault().unregister(this@MainFirstFragment)
         super.onDestroy()
@@ -224,7 +241,7 @@ class MainFirstFragment : BaseFragment() {
     @Subscribe
     fun onMessageEvent(event: RefreshMessageEvent) {
         when (event.type) {
-            "选择公司" -> {
+            "选择公司", "更新公司" -> {
                 companyId = event.id
                 first_company_name.text = event.name
 

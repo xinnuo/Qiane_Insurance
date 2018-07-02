@@ -23,8 +23,9 @@ import java.util.ArrayList
 
 class OrderActivity : BaseActivity() {
 
-    private var tabPosition = 0
     private val list = ArrayList<Any>()
+    private var tabPosition = 0
+    private var mStatus = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +46,11 @@ class OrderActivity : BaseActivity() {
 
             onTabSelectedListener {
                 onTabSelected {
-                    mPosition = it!!.position
+                    mStatus = when (it!!.position) {
+                        1 -> "0"
+                        2 -> "3"
+                        else -> ""
+                    }
 
                     OkGo.getInstance().cancelTag(this@OrderActivity)
                     window.decorView.postDelayed({ updateList() }, 300)
@@ -83,7 +88,7 @@ class OrderActivity : BaseActivity() {
         OkGo.post<BaseResponse<ArrayList<CommonData>>>(BaseHttp.goodsorder_list_data)
                 .tag(this@OrderActivity)
                 .headers("token", getString("token"))
-                .params("status", mPosition)
+                .params("status", mStatus)
                 .params("page", pindex)
                 .execute(object : JacksonDialogCallback<BaseResponse<ArrayList<CommonData>>>(baseContext) {
 
