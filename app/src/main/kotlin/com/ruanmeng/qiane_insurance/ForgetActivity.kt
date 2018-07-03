@@ -11,7 +11,7 @@ import com.ruanmeng.base.showToast
 import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.share.Const
 import com.ruanmeng.utils.ActivityStack
-import com.ruanmeng.utils.CommonUtil
+import com.ruanmeng.utils.isMobile
 import kotlinx.android.synthetic.main.activity_password.*
 import org.json.JSONObject
 
@@ -49,7 +49,7 @@ class ForgetActivity : BaseActivity() {
                     return
                 }
 
-                if (!CommonUtil.isMobile(et_tel.text.toString())) {
+                if (!et_tel.text.toString().isMobile()) {
                     et_tel.requestFocus()
                     et_tel.setText("")
                     showToast("手机号码格式错误，请重新输入")
@@ -88,7 +88,7 @@ class ForgetActivity : BaseActivity() {
                         })
             }
             R.id.bt_ok -> {
-                if (!CommonUtil.isMobile(et_tel.text.toString())) {
+                if (!et_tel.text.toString().isMobile()) {
                     et_tel.requestFocus()
                     et_tel.setText("")
                     showToast("手机号码格式错误，请重新输入")

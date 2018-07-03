@@ -12,7 +12,7 @@ import com.lzy.okgo.model.Response
 import com.ruanmeng.base.*
 import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.utils.ActivityStack
-import com.ruanmeng.utils.CommonUtil
+import com.ruanmeng.utils.isMobile
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.startActivity
 import org.json.JSONObject
@@ -52,7 +52,7 @@ class LoginActivity : BaseActivity() {
             R.id.login_forget -> startActivity<ForgetActivity>()
             R.id.login_deal -> startActivity<WebActivity>("title" to "注册协议")
             R.id.bt_login -> {
-                if (!CommonUtil.isMobile(et_name.text.toString())) {
+                if (!et_name.text.toString().isMobile()) {
                     et_name.requestFocus()
                     et_name.setText("")
                     showToast("手机号码格式错误，请重新输入")

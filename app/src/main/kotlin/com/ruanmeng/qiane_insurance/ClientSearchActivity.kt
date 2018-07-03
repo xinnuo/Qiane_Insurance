@@ -31,7 +31,7 @@ class ClientSearchActivity : BaseActivity() {
         client_list.load_Linear(baseContext)
 
         client_list.addItemDecoration(object : NormalDecoration() {
-            override fun getHeaderName(pos: Int): String = list[pos].letter
+            override fun getHeaderName(pos: Int): String = list[pos].fristName
         }.apply {
             setHeaderContentColor(resources.getColor(R.color.background))
             setHeaderHeight(dip(25))
@@ -47,7 +47,7 @@ class ClientSearchActivity : BaseActivity() {
                     injector.text(R.id.item_client_name, data.title)
                             .visibility(
                                     R.id.item_client_divider1,
-                                    if ((!isLast && data.letter != list[list.indexOf(data) + 1].letter) || isLast) View.GONE else View.VISIBLE)
+                                    if ((!isLast && data.fristName != list[list.indexOf(data) + 1].fristName) || isLast) View.GONE else View.VISIBLE)
                             .visibility(R.id.item_client_divider2, if (!isLast) View.GONE else View.VISIBLE)
                 }
                 .attachTo(client_list)
@@ -62,7 +62,7 @@ class ClientSearchActivity : BaseActivity() {
             setSelTextColor(resources.getColor(R.color.black))
             setIndexsList(letters)
             setIndexChangeListener { name ->
-                val itemIndex = list.indexOfFirst { it.letter == name }
+                val itemIndex = list.indexOfFirst { it.fristName == name }
                 if (itemIndex > -1)
                     (client_list.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(itemIndex, 0)
             }
@@ -80,75 +80,75 @@ class ClientSearchActivity : BaseActivity() {
         list.clear()
         list.add(CommonData().apply {
             title = "李晓明1"
-            letter = "L"
+            fristName = "L"
         })
         list.add(CommonData().apply {
             title = "李晓明2"
-            letter = "L"
+            fristName = "L"
         })
         list.add(CommonData().apply {
             title = "李晓明3"
-            letter = "L"
+            fristName = "L"
         })
         list.add(CommonData().apply {
             title = "李晓明4"
-            letter = "L"
+            fristName = "L"
         })
         list.add(CommonData().apply {
             title = "李晓明5"
-            letter = "L"
+            fristName = "L"
         })
         list.add(CommonData().apply {
             title = "李晓明6"
-            letter = "L"
+            fristName = "L"
         })
         list.add(CommonData().apply {
             title = "李健熙"
-            letter = "L"
+            fristName = "L"
         })
         list.add(CommonData().apply {
             title = "王晓静1"
-            letter = "W"
+            fristName = "W"
         })
         list.add(CommonData().apply {
             title = "王晓静2"
-            letter = "W"
+            fristName = "W"
         })
         list.add(CommonData().apply {
             title = "王晓静3"
-            letter = "W"
+            fristName = "W"
         })
         list.add(CommonData().apply {
             title = "王晓静4"
-            letter = "W"
+            fristName = "W"
         })
         list.add(CommonData().apply {
             title = "王晓静5"
-            letter = "W"
+            fristName = "W"
         })
         list.add(CommonData().apply {
             title = "王晓静6"
-            letter = "W"
+            fristName = "W"
         })
         list.add(CommonData().apply {
             title = "王晓静7"
-            letter = "W"
+            fristName = "W"
         })
         list.add(CommonData().apply {
             title = "张金霞"
-            letter = "Z"
+            fristName = "Z"
         })
         list.add(CommonData().apply {
             title = "张亚轩"
-            letter = "Z"
+            fristName = "Z"
         })
         list.add(CommonData().apply {
             title = "张靖宇"
-            letter = "Z"
+            fristName = "Z"
         })
         list.add(CommonData().apply {
             title = "张心雨"
-            letter = "Z"
+            fristName = "Z"
         })
 
         mAdapter.updateData(list)

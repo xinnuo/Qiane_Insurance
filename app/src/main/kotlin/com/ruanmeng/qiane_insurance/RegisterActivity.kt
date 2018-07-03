@@ -14,7 +14,7 @@ import com.ruanmeng.base.showToast
 import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.share.Const
 import com.ruanmeng.utils.ActivityStack
-import com.ruanmeng.utils.CommonUtil
+import com.ruanmeng.utils.isMobile
 import kotlinx.android.synthetic.main.activity_register.*
 import org.jetbrains.anko.startActivity
 import org.json.JSONObject
@@ -56,7 +56,7 @@ class RegisterActivity : BaseActivity() {
                     return
                 }
 
-                if (!CommonUtil.isMobile(et_name.text.toString())) {
+                if (!et_name.text.toString().isMobile()) {
                     et_name.requestFocus()
                     et_name.setText("")
                     showToast("手机号码格式错误，请重新输入")
@@ -98,7 +98,7 @@ class RegisterActivity : BaseActivity() {
                         })
             }
             R.id.bt_register -> {
-                if (!CommonUtil.isMobile(et_name.text.toString())) {
+                if (!et_name.text.toString().isMobile()) {
                     et_name.requestFocus()
                     et_name.setText("")
                     showToast("手机号码格式错误，请重新输入")

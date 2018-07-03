@@ -106,6 +106,9 @@
             android:name=".IncomeWithdrawActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".IncomeWithdrawListActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".IncomeDetailActivity"
             android:screenOrientation="portrait" />
         <activity

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.ruanmeng.base.BaseFragment
 import com.ruanmeng.base.showToast
 import com.ruanmeng.qiane_insurance.R
-import com.ruanmeng.utils.CommonUtil
+import com.ruanmeng.utils.isMobile
 import kotlinx.android.synthetic.main.fragment_phone_first.*
 import org.jetbrains.anko.sdk25.listeners.onClick
 
@@ -45,7 +45,7 @@ class PhoneFirstFragment : BaseFragment() {
                 return@onClick
             }
 
-            if (!CommonUtil.isMobile(et_tel.text.toString())) {
+            if (!et_tel.text.toString().isMobile()) {
                 et_tel.requestFocus()
                 et_tel.setText("")
                 showToast("手机号码格式错误，请重新输入")

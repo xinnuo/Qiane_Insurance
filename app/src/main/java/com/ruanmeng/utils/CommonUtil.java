@@ -62,62 +62,6 @@ public class CommonUtil {
     }
 
     /**
-     * 手机号校验
-     */
-    public static boolean isMobile(String mobile) {
-        if (mobile.length() != 11) return false;
-        Pattern p = Pattern.compile("^((1[3|5|8][0-9])|(14[5|7])|(16[6])|(17[0|1|3|5|6|7|8])|(19[8|9]))\\d{8}$");
-        Matcher m = p.matcher(mobile);
-        return m.matches();
-    }
-
-    /**
-     * 传真校验
-     */
-    public static boolean isFax(String fax) {
-        Pattern p = Pattern.compile("^((\\d{7,8})|(0\\d{2,3}-\\d{7,8}))$"); //传真
-        Matcher m = p.matcher(fax);
-        return m.matches();
-    }
-
-    /**
-     * 固话校验
-     */
-    public static boolean isTel(String tel) {
-        Pattern p = Pattern.compile("^((\\d{7,8})|(0\\d{2,3}-\\d{7,8})|(400-\\d{3}-\\d{4})|(1[3456789]\\\\d{9}))$"); //固话、400固话、匹配手机
-        /*String reg = "(?:(\\(\\+?86\\))(0[0-9]{2,3}\\-?)?([2-9][0-9]{6,7})+(\\-[0-9]{1,4})?)|" +
-                "(?:(86-?)?(0[0-9]{2,3}\\-?)?([2-9][0-9]{6,7})+(\\-[0-9]{1,4})?)";
-        Pattern p = Pattern.compile(reg);*/
-        Matcher m = p.matcher(tel);
-        return m.matches();
-    }
-
-    /**
-     * 邮箱校验
-     */
-    public static boolean isEmail(String strEmail) {
-        // String strPattern =
-        // "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
-        String strPattern = "^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$";
-
-        Pattern p = Pattern.compile(strPattern);
-        Matcher m = p.matcher(strEmail);
-        return m.matches();
-    }
-
-    /**
-     * 网址校验
-     */
-    public static boolean isWeb(String strWeb) {
-        // String strPattern = "(http://|ftp://|https://|www){0,1}[^\u4e00-\u9fa5\\s]*?\\.(com|net|cn|me|tw|fr)[^\u4e00-\u9fa5\\s]*";
-        String strPattern = "^([hH][tT]{2}[pP]:/*|[hH][tT]{2}[pP][sS]:/*|[fF][tT][pP]:/*)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+(\\?{0,1}(([A-Za-z0-9-~]+\\={0,1})([A-Za-z0-9-~]*)\\&{0,1})*)$";
-
-        Pattern p = Pattern.compile(strPattern);
-        Matcher m = p.matcher(strWeb);
-        return m.matches();
-    }
-
-    /**
      * 功能：身份证的有效验证
      *
      * @param IDStr 身份证号

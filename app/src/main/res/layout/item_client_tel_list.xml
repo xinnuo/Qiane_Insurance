@@ -14,10 +14,10 @@
 
         <ImageView
             android:id="@+id/item_tel_close"
-            android:layout_width="@dimen/dimen_size_18"
-            android:layout_height="@dimen/dimen_size_18"
-            android:layout_marginEnd="@dimen/dimen_size_10"
-            android:layout_marginStart="@dimen/dimen_size_10"
+            android:layout_width="@dimen/dimen_size_38"
+            android:layout_height="match_parent"
+            android:paddingEnd="@dimen/dimen_size_10"
+            android:paddingStart="@dimen/dimen_size_10"
             android:src="@mipmap/cus_icon03"
             tools:ignore="ContentDescription" />
 

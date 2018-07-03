@@ -46,9 +46,6 @@ data class CommonData(
         var productprospectusId: String = "",
         var type: String = "",
 
-        var content: String = "",
-        var price: String = "",
-
         //计划书列表
         var prospectusId: String = "",
         var prospectusImg: String = "",
@@ -97,6 +94,7 @@ data class CommonData(
         var insuranceTypeName: String = "",
 
         //订单列表
+        var goodsOrderId: String = "",
         var payTime: String = "",
         var buyName: String = "",
         var coverName: String = "",
@@ -104,12 +102,22 @@ data class CommonData(
         var endDate: String = "",
         var spreadRate: String = "",
         var payCost: String = "",
+        var status: String = "",
 
         //资讯列表
         var informationId: String = "",
         var informationHead: String = "",
         var informationTitle: String = "",
         var createDate: String = "",
+
+        //提现列表
+        var refuseReason: String = "",
+        var withdrawSum: String = "",
+        var withdrawWay: String = "",
+
+        //收益列表
+        var profitExplain: String = "",
+        var profitSum: String = "",
 
         //公司列表
         var companyId: String = "",
@@ -118,8 +126,32 @@ data class CommonData(
         //消息列表
         var msgReceiveId: String = "",
         var sendDate: String = "",
+        var content: String = "",
 
-        var position: Int = -1,
-        var letter: String = "",
+        //客户列表
+        var customerBirth: String = "",
+        var usercustomerId: String = "",
+        var customerName: String = "",
+        var fristName: String = "",
+        var year: String = "",
+        var day: String = "",
+
+        //添加客户列表
+        var certificateType: String = "",
+        var certificateNumber: String = "",
+        var certificateStartDate: String = "",
+        var certificateEndDate: String = "",
+        var longValid: String = "0",
+        var province: String = "",
+        var city: String = "",
+        var district: String = "",
+        var detailAdress: String = "",
+        var postcode: String = "",
+
+        //地区列表
+        var areaCode: String = "",
+        var areaId: String = "",
+        var areaName: String = "",
+
         var isChecked: Boolean = false
 ) : Serializable

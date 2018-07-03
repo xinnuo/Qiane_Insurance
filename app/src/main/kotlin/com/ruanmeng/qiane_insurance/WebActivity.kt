@@ -14,7 +14,7 @@ import com.ruanmeng.base.BaseActivity
 import com.ruanmeng.base.cancelLoadingDialog
 import com.ruanmeng.base.showLoadingDialog
 import com.ruanmeng.share.BaseHttp
-import com.ruanmeng.utils.CommonUtil
+import com.ruanmeng.utils.isWeb
 import org.jetbrains.anko.browse
 import org.jetbrains.anko.webView
 import org.json.JSONObject
@@ -58,7 +58,7 @@ class WebActivity : BaseActivity() {
                 override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
 
 
-                    if (!CommonUtil.isWeb(url)) return true
+                    if (!url.isWeb()) return true
 
                     if (url.isNotEmpty() && url.endsWith("apk")) browse(url)
                     else {
@@ -103,6 +103,7 @@ class WebActivity : BaseActivity() {
             "积分规则" -> {
                 webView.loadUrl("https://www.baidu.com/")
             }
+            "订单详情" -> webView.loadUrl(BaseHttp.order_detlis + intent.getStringExtra("goodsOrderId"))
             "公司介绍" -> {
                 OkGo.post<String>(BaseHttp.company_info)
                         .tag(this@WebActivity)

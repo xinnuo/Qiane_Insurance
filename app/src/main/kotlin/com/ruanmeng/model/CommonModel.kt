@@ -46,6 +46,13 @@ data class CommonModel(
         var lks: List<CommonData>? = ArrayList(),
 
         //计划书阅读
+        var birthCtn: String = "",
+        var customerCtn: String = "",
+        var ordeDayCtn: String = "",
+        var birthList: List<CommonData>? = ArrayList(),
+        var customerList: List<CommonData>? = ArrayList(),
+
+        //计划书阅读
         var makeSum: String = "",
         var readSum: String = "",
         var lwithin: List<CommonData>? = ArrayList(),

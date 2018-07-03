@@ -5,6 +5,7 @@ import com.ruanmeng.utils.Tools
 import kotlinx.android.synthetic.main.activity_order.*
 import android.support.v4.content.ContextCompat
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import com.lzg.extend.BaseResponse
 import com.lzg.extend.jackson.JacksonDialogCallback
@@ -13,12 +14,14 @@ import com.lzy.okgo.model.Response
 import com.ruanmeng.base.*
 import com.ruanmeng.model.CommonData
 import com.ruanmeng.share.BaseHttp
+import com.ruanmeng.utils.isNumeric
 import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_list.*
 import net.idik.lib.slimadapter.SlimAdapter
 import org.jetbrains.anko.design.listeners.onTabSelectedListener
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.startActivity
+import java.text.DecimalFormat
 import java.util.ArrayList
 
 class OrderActivity : BaseActivity() {
@@ -75,10 +78,43 @@ class OrderActivity : BaseActivity() {
 
         mAdapter = SlimAdapter.create()
                 .register<CommonData>(R.layout.item_order_list) { data, injector ->
-                    injector.visibility(R.id.item_order_divider, if (list.indexOf(data) == 0) View.VISIBLE else View.GONE)
+                    injector.text(R.id.item_order_time, data.createDate)
+                            .text(R.id.item_order_title, data.productName)
+                            .text(R.id.item_order_plan, "投保人：${data.buyName}")
+                            .text(R.id.item_order_planed, "被保人：${data.coverName}")
+                            .text(R.id.item_order_money, "订单金额：${data.payCost}元")
+                            .text(R.id.item_order_range,
+                                    "投保期间：${data.startDate.replace("-", ".")} - ${data.endDate.replace("-", ".")}")
+                            .text(R.id.item_order_status, when (data.status) {
+                                "-3" -> "已删除"
+                                "-2" -> "投保中"
+                                "-1" -> "付款失败"
+                                "0" -> "待付款"
+                                "1" -> "付款中"
+                                "2" -> "已付款"
+                                "3" -> "已出单"
+                                else -> ""
+                            })
+                            .text(R.id.item_order_around,
+                                    "推广费${if (data.spreadRate.isNumeric()) {
+                                        DecimalFormat("0.##").format(data.spreadRate.toDouble() * 100)
+                                    } else "0"}%")
+
+                            .visibility(R.id.item_order_pay,
+                                    if (data.status == "-1" || data.status == "0") View.VISIBLE else View.GONE)
+                            .visibility(R.id.item_order_divider,
+                                    if (list.indexOf(data) == 0) View.VISIBLE else View.GONE)
+
+                            .with<ImageView>(R.id.item_order_img) {
+                                it.setImageURL(BaseHttp.baseImg + data.productImg)
+                            }
+
+                            .clicked(R.id.item_order_pay) {}
 
                             .clicked(R.id.item_order) {
-                                startActivity<OrderDetailActivity>()
+                                startActivity<WebActivity>(
+                                        "title" to "订单详情",
+                                        "goodsOrderId" to data.goodsOrderId)
                             }
                 }
                 .attachTo(recycle_list)

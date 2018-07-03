@@ -13,16 +13,17 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/item_license_type_ll"
             android:layout_width="match_parent"
             android:layout_height="@dimen/line_height"
             android:gravity="center_vertical">
 
             <ImageView
                 android:id="@+id/item_license_close"
-                android:layout_width="@dimen/dimen_size_18"
-                android:layout_height="@dimen/dimen_size_18"
-                android:layout_marginEnd="@dimen/dimen_size_10"
-                android:layout_marginStart="@dimen/dimen_size_10"
+                android:layout_width="@dimen/dimen_size_38"
+                android:layout_height="match_parent"
+                android:paddingEnd="@dimen/dimen_size_10"
+                android:paddingStart="@dimen/dimen_size_10"
                 android:src="@mipmap/cus_icon03"
                 tools:ignore="ContentDescription" />
 
@@ -96,6 +97,7 @@
             android:background="@color/divider" />
 
         <LinearLayout
+            android:id="@+id/item_license_start_ll"
             android:layout_width="match_parent"
             android:layout_height="@dimen/line_height"
             android:gravity="center_vertical">
@@ -135,6 +137,7 @@
             android:background="@color/divider" />
 
         <LinearLayout
+            android:id="@+id/item_license_end_ll"
             android:layout_width="match_parent"
             android:layout_height="@dimen/line_height"
             android:gravity="center_vertical">
@@ -184,6 +187,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimen_size_38"
+                android:background="@color/transparent"
                 android:button="@drawable/rb_plan_selector"
                 android:clickable="false" />
 

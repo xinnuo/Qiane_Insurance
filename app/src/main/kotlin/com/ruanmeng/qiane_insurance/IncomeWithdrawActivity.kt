@@ -7,6 +7,7 @@ import android.view.View
 import com.ruanmeng.base.BaseActivity
 import com.ruanmeng.utils.DecimalNumberFilter
 import kotlinx.android.synthetic.main.activity_income_withdraw.*
+import org.jetbrains.anko.startActivity
 import java.text.DecimalFormat
 
 class IncomeWithdrawActivity : BaseActivity() {
@@ -16,7 +17,7 @@ class IncomeWithdrawActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_income_withdraw)
-        init_title("提现")
+        init_title("提现", "记录")
     }
 
     @SuppressLint("SetTextI18n")
@@ -36,6 +37,7 @@ class IncomeWithdrawActivity : BaseActivity() {
     override fun doClick(v: View) {
         super.doClick(v)
         when (v.id) {
+            R.id.tv_nav_right -> startActivity<IncomeWithdrawListActivity>()
             R.id.withdraw_type_ll -> {}
             R.id.bt_submit -> {}
         }

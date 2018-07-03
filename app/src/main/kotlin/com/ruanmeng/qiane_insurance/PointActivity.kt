@@ -53,7 +53,7 @@ class PointActivity : BaseActivity() {
 
                     injector.text(R.id.item_income_time, data.title)
                             .text(R.id.item_income_content, data.content)
-                            .text(R.id.item_income_money, "+${data.price}")
+                            .text(R.id.item_income_money, "+${data.profitSum}")
 
                             .visibility(R.id.item_income_divider1, if (isLast) View.GONE else View.VISIBLE)
                             .visibility(R.id.item_income_divider2, if (!isLast) View.GONE else View.VISIBLE)

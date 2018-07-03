@@ -11,9 +11,9 @@ import android.widget.LinearLayout
 import com.ruanmeng.base.*
 import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.share.Const
-import com.ruanmeng.utils.CommonUtil
 import com.ruanmeng.utils.DESUtil
 import com.ruanmeng.utils.EncryptUtil
+import com.ruanmeng.utils.isWeb
 import com.ruanmeng.view.webViewX5
 import com.tencent.smtt.sdk.WebChromeClient
 import com.tencent.smtt.sdk.WebSettings
@@ -97,7 +97,7 @@ class PlanLookActivity : BaseActivity() {
 
                         if (url.contains("tel:")) makeCall(url.replace("tel:", ""))
 
-                        if (!CommonUtil.isWeb(url)) return true
+                        if (!url.isWeb()) return true
 
                         if (url.isNotEmpty() && url.endsWith("apk")) browse(url)
                         else {

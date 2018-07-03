@@ -1,14 +1,21 @@
 package com.ruanmeng.qiane_insurance
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
-import com.ruanmeng.base.BaseActivity
-import com.ruanmeng.base.load_Linear
-import com.ruanmeng.base.refresh
+import com.lzg.extend.BaseResponse
+import com.lzg.extend.jackson.JacksonDialogCallback
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.model.Response
+import com.ruanmeng.base.*
 import com.ruanmeng.model.CommonData
+import com.ruanmeng.model.CommonModel
+import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.view.NormalDecoration
+import kotlinx.android.synthetic.main.header_client.*
 import kotlinx.android.synthetic.main.layout_list.*
 import net.idik.lib.slimadapter.SlimAdapter
 import net.idik.lib.slimadapter.SlimAdapterEx
@@ -20,12 +27,14 @@ import java.util.ArrayList
 class ClientActivity : BaseActivity() {
 
     private val list = ArrayList<CommonData>()
+    private val listBirth = ArrayList<CommonData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_client)
         init_title("客户", "搜索客户")
 
+        swipe_refresh.isRefreshing = true
         getData()
     }
 
@@ -37,7 +46,7 @@ class ClientActivity : BaseActivity() {
         recycle_list.load_Linear(baseContext, swipe_refresh)
 
         recycle_list.addItemDecoration(object : NormalDecoration() {
-            override fun getHeaderName(pos: Int): String? = if (pos == 0) null else list[pos - 1].letter
+            override fun getHeaderName(pos: Int): String? = if (pos == 0) null else list[pos - 1].fristName.toUpperCase()
         }.apply {
             setHeaderContentColor(resources.getColor(R.color.background))
             setHeaderHeight(dip(25))
@@ -54,10 +63,9 @@ class ClientActivity : BaseActivity() {
 
                     val isLast = list.indexOf(data) == list.size - 1
 
-                    injector.text(R.id.item_client_name, data.title)
-                            .visibility(
-                                    R.id.item_client_divider1,
-                                    if ((!isLast && data.letter != list[list.indexOf(data) + 1].letter) || isLast) View.GONE else View.VISIBLE)
+                    injector.text(R.id.item_client_name, data.customerName)
+                            .visibility(R.id.item_client_divider1,
+                                    if ((!isLast && data.fristName != list[list.indexOf(data) + 1].fristName) || isLast) View.GONE else View.VISIBLE)
                             .visibility(R.id.item_client_divider2, if (!isLast) View.GONE else View.VISIBLE)
                 }
                 .attachTo(recycle_list)
@@ -67,91 +75,128 @@ class ClientActivity : BaseActivity() {
         super.doClick(v)
         when (v.id) {
             R.id.tv_nav_right -> startActivity<ClientSearchActivity>()
-            R.id.client_birth_ll -> startActivity<ClientBirthActivity>()
+            R.id.client_birth_ll -> startActivity<ClientBirthActivity>("list" to listBirth)
             R.id.client_form_ll -> startActivity<ClientFormActivity>()
             R.id.client_edit -> startActivity<ClientEditActivity>()
             R.id.client_input -> startActivity<ClientAddActivity>()
-            R.id.client_contact -> startActivity<ClientAddActivity>()
+            R.id.client_contact -> startActivityForResult(Intent(
+                    Intent.ACTION_PICK,
+                    ContactsContract.Contacts.CONTENT_URI),
+                    10)
         }
     }
 
+    @Suppress("DEPRECATION")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (data == null) return
+
+        var userName = ""
+        var userBirth = ""
+        val userPhones = ArrayList<String>()
+        val userEmails = ArrayList<String>()
+
+        if (resultCode == RESULT_OK && requestCode == 10) {
+            val reContentResolver = contentResolver
+            val cursor = managedQuery(data.data, null, null, null, null)
+            cursor.moveToFirst()
+            val contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
+            userName = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
+
+            //查询电话类型的数据操作
+            val phone = reContentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    null,
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId,
+                    null,
+                    null)
+            while (phone.moveToNext()) {
+                val number = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+
+                userPhones.add(number.replace("-", "").replace(" ", ""))
+            }
+            phone.close()
+
+            //查询Email类型的数据操作
+            val emails = reContentResolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+                    null,
+                    ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = " + contactId,
+                    null,
+                    null)
+            while (emails.moveToNext()) {
+                val email = emails.getString(emails.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA))
+
+                userEmails.add(email)
+            }
+            emails.close()
+
+            //查询地址的数据操作
+            /*val address = reContentResolver.query(ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_URI,
+                    null,
+                    ContactsContract.CommonDataKinds.StructuredPostal.CONTACT_ID + " = " + contactId,
+                    null,
+                    null)
+            while (address.moveToNext()) {
+                val addr = address.getString(address.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.DATA))
+
+                userAddress.add(addr)
+            }
+            address.close()*/
+
+            //查询生日的数据操作
+            val event = reContentResolver.query(ContactsContract.Data.CONTENT_URI,
+                    null,
+                    ContactsContract.Data.CONTACT_ID + " = " + contactId,
+                    null,
+                    ContactsContract.Contacts.Data.RAW_CONTACT_ID)
+            while (event.moveToNext()) {
+                // 取得mimetype类型，扩展的数据都在这个类型里面
+                val mimetype = event.getString(event.getColumnIndex(ContactsContract.Data.MIMETYPE))
+                if (mimetype == ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE) {
+
+                    val eventType = event.getInt(event.getColumnIndex(ContactsContract.CommonDataKinds.Event.TYPE))
+                    if (eventType == ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY) {
+                        userBirth = event.getString(event.getColumnIndex(ContactsContract.CommonDataKinds.Event.START_DATE))
+                    }
+                }
+            }
+            event.close()
+        }
+
+        startActivity<ClientAddActivity>(
+                "name" to userName,
+                "birth" to userBirth,
+                "phone" to userPhones.joinToString(","),
+                "email" to userEmails.joinToString(","))
+    }
+
     override fun getData() {
-        swipe_refresh.isRefreshing = false
+        OkGo.post<BaseResponse<CommonModel>>(BaseHttp.find_usercustome_info)
+                .tag(this@ClientActivity)
+                .headers("token", getString("token"))
+                .execute(object : JacksonDialogCallback<BaseResponse<CommonModel>>(baseContext) {
 
-        list.clear()
-        list.add(CommonData().apply {
-            title = "李晓明1"
-            letter = "L"
-        })
-        list.add(CommonData().apply {
-            title = "李晓明2"
-            letter = "L"
-        })
-        list.add(CommonData().apply {
-            title = "李晓明3"
-            letter = "L"
-        })
-        list.add(CommonData().apply {
-            title = "李晓明4"
-            letter = "L"
-        })
-        list.add(CommonData().apply {
-            title = "李晓明5"
-            letter = "L"
-        })
-        list.add(CommonData().apply {
-            title = "李晓明6"
-            letter = "L"
-        })
-        list.add(CommonData().apply {
-            title = "李健熙"
-            letter = "L"
-        })
-        list.add(CommonData().apply {
-            title = "王晓静1"
-            letter = "W"
-        })
-        list.add(CommonData().apply {
-            title = "王晓静2"
-            letter = "W"
-        })
-        list.add(CommonData().apply {
-            title = "王晓静3"
-            letter = "W"
-        })
-        list.add(CommonData().apply {
-            title = "王晓静4"
-            letter = "W"
-        })
-        list.add(CommonData().apply {
-            title = "王晓静5"
-            letter = "W"
-        })
-        list.add(CommonData().apply {
-            title = "王晓静6"
-            letter = "W"
-        })
-        list.add(CommonData().apply {
-            title = "王晓静7"
-            letter = "W"
-        })
-        list.add(CommonData().apply {
-            title = "张金霞"
-            letter = "Z"
-        })
-        list.add(CommonData().apply {
-            title = "张亚轩"
-            letter = "Z"
-        })
-        list.add(CommonData().apply {
-            title = "张靖宇"
-            letter = "Z"
-        })
-        list.add(CommonData().apply {
-            title = "张心雨"
-            letter = "Z"
-        })
+                    @SuppressLint("SetTextI18n")
+                    override fun onSuccess(response: Response<BaseResponse<CommonModel>>) {
 
-        mAdapterEx.updateData(list)
+                        val data = response.body().`object` ?: return
+                        client_num.text = data.customerCtn
+                        client_birth.text = "最近有${data.birthCtn}位客户过生日"
+                        client_form.text = "最近有${data.ordeDayCtn}个保单到期"
+                        client_all.text = "(${data.customerCtn}人)"
+
+                        list.clear()
+                        listBirth.clear()
+                        list.addItems(data.customerList)
+                        listBirth.addItems(data.birthList)
+
+                        mAdapterEx.updateData(list)
+                    }
+
+                    override fun onFinish() {
+                        super.onFinish()
+                        swipe_refresh.isRefreshing = false
+                    }
+
+                })
     }
 }
