@@ -119,6 +119,10 @@ data class CommonData(
         var profitExplain: String = "",
         var profitSum: String = "",
 
+        //积分列表
+        var integralExplain: String = "",
+        var integralScore: String = "",
+
         //公司列表
         var companyId: String = "",
         var companyName: String = "",
@@ -136,7 +140,18 @@ data class CommonData(
         var year: String = "",
         var day: String = "",
 
+        //客户信息
+        var customerSex: String = "",
+        var income: String = "",
+        var height: String = "",
+        var weight: String = "",
+        var cardNumber: String = "",
+        var cardMobile: String = "",
+        var cardBank: String = "",
+        var memo: String = "",
+
         //添加客户列表
+        var contact: String = "",
         var certificateType: String = "",
         var certificateNumber: String = "",
         var certificateStartDate: String = "",

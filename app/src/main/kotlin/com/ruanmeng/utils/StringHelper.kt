@@ -42,7 +42,7 @@ fun String.bankCardReplaceWithStar(): String = when {
 }
 
 /**
- * 银行卡替换，保留后四位
+ * 银行卡替换，保留前六位和后四位
  * 如果银行卡号为空 或者 null ,返回空 ；否则，返回替换后的字符串；
  */
 fun String.bankCardReplaceHeaderWithStar(): String = when {

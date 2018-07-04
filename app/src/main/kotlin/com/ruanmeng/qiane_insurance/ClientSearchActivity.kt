@@ -3,19 +3,31 @@ package com.ruanmeng.qiane_insurance
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import com.ruanmeng.base.BaseActivity
-import com.ruanmeng.base.load_Linear
+import android.view.inputmethod.EditorInfo
+import com.lzg.extend.BaseResponse
+import com.lzg.extend.jackson.JacksonDialogCallback
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.model.Response
+import com.ruanmeng.base.*
 import com.ruanmeng.model.CommonData
+import com.ruanmeng.model.RefreshMessageEvent
+import com.ruanmeng.share.BaseHttp
+import com.ruanmeng.utils.KeyboardHelper
 import com.ruanmeng.view.NormalDecoration
 import kotlinx.android.synthetic.main.activity_client_search.*
+import kotlinx.android.synthetic.main.layout_empty.*
 import net.idik.lib.slimadapter.SlimAdapter
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.sp
+import org.jetbrains.anko.startActivity
 import java.util.ArrayList
 
 class ClientSearchActivity : BaseActivity() {
 
     private val list = ArrayList<CommonData>()
+    private var keyWord = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,15 +35,18 @@ class ClientSearchActivity : BaseActivity() {
         setToolbarVisibility(false)
         init_title()
 
+        EventBus.getDefault().register(this@ClientSearchActivity)
+
         getData()
     }
 
     @Suppress("DEPRECATION")
     override fun init_title() {
+        empty_hint.text = "未搜索到相关客户信息！"
         client_list.load_Linear(baseContext)
 
         client_list.addItemDecoration(object : NormalDecoration() {
-            override fun getHeaderName(pos: Int): String = list[pos].fristName
+            override fun getHeaderName(pos: Int): String = list[pos].fristName.toUpperCase()
         }.apply {
             setHeaderContentColor(resources.getColor(R.color.background))
             setHeaderHeight(dip(25))
@@ -42,13 +57,19 @@ class ClientSearchActivity : BaseActivity() {
         mAdapter = SlimAdapter.create()
                 .register<CommonData>(R.layout.item_client_list) { data, injector ->
 
-                    val isLast = list.indexOf(data) == list.size - 1
+                    val index = list.indexOf(data)
+                    val isLast = index == list.size - 1
 
-                    injector.text(R.id.item_client_name, data.title)
-                            .visibility(
-                                    R.id.item_client_divider1,
-                                    if ((!isLast && data.fristName != list[list.indexOf(data) + 1].fristName) || isLast) View.GONE else View.VISIBLE)
+                    injector.text(R.id.item_client_name, getColorText(data.customerName, keyWord))
+                            .visibility(R.id.item_client_divider1,
+                                    if ((!isLast && data.fristName != list[index + 1].fristName) || isLast) View.GONE else View.VISIBLE)
                             .visibility(R.id.item_client_divider2, if (!isLast) View.GONE else View.VISIBLE)
+
+                            .clicked(R.id.item_client) {
+                                startActivity<ClientAddActivity>(
+                                        "title" to "客户信息",
+                                        "usercustomerId" to data.usercustomerId)
+                            }
                 }
                 .attachTo(client_list)
 
@@ -62,10 +83,25 @@ class ClientSearchActivity : BaseActivity() {
             setSelTextColor(resources.getColor(R.color.black))
             setIndexsList(letters)
             setIndexChangeListener { name ->
-                val itemIndex = list.indexOfFirst { it.fristName == name }
+                val itemIndex = list.indexOfFirst { it.fristName.toUpperCase() == name }
                 if (itemIndex > -1)
                     (client_list.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(itemIndex, 0)
             }
+        }
+
+        client_edit.addTextChangedListener(this@ClientSearchActivity)
+        client_edit.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                KeyboardHelper.hideSoftInput(baseContext) //隐藏软键盘
+
+                if (client_edit.text.toString().isBlank()) {
+                    showToast("请输入关键字")
+                } else {
+                    keyWord = client_edit.text.toString()
+                    updateList()
+                }
+            }
+            return@setOnEditorActionListener false
         }
     }
 
@@ -77,80 +113,56 @@ class ClientSearchActivity : BaseActivity() {
     }
 
     override fun getData() {
-        list.clear()
-        list.add(CommonData().apply {
-            title = "李晓明1"
-            fristName = "L"
-        })
-        list.add(CommonData().apply {
-            title = "李晓明2"
-            fristName = "L"
-        })
-        list.add(CommonData().apply {
-            title = "李晓明3"
-            fristName = "L"
-        })
-        list.add(CommonData().apply {
-            title = "李晓明4"
-            fristName = "L"
-        })
-        list.add(CommonData().apply {
-            title = "李晓明5"
-            fristName = "L"
-        })
-        list.add(CommonData().apply {
-            title = "李晓明6"
-            fristName = "L"
-        })
-        list.add(CommonData().apply {
-            title = "李健熙"
-            fristName = "L"
-        })
-        list.add(CommonData().apply {
-            title = "王晓静1"
-            fristName = "W"
-        })
-        list.add(CommonData().apply {
-            title = "王晓静2"
-            fristName = "W"
-        })
-        list.add(CommonData().apply {
-            title = "王晓静3"
-            fristName = "W"
-        })
-        list.add(CommonData().apply {
-            title = "王晓静4"
-            fristName = "W"
-        })
-        list.add(CommonData().apply {
-            title = "王晓静5"
-            fristName = "W"
-        })
-        list.add(CommonData().apply {
-            title = "王晓静6"
-            fristName = "W"
-        })
-        list.add(CommonData().apply {
-            title = "王晓静7"
-            fristName = "W"
-        })
-        list.add(CommonData().apply {
-            title = "张金霞"
-            fristName = "Z"
-        })
-        list.add(CommonData().apply {
-            title = "张亚轩"
-            fristName = "Z"
-        })
-        list.add(CommonData().apply {
-            title = "张靖宇"
-            fristName = "Z"
-        })
-        list.add(CommonData().apply {
-            title = "张心雨"
-            fristName = "Z"
-        })
+        OkGo.post<BaseResponse<ArrayList<CommonData>>>(BaseHttp.find_usercustome_data)
+                .tag(this@ClientSearchActivity)
+                .headers("token", getString("token"))
+                .params("customerName", keyWord)
+                .execute(object : JacksonDialogCallback<BaseResponse<ArrayList<CommonData>>>(baseContext, true) {
 
-        mAdapter.updateData(list)
+                    override fun onSuccess(response: Response<BaseResponse<ArrayList<CommonData>>>) {
+
+                        list.apply {
+                            clear()
+                            addItems(response.body().`object`)
+                        }
+
+                        mAdapter.updateData(list)
+                    }
+
+                    override fun onFinish() {
+                        super.onFinish()
+                        empty_view.apply { if (list.isEmpty()) visible() else gone() }
+                    }
+
+                })
+    }
+
+    fun updateList() {
+        empty_view.gone()
+        if (list.isNotEmpty()) {
+            list.clear()
+            mAdapter.notifyDataSetChanged()
+        }
+
+        getData()
+    }
+
+    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        if (s.isEmpty() && keyWord.isNotEmpty()) {
+            keyWord = ""
+            updateList()
+        }
+    }
+
+    override fun finish() {
+        EventBus.getDefault().unregister(this@ClientSearchActivity)
+        super.finish()
+    }
+
+    @Subscribe
+    fun onMessageEvent(event: RefreshMessageEvent) {
+        when (event.type) {
+            "更新客户" -> getData()
+        }
     }
 }

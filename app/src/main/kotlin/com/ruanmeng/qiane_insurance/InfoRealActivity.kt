@@ -52,14 +52,20 @@ class InfoRealActivity : BaseActivity() {
                         .headers("token", getString("token"))
                         .params("userName", et_name.text.trim().toString())
                         .params("cardNo", et_card.text.toString().toUpperCase())
-                        .params("type", 0)
+                        .params("type", when (intent.getStringExtra("title")) {
+                            "实名认证" -> "0"
+                            "获取资质证书" -> "1"
+                            else -> ""
+                        })
                         .execute(object : StringDialogCallback(baseContext) {
 
                             override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
 
                                 showToast(msg)
-                                putString("realName", et_name.text.trim().toString())
-                                putString("pass", "-1")
+                                if (intent.getStringExtra("title") == "实名认证") {
+                                    putString("realName", et_name.text.trim().toString())
+                                    putString("pass", "-1")
+                                }
                                 ActivityStack.screenManager.popActivities(this@InfoRealActivity::class.java)
                             }
 

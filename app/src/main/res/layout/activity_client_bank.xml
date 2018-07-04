@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <View
@@ -31,7 +32,7 @@
                 android:minWidth="@dimen/dimen_size_75"
                 android:text="银行卡号" />
 
-            <EditText
+            <com.santalu.maskedittext.MaskEditText
                 android:id="@+id/et_card"
                 style="@style/Font14_black"
                 android:layout_width="match_parent"
@@ -39,9 +40,9 @@
                 android:background="@color/transparent"
                 android:hint="请输入银行卡号"
                 android:inputType="number"
-                android:maxLength="19"
                 android:paddingEnd="@dimen/dimen_size_0"
-                android:paddingStart="@dimen/dimen_size_15" />
+                android:paddingStart="@dimen/dimen_size_15"
+                app:mask="#### #### #### #### ###" />
 
         </LinearLayout>
 

@@ -75,7 +75,7 @@ class MainActivity : BaseActivity() {
             R.id.first_company -> startActivity<CompanyActivity>("type" to "选择公司")
 
             R.id.second_search -> startActivity<SearchActivity>()
-            R.id.second_total_ll -> startActivity<TotalActivity>()
+            R.id.second_total_ll -> startActivity<ClientActivity>()
             R.id.second_read_ll -> startActivity<ReadActivity>()
             R.id.second_type_ll -> startActivity<FilterKindActivity>()
             R.id.second_company_ll -> startActivity<FilterCompanyActivity>()

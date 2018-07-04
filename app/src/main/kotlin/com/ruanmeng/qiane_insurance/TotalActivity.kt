@@ -24,6 +24,8 @@ class TotalActivity : BaseActivity() {
         list.add(CommonData("1"))
         list.add(CommonData("2"))
         mAdapter.updateData(list)
+
+        TODO("无用的页面")
     }
 
     override fun init_title() {

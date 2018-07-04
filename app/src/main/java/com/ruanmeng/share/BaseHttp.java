@@ -37,6 +37,11 @@ public class BaseHttp {
     public static String myprospectus_list_data = baseIp + "/myprospectus_list_data.rm";       //我的计划书√
     public static String goodsorder_list_data = baseIp + "/goodsorder_list_data.rm";           //订单列表√
     public static String find_usercustome_info = baseIp + "/find_usercustome_info.rm";         //客户列表√
+    public static String find_usercustome_details = baseIp + "/find_usercustome_details.rm";   //客户信息√
+    public static String add_usercustomer_sub = baseIp + "/add_usercustomer_sub.rm";           //添加客户√
+    public static String edit_usercustomer_sub = baseIp + "/edit_usercustomer_sub.rm";         //修改客户√
+    public static String delete_usercustomer_sub = baseIp + "/delete_usercustomer_sub.rm";     //删除客户√
+    public static String find_usercustome_data = baseIp + "/find_usercustome_data.rm";         //搜索客户√
 
     public static String index_data = baseIp + "/index_data.rm";                           //首页√
     public static String index_productprospectus = baseIp + "/index_productprospectus.rm"; //首页列表√
@@ -57,6 +62,8 @@ public class BaseHttp {
     public static String leave_message_sub = baseIp + "/leave_message_sub.rm";         //意见反馈√
     public static String city_name_data = baseIp + "/city_name_data.rm";               //获取省市区√
 
+    public static String invite_index = baseImg + "forend/invitation_index.hm?userInfoId=";               //分享√
+    public static String register_index = baseImg + "forend/register_index.hm?userInfoId=";               //分享注册√
     public static String prospectus_open = baseImg + "forend/prospectus_open.hm?prospectusId=";           //查看计划书√
     public static String prospectus_detil = baseImg + "forend/prospectus_detils.hm?type=1&prospectusId="; //计划书详情√
     public static String product_detils = baseImg + "forend/product_detils.hm?productinId=";              //产品详情√

@@ -16,6 +16,7 @@ import com.ruanmeng.utils.Tools
 import kotlinx.android.synthetic.main.fragment_main_third.*
 import org.jetbrains.anko.support.v4.dip
 import org.json.JSONObject
+import java.text.DecimalFormat
 
 class MainThirdFragment : BaseFragment() {
 
@@ -75,8 +76,8 @@ class MainThirdFragment : BaseFragment() {
                         putString("integral", obj.optStringNotEmpty("integral", "0"))
 
                         third_name.text = getString("nickName")
-                        third_income.text = getString("balance")
-                        third_point.text = getString("integral")
+                        third_income.text = DecimalFormat("0.00").format(getString("balance").toDouble())
+                        third_point.text = DecimalFormat("0.##").format(getString("integral").toDouble())
 
                         if (third_img.getTag(R.id.third_img) == null) {
                             third_img.loadImage(BaseHttp.baseImg + getString("userhead"))

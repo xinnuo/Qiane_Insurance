@@ -18,6 +18,7 @@ import net.idik.lib.slimadapter.SlimAdapter
 import net.idik.lib.slimadapter.SlimAdapterEx
 import org.jetbrains.anko.*
 import org.json.JSONObject
+import java.text.DecimalFormat
 import java.util.ArrayList
 
 class PointActivity : BaseActivity() {
@@ -51,9 +52,9 @@ class PointActivity : BaseActivity() {
 
                     val isLast = list.indexOf(data) == list.size - 1
 
-                    injector.text(R.id.item_income_time, data.title)
-                            .text(R.id.item_income_content, data.content)
-                            .text(R.id.item_income_money, "+${data.profitSum}")
+                    injector.text(R.id.item_income_time, data.createDate)
+                            .text(R.id.item_income_content, data.integralExplain)
+                            .text(R.id.item_income_money, "+${data.integralScore}")
 
                             .visibility(R.id.item_income_divider1, if (isLast) View.GONE else View.VISIBLE)
                             .visibility(R.id.item_income_divider2, if (!isLast) View.GONE else View.VISIBLE)
@@ -118,7 +119,8 @@ class PointActivity : BaseActivity() {
                     override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
 
                         val obj = JSONObject(response.body()).optJSONObject("object") ?: JSONObject()
-                        pointTV.text = obj.optStringNotEmpty("integral", "0")
+                        val integral = obj.optStringNotEmpty("integral", "0")
+                        pointTV.text = DecimalFormat("0.##").format(integral.toDouble())
                     }
 
                 })

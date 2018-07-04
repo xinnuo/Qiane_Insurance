@@ -1,5 +1,5 @@
 /**
- * created by 小卷毛, 2018/6/21
+ * created by 小卷毛, 2018/3/14 0014
  * Copyright (c) 2018, 416143467@qq.com All Rights Reserved.
  * #                   *********                            #
  * #                  ************                          #
@@ -25,48 +25,46 @@
  * #          *****       ***        ***      *             #
  * #            **       ****        ****                   #
  */
-package com.ruanmeng.model
 
-import java.io.Serializable
+package com.ruanmeng.base
+
+import android.text.Html
+import android.text.Spanned
+import android.widget.TextView
+import com.ruanmeng.qiane_insurance.R
 
 /**
- * 项目名称：Qiane_Insurance
- * 创建人：小卷毛
- * 创建时间：2018-06-21 15:57
+ * 文本加载扩展类
  */
-data class CommonModel(
-        var slider: List<CommonData> ?= ArrayList(),
-        var news: List<CommonData> ?= ArrayList(),
+fun TextView.setColor(text: String, key: String) {
+    @Suppress("DEPRECATION")
+    setText(Html.fromHtml(text.replace(key, "<font color='${resources.getColor(R.color.colorAccent)}'>$key</font>")))
+}
 
-        //计划书详情
-        var companyId: String = "",
-        var productId: String = "",
-        var prospectusId: String = "",
-        var lbs: List<InsuranceModel>? = ArrayList(),
-        var lks: List<CommonData>? = ArrayList(),
+fun TextView.setColor(text: String, key: String, color: String) {
+    @Suppress("DEPRECATION")
+    setText(Html.fromHtml(text.replace(key, "<font color='$color'>$key</font>")))
+}
 
-        //计划书阅读
-        var birthCtn: String = "",
-        var customerCtn: String = "",
-        var ordeDayCtn: String = "",
-        var birthList: List<CommonData>? = ArrayList(),
-        var customerList: List<CommonData>? = ArrayList(),
+fun TextView.setUnicodeText(text: String) {
+    if (text.isEmpty()) setText(text)
+    else {
+        var start = 0
+        var end: Int
+        val buffer = StringBuilder()
+        while (start > -1) {
+            end = text.indexOf("\\u", start + 2)
+            val charStr = text.substring(start + 2, if (end == -1) text.length else end)
+            val letter = Integer.parseInt(charStr, 16).toChar() // 16进制parse整形字符串
+            buffer.append(Character.valueOf(letter).toString())
+            start = end
+        }
+        setText(buffer.toString())
+    }
+}
 
-        //计划书阅读
-        var makeSum: String = "",
-        var readSum: String = "",
-        var lwithin: List<CommonData>? = ArrayList(),
-        var lago: List<CommonData>? = ArrayList(),
+@Suppress("DEPRECATION")
+fun getColorText(text: String, key: String): Spanned = Html.fromHtml(text.replace(key, "<font color='#C20D23'>$key</font>"))
 
-        //客户详情
-        var u: CommonData = CommonData(),
-        var tels: List<CommonData>? = ArrayList(),
-        var emails: List<CommonData>? = ArrayList(),
-        var certificates: List<CommonData>? = ArrayList(),
-        var contactaddress: List<CommonData>? = ArrayList(),
-
-        //保险种类
-        var insuranceTypeId: String = "",
-        var insuranceTypeName: String = "",
-        var lcs: List<CommonData>? = ArrayList()
-): Serializable
+@Suppress("DEPRECATION")
+fun getColorText(text: String, key: String, color: String): Spanned = Html.fromHtml(text.replace(key, "<font color='$color'>$key</font>"))

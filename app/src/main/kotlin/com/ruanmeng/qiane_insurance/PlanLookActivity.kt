@@ -1,6 +1,7 @@
 package com.ruanmeng.qiane_insurance
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialog
@@ -20,6 +21,7 @@ import com.tencent.smtt.sdk.WebSettings
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
 import com.umeng.socialize.ShareAction
+import com.umeng.socialize.UMShareAPI
 import com.umeng.socialize.bean.SHARE_MEDIA
 import com.umeng.socialize.media.UMImage
 import com.umeng.socialize.media.UMWeb
@@ -142,6 +144,11 @@ class PlanLookActivity : BaseActivity() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        UMShareAPI.get(this@PlanLookActivity).onActivityResult(requestCode, resultCode, data)
+    }
+
     @SuppressLint("InflateParams")
     override fun doClick(v: View) {
         super.doClick(v)
@@ -170,8 +177,8 @@ class PlanLookActivity : BaseActivity() {
                             .setPlatform(SHARE_MEDIA.WEIXIN)
                             .withText(getString(R.string.app_name))
                             .withMedia(UMWeb(urlShare).apply {
-                                title = getString("标题")
-                                description = getString("描述")
+                                title = tvTitle.text.toString()
+                                description = "描述"
                                 setThumb(UMImage(baseContext, R.mipmap.ic_launcher_logo))
                             })
                             .share()
@@ -183,8 +190,8 @@ class PlanLookActivity : BaseActivity() {
                             .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
                             .withText(getString(R.string.app_name))
                             .withMedia(UMWeb(urlShare).apply {
-                                title = getString("标题")
-                                description = getString("描述")
+                                title = tvTitle.text.toString()
+                                description = "描述"
                                 setThumb(UMImage(baseContext, R.mipmap.ic_launcher_logo))
                             })
                             .share()
@@ -196,8 +203,8 @@ class PlanLookActivity : BaseActivity() {
                             .setPlatform(SHARE_MEDIA.QQ)
                             .withText(getString(R.string.app_name))
                             .withMedia(UMWeb(urlShare).apply {
-                                title = getString("标题")
-                                description = getString("描述")
+                                title = tvTitle.text.toString()
+                                description = "描述"
                                 setThumb(UMImage(baseContext, R.mipmap.ic_launcher_logo))
                             })
                             .share()
@@ -209,8 +216,8 @@ class PlanLookActivity : BaseActivity() {
                             .setPlatform(SHARE_MEDIA.QZONE)
                             .withText(getString(R.string.app_name))
                             .withMedia(UMWeb(urlShare).apply {
-                                title = getString("标题")
-                                description = getString("描述")
+                                title = tvTitle.text.toString()
+                                description = "描述"
                                 setThumb(UMImage(baseContext, R.mipmap.ic_launcher_logo))
                             })
                             .share()

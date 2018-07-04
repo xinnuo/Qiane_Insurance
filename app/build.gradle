@@ -132,6 +132,7 @@ dependencies {
     }
 
     implementation 'com.github.zcweng:switch-button:0.0.3@aar'
+    implementation 'com.github.santalu:mask-edittext:1.0.1'
     implementation 'com.hyman:flowlayout-lib:1.1.2'
     implementation 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.1.1'
     implementation 'com.weigan:loopView:0.1.2'

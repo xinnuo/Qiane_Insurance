@@ -40,7 +40,7 @@ class ClientBirthActivity : BaseActivity() {
 
                     injector.text(R.id.item_birth_name, data.customerName)
                             .text(R.id.item_birth_age, "${data.year}岁生日")
-                            .text(R.id.item_birth_day, "${data.day}天")
+                            .text(R.id.item_birth_day, "${if (data.day == "0") "今" else data.day}天")
 
                             .visibility(R.id.item_birth_divider1, if (isLast) View.GONE else View.VISIBLE)
                             .visibility(R.id.item_birth_divider2, if (!isLast) View.GONE else View.VISIBLE)

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
+import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -47,6 +48,7 @@ class WebActivity : BaseActivity() {
             settings.setAppCacheEnabled(true)
             settings.domStorageEnabled = true
 
+            webChromeClient = WebChromeClient()
             webViewClient = object : WebViewClient() {
 
                 /* 这个事件，将在用户点击链接时触发。

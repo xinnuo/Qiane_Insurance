@@ -13,12 +13,15 @@ import com.lzy.okgo.model.Response
 import com.ruanmeng.base.*
 import com.ruanmeng.model.CommonData
 import com.ruanmeng.model.CommonModel
+import com.ruanmeng.model.RefreshMessageEvent
 import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.view.NormalDecoration
 import kotlinx.android.synthetic.main.header_client.*
 import kotlinx.android.synthetic.main.layout_list.*
 import net.idik.lib.slimadapter.SlimAdapter
 import net.idik.lib.slimadapter.SlimAdapterEx
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.sp
 import org.jetbrains.anko.startActivity
@@ -33,6 +36,8 @@ class ClientActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_client)
         init_title("客户", "搜索客户")
+
+        EventBus.getDefault().register(this@ClientActivity)
 
         swipe_refresh.isRefreshing = true
         getData()
@@ -67,6 +72,12 @@ class ClientActivity : BaseActivity() {
                             .visibility(R.id.item_client_divider1,
                                     if ((!isLast && data.fristName != list[list.indexOf(data) + 1].fristName) || isLast) View.GONE else View.VISIBLE)
                             .visibility(R.id.item_client_divider2, if (!isLast) View.GONE else View.VISIBLE)
+
+                            .clicked(R.id.item_client) {
+                                startActivity<ClientAddActivity>(
+                                        "title" to "客户信息",
+                                        "usercustomerId" to data.usercustomerId)
+                            }
                 }
                 .attachTo(recycle_list)
     }
@@ -78,7 +89,7 @@ class ClientActivity : BaseActivity() {
             R.id.client_birth_ll -> startActivity<ClientBirthActivity>("list" to listBirth)
             R.id.client_form_ll -> startActivity<ClientFormActivity>()
             R.id.client_edit -> startActivity<ClientEditActivity>()
-            R.id.client_input -> startActivity<ClientAddActivity>()
+            R.id.client_input -> startActivity<ClientAddActivity>("title" to "添加客户")
             R.id.client_contact -> startActivityForResult(Intent(
                     Intent.ACTION_PICK,
                     ContactsContract.Contacts.CONTENT_URI),
@@ -129,19 +140,6 @@ class ClientActivity : BaseActivity() {
             }
             emails.close()
 
-            //查询地址的数据操作
-            /*val address = reContentResolver.query(ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_URI,
-                    null,
-                    ContactsContract.CommonDataKinds.StructuredPostal.CONTACT_ID + " = " + contactId,
-                    null,
-                    null)
-            while (address.moveToNext()) {
-                val addr = address.getString(address.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.DATA))
-
-                userAddress.add(addr)
-            }
-            address.close()*/
-
             //查询生日的数据操作
             val event = reContentResolver.query(ContactsContract.Data.CONTENT_URI,
                     null,
@@ -163,6 +161,7 @@ class ClientActivity : BaseActivity() {
         }
 
         startActivity<ClientAddActivity>(
+                "title" to "添加客户",
                 "name" to userName,
                 "birth" to userBirth,
                 "phone" to userPhones.joinToString(","),
@@ -198,5 +197,20 @@ class ClientActivity : BaseActivity() {
                     }
 
                 })
+    }
+
+    override fun finish() {
+        EventBus.getDefault().unregister(this@ClientActivity)
+        super.finish()
+    }
+
+    @Subscribe
+    fun onMessageEvent(event: RefreshMessageEvent) {
+        when (event.type) {
+            "更新客户", "删除客户" -> {
+                swipe_refresh.isRefreshing = true
+                getData()
+            }
+        }
     }
 }

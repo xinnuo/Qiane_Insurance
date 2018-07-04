@@ -5,8 +5,13 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
+import com.flyco.animation.BounceEnter.BounceTopEnter;
+import com.flyco.animation.SlideExit.SlideBottomExit;
+import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.widget.MaterialDialog;
 import com.flyco.dialog.widget.base.BottomBaseDialog;
 import com.maning.mndialoglibrary.MProgressDialog;
+import com.ruanmeng.model.CommonData;
 import com.ruanmeng.qiane_insurance.R;
 import com.weigan.loopview.LoopView;
 import com.weigan.loopview.OnItemSelectedListener;
@@ -40,6 +45,43 @@ public class DialogHelper {
     public static void dismissDialog() {
         if (mMProgressDialog != null && mMProgressDialog.isShowing())
             mMProgressDialog.dismiss();
+    }
+
+    public static void showDialog(
+            Context context,
+            String title,
+            String content,
+            String left,
+            String right,
+            boolean isOutDismiss,
+            final HintCallBack msgCallBack) {
+        final MaterialDialog dialog = new MaterialDialog(context);
+        dialog.content(content)
+                .title(title)
+                .contentTextColor(context.getResources().getColor(R.color.black))
+                .btnText(left, right)
+                .btnTextColor(
+                        context.getResources().getColor(R.color.black),
+                        context.getResources().getColor(R.color.colorAccent))
+                .showAnim(new BounceTopEnter())
+                .dismissAnim(new SlideBottomExit())
+                .show();
+        dialog.setCanceledOnTouchOutside(isOutDismiss);
+        dialog.setOnBtnClickL(
+                new OnBtnClickL() {//left btn click listener
+                    @Override
+                    public void onBtnClick() {
+                        dialog.dismiss();
+                    }
+                },
+                new OnBtnClickL() {//right btn click listener
+                    @Override
+                    public void onBtnClick() {
+                        dialog.dismiss();
+                        msgCallBack.doWork();
+                    }
+                }
+        );
     }
 
     public static void showItemDialog(
@@ -361,6 +403,99 @@ public class DialogHelper {
         dialog.show();
     }
 
+    public static void showAddressDialog(
+            final Context context,
+            final String title,
+            final List<CommonData> list_province,
+            final List<CommonData> list_city,
+            final List<CommonData> list_district,
+            final AddressCallBack callBack) {
+
+        BottomBaseDialog dialog = new BottomBaseDialog(context) {
+
+            private LoopView province, city, district;
+
+            @Override
+            public View onCreateView() {
+                View view = View.inflate(context, R.layout.dialog_select_time, null);
+
+                TextView tv_title = view.findViewById(R.id.tv_dialog_select_title);
+                TextView tv_cancel = view.findViewById(R.id.tv_dialog_select_cancle);
+                TextView tv_ok = view.findViewById(R.id.tv_dialog_select_ok);
+                province = view.findViewById(R.id.lv_dialog_select_year);
+                city = view.findViewById(R.id.lv_dialog_select_month);
+                district = view.findViewById(R.id.lv_dialog_select_day);
+                LoopView hour = view.findViewById(R.id.lv_dialog_select_hour);
+                LoopView minute = view.findViewById(R.id.lv_dialog_select_minute);
+
+                hour.setVisibility(View.GONE);
+                minute.setVisibility(View.GONE);
+                tv_title.setText(title);
+                province.setTextSize(14f);
+                province.setDividerColor(context.getResources().getColor(R.color.divider));
+                province.setNotLoop();
+                city.setTextSize(14f);
+                city.setDividerColor(context.getResources().getColor(R.color.divider));
+                city.setNotLoop();
+                district.setTextSize(14f);
+                district.setDividerColor(context.getResources().getColor(R.color.divider));
+                district.setNotLoop();
+
+                tv_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss();
+                    }
+                });
+
+                tv_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss();
+
+                        callBack.doWork(
+                                province.getSelectedItem(),
+                                city.getSelectedItem(),
+                                district.getSelectedItem());
+                    }
+                });
+
+                return view;
+            }
+
+            @Override
+            public void setUiBeforShow() {
+                List<String> provinces = new ArrayList<>();
+                List<String> cities = new ArrayList<>();
+                final List<String> districts = new ArrayList<>();
+
+                for (CommonData item : list_province) provinces.add(item.getAreaName());
+                for (CommonData item : list_city) cities.add(item.getAreaName());
+                for (CommonData item : list_district) districts.add(item.getAreaName());
+
+                if (provinces.size() > 0) province.setItems(provinces);
+                if (cities.size() > 0) city.setItems(cities);
+                if (districts.size() > 0) district.setItems(districts);
+
+                province.setListener(new OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(int index) {
+                        callBack.getCities(city, district, province.getSelectedItem());
+                    }
+                });
+                city.setListener(new OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(int index) {
+                        callBack.getDistricts(district, city.getSelectedItem());
+                    }
+                });
+            }
+
+        };
+
+        dialog.show();
+    }
+
     private static List<String> dateToList(int minValue, int maxValue, String format) {
         List<String> items = new ArrayList<>();
 
@@ -372,11 +507,23 @@ public class DialogHelper {
         return items;
     }
 
+    public interface HintCallBack {
+        void doWork();
+    }
+
     public interface ItemCallBack {
         void doWork(int position, String name);
     }
 
     public interface DateItemCallBack {
         void doWork(int year, int month, int day, int hour, int minute, String date);
+    }
+
+    public interface AddressCallBack {
+        void doWork(int pos_province, int pos_city, int pos_district);
+
+        void getCities(LoopView loopView, LoopView loopView2, int pos);
+
+        void getDistricts(LoopView loopView, int pos);
     }
 }
