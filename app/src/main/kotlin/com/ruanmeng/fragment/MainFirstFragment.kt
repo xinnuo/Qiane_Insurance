@@ -220,7 +220,7 @@ class MainFirstFragment : BaseFragment() {
         OkGo.post<String>(BaseHttp.user_profession_info)
                 .tag(this@MainFirstFragment)
                 .headers("token", getString("token"))
-                .execute(object : StringDialogCallback(activity) {
+                .execute(object : StringDialogCallback(activity, false) {
 
                     override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
 

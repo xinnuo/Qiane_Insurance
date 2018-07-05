@@ -407,8 +407,6 @@ class ClientAddActivity : BaseActivity() {
                 return@OnClickListener
             }
 
-            if (mTitle == "客户信息") {}
-
             OkGo.post<String>(if (mTitle == "客户信息") BaseHttp.edit_usercustomer_sub else BaseHttp.add_usercustomer_sub)
                     .tag(this@ClientAddActivity)
                     .isMultipart(true)

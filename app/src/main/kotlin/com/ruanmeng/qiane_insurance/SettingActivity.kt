@@ -1,8 +1,13 @@
 package com.ruanmeng.qiane_insurance
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import com.luck.picture.lib.tools.PictureFileUtils
 import com.ruanmeng.base.BaseActivity
+import com.ruanmeng.utils.GlideCacheUtil
+import com.ruanmeng.utils.Tools
+import kotlinx.android.synthetic.main.activity_setting.*
 import org.jetbrains.anko.*
 
 class SettingActivity : BaseActivity() {
@@ -13,13 +18,32 @@ class SettingActivity : BaseActivity() {
         init_title("设置")
     }
 
+    @SuppressLint("SetTextI18n")
+    override fun init_title() {
+        super.init_title()
+        setting_cache.text = GlideCacheUtil.getInstance().getCacheSize(this@SettingActivity)
+        setting_version.text = "v${Tools.getVersion(baseContext)}"
+    }
+
+    @SuppressLint("SetTextI18n")
     override fun doClick(v: View) {
         super.doClick(v)
         when (v.id) {
             R.id.setting_password -> startActivity<PasswordActivity>()
             R.id.setting_about -> startActivity<WebActivity>("title" to "关于我们")
-            R.id.setting_feedback -> {}
-            R.id.setting_cache_ll -> {}
+            R.id.setting_feedback -> startActivity<FeedbackActivity>()
+            R.id.setting_cache_ll -> {
+                alert {
+                    title = "清空缓存"
+                    message = "确定要清空缓存吗？"
+                    negativeButton("取消") {}
+                    positiveButton("清空") {
+                        GlideCacheUtil.getInstance().clearImageAllCache(baseContext)
+                        PictureFileUtils.deleteCacheDirFile(baseContext)
+                        setting_cache.text = "0B"
+                    }
+                }.show()
+            }
             R.id.setting_version_ll -> {}
             R.id.bt_quit -> {
                 /*AlertDialog.newBuilder(baseContext)

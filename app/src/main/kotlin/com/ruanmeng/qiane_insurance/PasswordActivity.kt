@@ -3,17 +3,17 @@ package com.ruanmeng.qiane_insurance
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import com.lzg.extend.StringDialogCallback
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.model.Response
 import com.ruanmeng.base.BaseActivity
+import com.ruanmeng.base.getString
 import com.ruanmeng.base.showToast
-import com.ruanmeng.utils.isMobile
+import com.ruanmeng.share.BaseHttp
+import com.ruanmeng.utils.ActivityStack
 import kotlinx.android.synthetic.main.activity_password.*
 
 class PasswordActivity : BaseActivity() {
-
-    private var time_count: Int = 180
-    private lateinit var thread: Runnable
-    private var YZM: String = ""
-    private var mTel: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,73 +26,49 @@ class PasswordActivity : BaseActivity() {
         bt_ok.setBackgroundResource(R.drawable.rec_bg_d0d0d0)
         bt_ok.isClickable = false
 
-        et_tel.addTextChangedListener(this)
-        et_yzm.addTextChangedListener(this)
+        et_old.addTextChangedListener(this)
         et_new.addTextChangedListener(this)
+        et_confirm.addTextChangedListener(this)
     }
 
     @SuppressLint("SetTextI18n")
     override fun doClick(v: View) {
         super.doClick(v)
         when (v.id) {
-            R.id.bt_yzm -> {
-                if (et_tel.text.isBlank()) {
-                    et_tel.requestFocus()
-                    showToast("请输入手机号")
-                    return
-                }
-
-                if (!et_tel.text.toString().isMobile()) {
-                    et_tel.requestFocus()
-                    et_tel.setText("")
-                    showToast("手机号码格式错误，请重新输入")
-                    return
-                }
-
-                thread = Runnable {
-                    bt_yzm.text = "${time_count}秒后重发"
-                    if (time_count > 0) {
-                        bt_yzm.postDelayed(thread, 1000)
-                        time_count--
-                    } else {
-                        bt_yzm.text = "获取验证码"
-                        bt_yzm.isClickable = true
-                        time_count = 180
-                    }
-                }
-            }
             R.id.bt_ok -> {
-                if (!et_tel.text.toString().isMobile()) {
-                    et_tel.requestFocus()
-                    et_tel.setText("")
-                    showToast("手机号码格式错误，请重新输入")
+                if (et_old.text.length < 6 || et_new.text.length < 6 || et_confirm.text.length < 6) {
+                    showToast("密码长度不少于6位")
                     return
                 }
 
-                if (et_tel.text.toString() != mTel) {
-                    showToast("手机号码不匹配，请重新获取验证码")
+                if (et_new.text.toString() != et_confirm.text.toString()) {
+                    showToast("密码输入不一致，请重新输入")
                     return
                 }
 
-                if (et_yzm.text.trim().toString() != YZM) {
-                    et_yzm.requestFocus()
-                    et_yzm.setText("")
-                    showToast("验证码错误，请重新输入")
-                    return
-                }
+                OkGo.post<String>(BaseHttp.password_change_sub)
+                        .tag(this@PasswordActivity)
+                        .headers("token", getString("token"))
+                        .params("oldPwd", et_old.text.toString())
+                        .params("newPwd", et_new.text.toString())
+                        .params("confirmPwd", et_confirm.text.toString())
+                        .execute(object : StringDialogCallback(baseContext) {
 
-                if (et_new.text.length < 6) {
-                    showToast("新密码长度不少于6位")
-                    return
-                }
+                            override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
+
+                                showToast(msg)
+                                ActivityStack.screenManager.popActivities(this@PasswordActivity::class.java)
+                            }
+
+                        })
             }
         }
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        if (et_tel.text.isNotBlank()
-                && et_yzm.text.isNotBlank()
-                && et_new.text.isNotBlank()) {
+        if (et_old.text.isNotBlank()
+                && et_new.text.isNotBlank()
+                && et_confirm.text.isNotBlank()) {
             bt_ok.setBackgroundResource(R.drawable.rec_bg_red)
             bt_ok.isClickable = true
         } else {

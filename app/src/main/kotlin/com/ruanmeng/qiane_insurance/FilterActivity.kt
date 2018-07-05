@@ -9,9 +9,11 @@ import android.widget.Button
 import android.widget.TextView
 import com.ruanmeng.base.BaseActivity
 import com.ruanmeng.model.CommonData
+import com.ruanmeng.model.RefreshMessageEvent
 import com.ruanmeng.utils.ActivityStack
 import com.ruanmeng.utils.MultiGapDecoration
 import net.idik.lib.slimadapter.SlimAdapter
+import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.*
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.sdk25.listeners.onClick
@@ -105,6 +107,20 @@ class FilterActivity : BaseActivity() {
         }
 
         sureBT.onClick {
+            val itemIds = ArrayList<String>()
+            val itemNames = ArrayList<String>()
+
+            list.filter { it is CommonData && it.isChecked }.forEach {
+                it as CommonData
+                itemIds.add(it.insuranceTypeId)
+                itemNames.add(it.title)
+            }
+
+            EventBus.getDefault().post(RefreshMessageEvent(
+                    "筛选",
+                    itemIds.joinToString(","),
+                    itemNames.joinToString(",")))
+
             ActivityStack.screenManager.popActivities(this::class.java)
         }
     }
@@ -114,11 +130,20 @@ class FilterActivity : BaseActivity() {
         list.add(CommonData().apply {
             title = "默认排序"
             type = "排序"
+            insuranceTypeId = "1"
         })
         list.add(CommonData().apply {
             title = "推广费优先"
             type = "排序"
+            insuranceTypeId = "0"
         })
+
+        val insuranceTypeIds = intent.getStringExtra("id") ?: ""
+        val itemIds = insuranceTypeIds.split(",")
+        list.filter { it is CommonData }.forEach {
+            it as CommonData
+            if (itemIds.contains(it.insuranceTypeId)) it.isChecked = true
+        }
 
         mAdapter.updateData(list)
     }

@@ -188,10 +188,12 @@
                         style="@style/Font14_gray"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:maxLength="4"
+                        android:ellipsize="end"
+                        android:maxLength="5"
                         android:text="保险种类" />
 
                     <ImageView
+                        android:id="@+id/second_type_arrow"
                         android:layout_width="@dimen/dimen_size_10"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_size_5"
@@ -215,10 +217,12 @@
                         style="@style/Font14_gray"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:maxLength="4"
+                        android:ellipsize="end"
+                        android:maxLength="5"
                         android:text="公司" />
 
                     <ImageView
+                        android:id="@+id/second_company_arrow"
                         android:layout_width="@dimen/dimen_size_10"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_size_5"
@@ -241,10 +245,12 @@
                         style="@style/Font14_gray"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:maxLength="4"
+                        android:ellipsize="end"
+                        android:maxLength="5"
                         android:text="年龄" />
 
                     <ImageView
+                        android:id="@+id/second_age_arrow"
                         android:layout_width="@dimen/dimen_size_10"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_size_5"
@@ -267,10 +273,12 @@
                         style="@style/Font14_gray"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:maxLength="4"
+                        android:ellipsize="end"
+                        android:maxLength="5"
                         android:text="筛选" />
 
                     <ImageView
+                        android:id="@+id/second_filter_arrow"
                         android:layout_width="@dimen/dimen_size_13"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_size_5"

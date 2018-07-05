@@ -18,20 +18,27 @@ import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.share.Const
 import com.ruanmeng.utils.DESUtil
 import com.ruanmeng.utils.EncryptUtil
+import com.ruanmeng.utils.Tools
 import com.ruanmeng.utils.isWeb
 import com.umeng.socialize.ShareAction
 import com.umeng.socialize.UMShareAPI
 import com.umeng.socialize.bean.SHARE_MEDIA
 import com.umeng.socialize.media.UMImage
 import com.umeng.socialize.media.UMWeb
+import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.browse
+import org.jetbrains.anko.collections.forEachWithIndex
 import org.jetbrains.anko.sdk25.listeners.onClick
 import org.jetbrains.anko.webView
+import org.jsoup.Jsoup
 
 class ShareActivity : BaseActivity() {
 
     private lateinit var webView: WebView
     private var mTitle = ""
+    private var mContent = ""
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,80 +118,98 @@ class ShareActivity : BaseActivity() {
         UMShareAPI.get(this@ShareActivity).onActivityResult(requestCode, resultCode, data)
     }
 
+    @SuppressLint("InflateParams")
+    private fun showShareDialog() {
+        EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
+        val userInfoId = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
+        val urlShare = BaseHttp.register_index + userInfoId
+
+        val view = LayoutInflater.from(baseContext).inflate(R.layout.dialog_share_bottom, null) as View
+        val wechat = view.findViewById<LinearLayout>(R.id.dialog_share_wechat)
+        val circle = view.findViewById<LinearLayout>(R.id.dialog_share_circle)
+        val qq = view.findViewById<LinearLayout>(R.id.dialog_share_qq)
+        val space = view.findViewById<LinearLayout>(R.id.dialog_share_space)
+        val cancel = view.findViewById<Button>(R.id.dialog_share_cancel)
+        val dialog = BottomSheetDialog(baseContext, R.style.BottomSheetDialogStyle)
+
+        wechat.onClick {
+            dialog.dismiss()
+
+            ShareAction(baseContext)
+                    .setPlatform(SHARE_MEDIA.WEIXIN)
+                    .withText(getString(R.string.app_name))
+                    .withMedia(UMWeb(urlShare).apply {
+                        title = mTitle
+                        description = mContent
+                        setThumb(UMImage(baseContext, Tools.getViewBitmap(webView)))
+                    })
+                    .share()
+        }
+        circle.onClick {
+            dialog.dismiss()
+
+            ShareAction(baseContext)
+                    .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                    .withText(getString(R.string.app_name))
+                    .withMedia(UMWeb(urlShare).apply {
+                        title = mTitle
+                        description = mContent
+                        setThumb(UMImage(baseContext, Tools.getViewBitmap(webView)))
+                    })
+                    .share()
+        }
+        qq.onClick {
+            dialog.dismiss()
+
+            ShareAction(baseContext)
+                    .setPlatform(SHARE_MEDIA.QQ)
+                    .withText(getString(R.string.app_name))
+                    .withMedia(UMWeb(urlShare).apply {
+                        title = mTitle
+                        description = mContent
+                        setThumb(UMImage(baseContext, Tools.getViewBitmap(webView)))
+                    })
+                    .share()
+        }
+        space.onClick {
+            dialog.dismiss()
+
+            ShareAction(baseContext)
+                    .setPlatform(SHARE_MEDIA.QZONE)
+                    .withText(getString(R.string.app_name))
+                    .withMedia(UMWeb(urlShare).apply {
+                        title = mTitle
+                        description = mContent
+                        setThumb(UMImage(baseContext, Tools.getViewBitmap(webView)))
+                    })
+                    .share()
+        }
+        cancel.onClick { dialog.dismiss() }
+
+        dialog.setContentView(view)
+        dialog.show()
+    }
+
     inner class JsInteration {
-        @SuppressLint("InflateParams")
         @JavascriptInterface
         fun openDialog() {
-            runOnUiThread {
-                EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
-                val userInfoId = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
-                val urlShare = BaseHttp.register_index + userInfoId
+                Flowable.just(BaseHttp.invite_index + getString("token"))
+                        .map { return@map Jsoup.connect(it).get() }
+                        .subscribeOn(Schedulers.newThread())
+                        .doOnSubscribe { showLoadingDialog() }
+                        .doFinally { cancelLoadingDialog() }
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe {
+                            val items = it.select("div.jl-list").select("div.item")
+                            val strHint = StringBuilder()
+                            items.forEachWithIndex { index, item ->
+                                strHint.append(item.select("div.jl-text").select("span").text())
+                                strHint.append(if (index == items.size - 1) "。" else "，")
+                            }
+                            mContent = strHint.toString().replace(" ", "")
 
-                val view = LayoutInflater.from(baseContext).inflate(R.layout.dialog_share_bottom, null) as View
-                val wechat = view.findViewById<LinearLayout>(R.id.dialog_share_wechat)
-                val circle = view.findViewById<LinearLayout>(R.id.dialog_share_circle)
-                val qq = view.findViewById<LinearLayout>(R.id.dialog_share_qq)
-                val space = view.findViewById<LinearLayout>(R.id.dialog_share_space)
-                val cancel = view.findViewById<Button>(R.id.dialog_share_cancel)
-                val dialog = BottomSheetDialog(baseContext, R.style.BottomSheetDialogStyle)
-
-                wechat.onClick {
-                    dialog.dismiss()
-
-                    ShareAction(baseContext)
-                            .setPlatform(SHARE_MEDIA.WEIXIN)
-                            .withText(getString(R.string.app_name))
-                            .withMedia(UMWeb(urlShare).apply {
-                                title = mTitle
-                                description = "描述"
-                                setThumb(UMImage(baseContext, R.mipmap.ic_launcher_logo))
-                            })
-                            .share()
-                }
-                circle.onClick {
-                    dialog.dismiss()
-
-                    ShareAction(baseContext)
-                            .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
-                            .withText(getString(R.string.app_name))
-                            .withMedia(UMWeb(urlShare).apply {
-                                title = mTitle
-                                description = "描述"
-                                setThumb(UMImage(baseContext, R.mipmap.ic_launcher_logo))
-                            })
-                            .share()
-                }
-                qq.onClick {
-                    dialog.dismiss()
-
-                    ShareAction(baseContext)
-                            .setPlatform(SHARE_MEDIA.QQ)
-                            .withText(getString(R.string.app_name))
-                            .withMedia(UMWeb(urlShare).apply {
-                                title = mTitle
-                                description = "描述"
-                                setThumb(UMImage(baseContext, R.mipmap.ic_launcher_logo))
-                            })
-                            .share()
-                }
-                space.onClick {
-                    dialog.dismiss()
-
-                    ShareAction(baseContext)
-                            .setPlatform(SHARE_MEDIA.QZONE)
-                            .withText(getString(R.string.app_name))
-                            .withMedia(UMWeb(urlShare).apply {
-                                title = mTitle
-                                description = "描述"
-                                setThumb(UMImage(baseContext, R.mipmap.ic_launcher_logo))
-                            })
-                            .share()
-                }
-                cancel.onClick { dialog.dismiss() }
-
-                dialog.setContentView(view)
-                dialog.show()
-            }
+                            showShareDialog()
+                        }
         }
     }
 }

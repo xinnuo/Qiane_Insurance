@@ -128,6 +128,12 @@ class FilterCompanyActivity : BaseActivity() {
                             addItems(response.body().`object`)
                         }
 
+                        val companyId = intent.getStringExtra("companyId") ?: ""
+                        val itemIds = companyId.split(",")
+                        list.forEach {
+                            if (itemIds.contains(it.companyId)) it.isChecked = true
+                        }
+
                         mAdapter.updateData(list)
                     }
 

@@ -77,10 +77,6 @@ class MainActivity : BaseActivity() {
             R.id.second_search -> startActivity<SearchActivity>()
             R.id.second_total_ll -> startActivity<ClientActivity>()
             R.id.second_read_ll -> startActivity<ReadActivity>()
-            R.id.second_type_ll -> startActivity<FilterKindActivity>()
-            R.id.second_company_ll -> startActivity<FilterCompanyActivity>()
-            R.id.second_age_ll -> startActivity<FilterAgeActivity>()
-            R.id.second_filter_ll -> startActivity<FilterActivity>()
 
             R.id.third_setting -> startActivity<SettingActivity>()
             R.id.third_message -> startActivity<MessageActivity>()

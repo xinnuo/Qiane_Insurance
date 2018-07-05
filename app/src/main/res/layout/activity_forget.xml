@@ -21,18 +21,64 @@
                 style="@style/Font14_gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minWidth="@dimen/dimen_size_65"
-                android:text="旧密码" />
+                android:text="手机号" />
 
             <EditText
-                android:id="@+id/et_old"
+                android:id="@+id/et_tel"
+                style="@style/Font14_black"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:hint="请输入您的手机号"
+                android:inputType="number"
+                android:maxLength="11"
+                android:paddingEnd="@dimen/dimen_size_0"
+                android:paddingStart="@dimen/dimen_size_15" />
+
+            <Button
+                android:id="@+id/bt_yzm"
+                style="@style/Font14_lighter"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_size_25"
+                android:background="@drawable/rec_bg_trans_stroke_red"
+                android:onClick="doClick"
+                android:paddingEnd="@dimen/dimen_size_10"
+                android:paddingStart="@dimen/dimen_size_10"
+                android:text="获取验证码"
+                android:textColor="@color/colorAccent" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_marginEnd="@dimen/dimen_size_10"
+            android:layout_marginStart="@dimen/dimen_size_10"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_height"
+            android:gravity="center_vertical"
+            android:paddingEnd="@dimen/dimen_size_10"
+            android:paddingStart="@dimen/dimen_size_10">
+
+            <TextView
+                style="@style/Font14_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="验证码" />
+
+            <EditText
+                android:id="@+id/et_yzm"
                 style="@style/Font14_black"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/transparent"
-                android:hint="请输入旧密码"
-                android:inputType="textPassword"
-                android:maxLength="20"
+                android:hint="请输入您的验证码"
+                android:inputType="number"
+                android:maxLength="6"
                 android:paddingEnd="@dimen/dimen_size_0"
                 android:paddingStart="@dimen/dimen_size_15" />
 
@@ -56,7 +102,6 @@
                 style="@style/Font14_gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minWidth="@dimen/dimen_size_65"
                 android:text="新密码" />
 
             <EditText
@@ -66,41 +111,6 @@
                 android:layout_height="match_parent"
                 android:background="@color/transparent"
                 android:hint="请输入新密码"
-                android:inputType="textPassword"
-                android:maxLength="20"
-                android:paddingEnd="@dimen/dimen_size_0"
-                android:paddingStart="@dimen/dimen_size_15" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/divider_height"
-            android:layout_marginEnd="@dimen/dimen_size_10"
-            android:layout_marginStart="@dimen/dimen_size_10"
-            android:background="@color/divider" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/line_height"
-            android:gravity="center_vertical"
-            android:paddingEnd="@dimen/dimen_size_10"
-            android:paddingStart="@dimen/dimen_size_10">
-
-            <TextView
-                style="@style/Font14_gray"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="@dimen/dimen_size_65"
-                android:text="确认密码" />
-
-            <EditText
-                android:id="@+id/et_confirm"
-                style="@style/Font14_black"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/transparent"
-                android:hint="请输入确认密码"
                 android:inputType="textPassword"
                 android:maxLength="20"
                 android:paddingEnd="@dimen/dimen_size_0"

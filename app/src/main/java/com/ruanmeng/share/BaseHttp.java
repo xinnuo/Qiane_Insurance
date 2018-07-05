@@ -23,6 +23,7 @@ public class BaseHttp {
     public static String userinfo_uploadhead_sub = baseIp + "/userinfo_uploadhead_sub.rm";     //修改头像√
     public static String nickName_change_sub = baseIp + "/nickName_change_sub.rm";             //修改昵称√
     public static String sex_change_sub = baseIp + "/sex_change_sub.rm";                       //修改性别√
+    public static String password_change_sub = baseIp + "/password_change_sub.rm";             //修改密码√
     public static String certification_sub = baseIp + "/certification_sub.rm";                 //实名认证√
     public static String user_profession_info = baseIp + "/user_profession_info.rm";           //职业信息√
     public static String add_profession_info = baseIp + "/add_profession_info.rm";             //修改职业信息√
@@ -67,5 +68,6 @@ public class BaseHttp {
     public static String prospectus_open = baseImg + "forend/prospectus_open.hm?prospectusId=";           //查看计划书√
     public static String prospectus_detil = baseImg + "forend/prospectus_detils.hm?type=1&prospectusId="; //计划书详情√
     public static String product_detils = baseImg + "forend/product_detils.hm?productinId=";              //产品详情√
+    public static String share_product_detils = baseImg + "forend/share_product_detils.hm?productinId=";  //产品详情分享√
     public static String order_detlis = baseImg + "forend/goods_order_detlis.hm?goodsOrderId=";           //订单详情√
 }

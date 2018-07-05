@@ -151,6 +151,13 @@ class FilterKindActivity : BaseActivity() {
                             list.addAll(datas)
                         }
 
+                        val insuranceTypeIds = intent.getStringExtra("id") ?: ""
+                        val itemIds = insuranceTypeIds.split(",")
+                        list.filter { it is CommonData }.forEach {
+                            it as CommonData
+                            if (itemIds.contains(it.insuranceTypeId)) it.isChecked = true
+                        }
+
                         mAdapter.updateData(list)
                     }
 

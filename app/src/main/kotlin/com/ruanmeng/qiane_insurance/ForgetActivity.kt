@@ -12,7 +12,7 @@ import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.share.Const
 import com.ruanmeng.utils.ActivityStack
 import com.ruanmeng.utils.isMobile
-import kotlinx.android.synthetic.main.activity_password.*
+import kotlinx.android.synthetic.main.activity_forget.*
 import org.json.JSONObject
 
 class ForgetActivity : BaseActivity() {
@@ -24,7 +24,7 @@ class ForgetActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_password)
+        setContentView(R.layout.activity_forget)
         init_title("忘记密码")
     }
 

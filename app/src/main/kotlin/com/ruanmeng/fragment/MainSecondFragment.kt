@@ -14,8 +14,7 @@ import com.lzy.okgo.model.Response
 import com.ruanmeng.base.*
 import com.ruanmeng.model.CommonData
 import com.ruanmeng.model.RefreshMessageEvent
-import com.ruanmeng.qiane_insurance.PlanLookActivity
-import com.ruanmeng.qiane_insurance.R
+import com.ruanmeng.qiane_insurance.*
 import com.ruanmeng.share.BaseHttp
 import kotlinx.android.synthetic.main.fragment_main_second.*
 import kotlinx.android.synthetic.main.layout_empty.*
@@ -23,7 +22,9 @@ import kotlinx.android.synthetic.main.layout_list.*
 import net.idik.lib.slimadapter.SlimAdapter
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.jetbrains.anko.sdk25.listeners.onClick
 import org.jetbrains.anko.support.v4.startActivity
+import org.jetbrains.anko.textColor
 import org.json.JSONObject
 import java.util.*
 
@@ -33,7 +34,7 @@ class MainSecondFragment : BaseFragment() {
     private var insuranceTypeIds = ""
     private var companyId = ""
     private var age = ""
-    private var sorttype = "0"
+    private var sorttype = ""
 
     //调用这个方法切换时不会释放掉Fragment
     override fun setMenuVisibility(menuVisible: Boolean) {
@@ -95,6 +96,11 @@ class MainSecondFragment : BaseFragment() {
                             }
                 }
                 .attachTo(recycle_list)
+
+        second_type_ll.onClick    { startActivity<FilterKindActivity>("id" to insuranceTypeIds) }
+        second_company_ll.onClick { startActivity<FilterCompanyActivity>("companyId" to companyId) }
+        second_age_ll.onClick     { startActivity<FilterAgeActivity>("ageId" to age) }
+        second_filter_ll.onClick  { startActivity<FilterActivity>("id" to sorttype) }
     }
 
     override fun getData() {
@@ -167,19 +173,68 @@ class MainSecondFragment : BaseFragment() {
         super.onDestroy()
     }
 
+    @Suppress("DEPRECATION")
     @Subscribe
     fun onMessageEvent(event: RefreshMessageEvent) {
         when (event.type) {
             "保险种类" -> {
                 insuranceTypeIds = event.id
+
+                if (insuranceTypeIds.isEmpty()) {
+                    second_type.text = "保险种类"
+                    second_type.textColor = resources.getColor(R.color.gray)
+                    second_type_arrow.setImageResource(R.mipmap.triangle_black)
+                } else {
+                    second_type.text = event.name
+                    second_type.textColor = resources.getColor(R.color.colorAccent)
+                    second_type_arrow.setImageResource(R.mipmap.triangle_red)
+                }
+
                 updateList()
             }
             "公司" -> {
                 companyId = event.id
+
+                if (companyId.isEmpty()) {
+                    second_company.text = "公司"
+                    second_company.textColor = resources.getColor(R.color.gray)
+                    second_company_arrow.setImageResource(R.mipmap.triangle_black)
+                } else {
+                    second_company.text = event.name
+                    second_company.textColor = resources.getColor(R.color.colorAccent)
+                    second_company_arrow.setImageResource(R.mipmap.triangle_red)
+                }
+
                 updateList()
             }
             "年龄" -> {
                 age = event.id
+
+                if (age.isEmpty()) {
+                    second_age.text = "年龄"
+                    second_age.textColor = resources.getColor(R.color.gray)
+                    second_age_arrow.setImageResource(R.mipmap.triangle_black)
+                } else {
+                    second_age.text = event.name
+                    second_age.textColor = resources.getColor(R.color.colorAccent)
+                    second_age_arrow.setImageResource(R.mipmap.triangle_red)
+                }
+
+                updateList()
+            }
+            "筛选" -> {
+                sorttype = event.id
+
+                if (sorttype.isEmpty()) {
+                    second_filter.text = "筛选"
+                    second_filter.textColor = resources.getColor(R.color.gray)
+                    second_filter_arrow.setImageResource(R.mipmap.money_tab_icon01)
+                } else {
+                    second_filter.text = event.name
+                    second_filter.textColor = resources.getColor(R.color.colorAccent)
+                    second_filter_arrow.setImageResource(R.mipmap.money_tab_icon02)
+                }
+
                 updateList()
             }
         }

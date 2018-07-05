@@ -14,6 +14,7 @@ import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.share.Const
 import com.ruanmeng.utils.DESUtil
 import com.ruanmeng.utils.EncryptUtil
+import com.ruanmeng.utils.Tools
 import com.ruanmeng.utils.isWeb
 import com.ruanmeng.view.webViewX5
 import com.tencent.smtt.sdk.WebChromeClient
@@ -25,9 +26,14 @@ import com.umeng.socialize.UMShareAPI
 import com.umeng.socialize.bean.SHARE_MEDIA
 import com.umeng.socialize.media.UMImage
 import com.umeng.socialize.media.UMWeb
+import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.browse
+import org.jetbrains.anko.collections.forEachWithIndex
 import org.jetbrains.anko.frameLayout
 import org.jetbrains.anko.sdk25.listeners.onClick
+import org.jsoup.Jsoup
 
 class PlanLookActivity : BaseActivity() {
 
@@ -150,88 +156,130 @@ class PlanLookActivity : BaseActivity() {
     }
 
     @SuppressLint("InflateParams")
+    private fun showShareDialog(content: String, urlShare: String) {
+        val view = LayoutInflater.from(baseContext).inflate(R.layout.dialog_share_bottom, null) as View
+        val wechat = view.findViewById<LinearLayout>(R.id.dialog_share_wechat)
+        val circle = view.findViewById<LinearLayout>(R.id.dialog_share_circle)
+        val qq = view.findViewById<LinearLayout>(R.id.dialog_share_qq)
+        val space = view.findViewById<LinearLayout>(R.id.dialog_share_space)
+        val cancel = view.findViewById<Button>(R.id.dialog_share_cancel)
+        val dialog = BottomSheetDialog(baseContext, R.style.BottomSheetDialogStyle)
+
+        wechat.onClick {
+            dialog.dismiss()
+
+            ShareAction(baseContext)
+                    .setPlatform(SHARE_MEDIA.WEIXIN)
+                    .withText(getString(R.string.app_name))
+                    .withMedia(UMWeb(urlShare).apply {
+                        title = tvTitle.text.toString()
+                        description = content
+                        setThumb(UMImage(baseContext, Tools.getViewBitmap(webView)))
+                    })
+                    .share()
+        }
+        circle.onClick {
+            dialog.dismiss()
+
+            ShareAction(baseContext)
+                    .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                    .withText(getString(R.string.app_name))
+                    .withMedia(UMWeb(urlShare).apply {
+                        title = tvTitle.text.toString()
+                        description = content
+                        setThumb(UMImage(baseContext, Tools.getViewBitmap(webView)))
+                    })
+                    .share()
+        }
+        qq.onClick {
+            dialog.dismiss()
+
+            ShareAction(baseContext)
+                    .setPlatform(SHARE_MEDIA.QQ)
+                    .withText(getString(R.string.app_name))
+                    .withMedia(UMWeb(urlShare).apply {
+                        title = tvTitle.text.toString()
+                        description = content
+                        setThumb(UMImage(baseContext, Tools.getViewBitmap(webView)))
+                    })
+                    .share()
+        }
+        space.onClick {
+            dialog.dismiss()
+
+            ShareAction(baseContext)
+                    .setPlatform(SHARE_MEDIA.QZONE)
+                    .withText(getString(R.string.app_name))
+                    .withMedia(UMWeb(urlShare).apply {
+                        title = tvTitle.text.toString()
+                        description = content
+                        setThumb(UMImage(baseContext, Tools.getViewBitmap(webView)))
+                    })
+                    .share()
+        }
+        cancel.onClick { dialog.dismiss() }
+
+        dialog.setContentView(view)
+        dialog.show()
+    }
+
     override fun doClick(v: View) {
         super.doClick(v)
         when (v.id) {
             R.id.iv_nav_right -> {
                 EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
                 val userInfoId = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
-                val urlShare = when (intent.getStringExtra("type")) {
-                    "计划书" -> BaseHttp.prospectus_detil + "${intent.getStringExtra("prospectusId")}&userInfoId=$userInfoId"
-                    "产品详情" -> BaseHttp.product_detils + intent.getStringExtra("productinId") + "&type=1&userInfoId=$userInfoId"
-                    else -> ""
+
+                when (intent.getStringExtra("type")) {
+                    "计划书" -> {
+                        val prospectusId = intent.getStringExtra("prospectusId")
+                        val urlShare = BaseHttp.prospectus_detil + "$prospectusId&userInfoId=$userInfoId"
+
+                        Flowable.just(urlShare)
+                                .map { return@map Jsoup.connect(it).get() }
+                                .subscribeOn(Schedulers.newThread())
+                                .doOnSubscribe { showLoadingDialog() }
+                                .doFinally { cancelLoadingDialog() }
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe {
+                                    val strHint = StringBuilder()
+                                    val itemGender = it.select("div.gender").select("span")
+                                    itemGender.forEach { strHint.append(it.text()) }
+                                    strHint.append("，")
+
+                                    val items = it.select("ul.info-class").select("li")
+                                    items.forEachWithIndex { index, item ->
+                                        strHint.append(item.select("span").text())
+                                        strHint.append(item.select("b.red").text())
+                                        strHint.append(if (index == items.size - 1) "。" else "，")
+                                    }
+                                    val content = strHint.toString().replace(" ", "")
+
+                                    showShareDialog(content, urlShare)
+                                }
+                    }
+                    "产品详情" -> {
+                        val productinId = intent.getStringExtra("productinId")
+                        val urlShare = BaseHttp.share_product_detils + productinId + "&userInfoId=$userInfoId"
+
+                        Flowable.just(urlShare)
+                                .map { return@map Jsoup.connect(it).get() }
+                                .subscribeOn(Schedulers.newThread())
+                                .doOnSubscribe { showLoadingDialog() }
+                                .doFinally { cancelLoadingDialog() }
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe {
+                                    val content = it.select("div.container").select("div.item").select("p.text").text()
+                                    showShareDialog(content, urlShare)
+                                }
+                    }
                 }
-
-                val view = LayoutInflater.from(baseContext).inflate(R.layout.dialog_share_bottom, null) as View
-                val wechat = view.findViewById<LinearLayout>(R.id.dialog_share_wechat)
-                val circle = view.findViewById<LinearLayout>(R.id.dialog_share_circle)
-                val qq = view.findViewById<LinearLayout>(R.id.dialog_share_qq)
-                val space = view.findViewById<LinearLayout>(R.id.dialog_share_space)
-                val cancel = view.findViewById<Button>(R.id.dialog_share_cancel)
-                val dialog = BottomSheetDialog(baseContext, R.style.BottomSheetDialogStyle)
-
-                wechat.onClick {
-                    dialog.dismiss()
-
-                    ShareAction(baseContext)
-                            .setPlatform(SHARE_MEDIA.WEIXIN)
-                            .withText(getString(R.string.app_name))
-                            .withMedia(UMWeb(urlShare).apply {
-                                title = tvTitle.text.toString()
-                                description = "描述"
-                                setThumb(UMImage(baseContext, R.mipmap.ic_launcher_logo))
-                            })
-                            .share()
-                }
-                circle.onClick {
-                    dialog.dismiss()
-
-                    ShareAction(baseContext)
-                            .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
-                            .withText(getString(R.string.app_name))
-                            .withMedia(UMWeb(urlShare).apply {
-                                title = tvTitle.text.toString()
-                                description = "描述"
-                                setThumb(UMImage(baseContext, R.mipmap.ic_launcher_logo))
-                            })
-                            .share()
-                }
-                qq.onClick {
-                    dialog.dismiss()
-
-                    ShareAction(baseContext)
-                            .setPlatform(SHARE_MEDIA.QQ)
-                            .withText(getString(R.string.app_name))
-                            .withMedia(UMWeb(urlShare).apply {
-                                title = tvTitle.text.toString()
-                                description = "描述"
-                                setThumb(UMImage(baseContext, R.mipmap.ic_launcher_logo))
-                            })
-                            .share()
-                }
-                space.onClick {
-                    dialog.dismiss()
-
-                    ShareAction(baseContext)
-                            .setPlatform(SHARE_MEDIA.QZONE)
-                            .withText(getString(R.string.app_name))
-                            .withMedia(UMWeb(urlShare).apply {
-                                title = tvTitle.text.toString()
-                                description = "描述"
-                                setThumb(UMImage(baseContext, R.mipmap.ic_launcher_logo))
-                            })
-                            .share()
-                }
-                cancel.onClick { dialog.dismiss() }
-
-                dialog.setContentView(view)
-                dialog.show()
             }
         }
     }
 
     override fun onBackPressed() {
-        if (webView.canGoBack()) {
+        if (webView.canGoBack() && intent.getStringExtra("type") == "计划书") {
             webView.goBack()
             return
         }

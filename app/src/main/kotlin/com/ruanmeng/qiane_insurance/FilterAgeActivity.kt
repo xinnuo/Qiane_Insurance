@@ -25,6 +25,7 @@ class FilterAgeActivity : BaseActivity() {
     private var ageId = ""
     private var ageName = "年龄"
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filter_age)
@@ -47,6 +48,23 @@ class FilterAgeActivity : BaseActivity() {
             title = "自定义年龄"
             type = "-1"
         })
+
+        val ageId = intent.getStringExtra("ageId") ?: ""
+        if (ageId.isEmpty()) list.find { it.type.isEmpty() }?.isChecked = true
+        else {
+            if (list.none { it.type == ageId }) {
+                list.find { it.type == "-1" }?.isChecked = true
+                age_custom.visible()
+                age_num.text = "${ageId.split(",")[0]}周岁"
+            } else {
+                list.forEach { if (it.type == ageId) it.isChecked = true }
+            }
+        }
+        when {
+            ageId.isEmpty() -> list.find { it.type.isEmpty() }?.isChecked = true
+            ageId == "-1" -> list.find { it.type == "-1" }?.isChecked = true
+            else -> list.forEach { if (it.type == ageId) it.isChecked = true }
+        }
 
         mAdapter.updateData(list)
     }
@@ -124,7 +142,7 @@ class FilterAgeActivity : BaseActivity() {
                 when {
                     data == null || data.type.isEmpty() -> {
                         ageId = ""
-                        ageName = "年龄"
+                        ageName = "不限年龄"
                     }
                     data.type == "-1" -> {
                         val hint = age_num.text.toString().replace("周岁", "")
