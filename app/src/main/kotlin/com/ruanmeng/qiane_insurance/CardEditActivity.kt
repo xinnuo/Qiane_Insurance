@@ -26,6 +26,7 @@ class CardEditActivity : BaseActivity() {
 
     private var selectList = ArrayList<LocalMedia>()
     private var companyId = ""
+    private var isUpdate = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,8 +143,8 @@ class CardEditActivity : BaseActivity() {
 
                     override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
 
-                        val obj = JSONObject(response.body()).optJSONObject("object")
-                                ?: JSONObject()
+                        val obj = JSONObject(response.body()).optJSONObject("object") ?: JSONObject()
+                        isUpdate = true
                         companyId = obj.optString("companyId")
 
                         loadUserHead(obj.optString("userhead"))
@@ -164,6 +165,7 @@ class CardEditActivity : BaseActivity() {
                     override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
 
                         showToast(msg)
+                        isUpdate = true
                         val userhead = JSONObject(response.body()).optString("object")
                         putString("userhead", userhead)
                         loadUserHead(userhead)
@@ -182,6 +184,7 @@ class CardEditActivity : BaseActivity() {
                     override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
 
                         showToast(msg)
+                        isUpdate = true
                         putString("companyId", Id)
                         putString("companyName", name)
                         EventBus.getDefault().post(RefreshMessageEvent("更新公司", Id, name))
@@ -201,12 +204,18 @@ class CardEditActivity : BaseActivity() {
                     override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
 
                         showToast(msg)
+                        isUpdate = true
                     }
 
                 })
     }
 
     private fun loadUserHead(path: String) = edit_img.loadImage(BaseHttp.baseImg + path)
+
+    override fun onBackPressed() {
+        if (isUpdate) EventBus.getDefault().post(RefreshMessageEvent("更新名片"))
+        super.onBackPressed()
+    }
 
     override fun finish() {
         EventBus.getDefault().unregister(this@CardEditActivity)

@@ -7,9 +7,11 @@ import android.os.Bundle
 import android.support.design.widget.BottomSheetDialog
 import android.view.LayoutInflater
 import android.view.View
+import android.webkit.JavascriptInterface
 import android.widget.Button
 import android.widget.LinearLayout
 import com.ruanmeng.base.*
+import com.ruanmeng.model.RefreshMessageEvent
 import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.share.Const
 import com.ruanmeng.utils.DESUtil
@@ -29,10 +31,13 @@ import com.umeng.socialize.media.UMWeb
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.browse
 import org.jetbrains.anko.collections.forEachWithIndex
 import org.jetbrains.anko.frameLayout
 import org.jetbrains.anko.sdk25.listeners.onClick
+import org.jetbrains.anko.startActivity
 import org.jsoup.Jsoup
 
 class PlanLookActivity : BaseActivity() {
@@ -78,6 +83,7 @@ class PlanLookActivity : BaseActivity() {
                 isHorizontalScrollBarEnabled = false
                 overScrollMode = View.OVER_SCROLL_NEVER
 
+                addJavascriptInterface(JsInteration(), "share")
                 webChromeClient = object : WebChromeClient() {
                     override fun onReceivedTitle(view: WebView, title: String) {
                         super.onReceivedTitle(view, title)
@@ -88,7 +94,7 @@ class PlanLookActivity : BaseActivity() {
                                 val hint = intent.getStringExtra("title")
                                 if (hint == title) ivRight.visible() else ivRight.gone()
                             }
-                            "产品详情" -> if (title.contains("产品详情")) ivRight.visible() else ivRight.gone()
+                            "产品详情" -> if (title == "产品详情") ivRight.visible() else ivRight.gone()
                         }
                     }
                 }
@@ -135,6 +141,8 @@ class PlanLookActivity : BaseActivity() {
         }
 
         init_title()
+
+        EventBus.getDefault().register(this@PlanLookActivity)
 
         when (intent.getStringExtra("type")) {
             "计划书" -> {
@@ -280,6 +288,7 @@ class PlanLookActivity : BaseActivity() {
 
     override fun onBackPressed() {
         if (webView.canGoBack() && intent.getStringExtra("type") == "计划书") {
+            // webView.settings.cacheMode = WebSettings.LOAD_NO_CACHE //设置无缓存
             webView.goBack()
             return
         }
@@ -299,5 +308,58 @@ class PlanLookActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         webView.destroy()
+    }
+
+    override fun finish() {
+        EventBus.getDefault().unregister(this@PlanLookActivity)
+        super.finish()
+    }
+
+    @Subscribe
+    fun onMessageEvent(event: RefreshMessageEvent) {
+        when (event.type) {
+            "更新名片" -> webView.reload()
+        }
+    }
+
+    inner class JsInteration {
+
+        @JavascriptInterface
+        fun openDialog(id: String) {
+            EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
+            val userInfoId = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
+            val urlShare = BaseHttp.share_product_detils + id + "&userInfoId=$userInfoId"
+
+            Flowable.just(urlShare)
+                    .map { return@map Jsoup.connect(it).get() }
+                    .subscribeOn(Schedulers.newThread())
+                    .doOnSubscribe { showLoadingDialog() }
+                    .doFinally { cancelLoadingDialog() }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        val content = it.select("div.container").select("div.item").select("p.text").text()
+                        showShareDialog(content, urlShare)
+                    }
+        }
+
+        @JavascriptInterface
+        fun openEditUser() = startActivity<CardEditActivity>()
+
+        @JavascriptInterface
+        fun openShareUser(userId: String, fromuserId: String) {
+            val urlShare = BaseHttp.user_businessCard + fromuserId + "&userinfoId=$userId"
+
+            Flowable.just(urlShare)
+                    .map { return@map Jsoup.connect(it).get() }
+                    .subscribeOn(Schedulers.newThread())
+                    .doOnSubscribe { showLoadingDialog() }
+                    .doFinally { cancelLoadingDialog() }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        val name = it.select("div.card-text").select("h4").text()
+                        val company = it.select("div.card-text").select("p").select("span").text()
+                        showShareDialog("$name $company", urlShare)
+                    }
+        }
     }
 }

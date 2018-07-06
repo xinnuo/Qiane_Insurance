@@ -61,13 +61,15 @@ public class BaseHttp {
     public static String information_detail = baseIp + "/information_detail.rm";       //资讯详情√
     public static String company_info = baseIp + "/company_info.rm";                   //公司详情√
     public static String leave_message_sub = baseIp + "/leave_message_sub.rm";         //意见反馈√
+    public static String help_center = baseIp + "/help_center.rm";                     //帮助中心√
     public static String city_name_data = baseIp + "/city_name_data.rm";               //获取省市区√
 
-    public static String invite_index = baseImg + "forend/invitation_index.hm?userInfoId=";               //分享√
-    public static String register_index = baseImg + "forend/register_index.hm?userInfoId=";               //分享注册√
-    public static String prospectus_open = baseImg + "forend/prospectus_open.hm?prospectusId=";           //查看计划书√
-    public static String prospectus_detil = baseImg + "forend/prospectus_detils.hm?type=1&prospectusId="; //计划书详情√
-    public static String product_detils = baseImg + "forend/product_detils.hm?productinId=";              //产品详情√
-    public static String share_product_detils = baseImg + "forend/share_product_detils.hm?productinId=";  //产品详情分享√
-    public static String order_detlis = baseImg + "forend/goods_order_detlis.hm?goodsOrderId=";           //订单详情√
+    public static String invite_index = baseImg + "forend/invitation_index.hm?userInfoId=";                  //分享√
+    public static String register_index = baseImg + "forend/register_index.hm?userInfoId=";                  //分享注册√
+    public static String user_businessCard = baseImg + "forend/user_businessCard.hm?type=1&fromuserInfoId="; //分享名片√
+    public static String prospectus_open = baseImg + "forend/prospectus_open.hm?prospectusId=";              //查看计划书√
+    public static String prospectus_detil = baseImg + "forend/prospectus_detils.hm?type=1&prospectusId=";    //计划书详情√
+    public static String product_detils = baseImg + "forend/product_detils.hm?productinId=";                 //产品详情√
+    public static String share_product_detils = baseImg + "forend/share_product_detils.hm?productinId=";     //产品详情分享√
+    public static String order_detlis = baseImg + "forend/goods_order_detlis.hm?goodsOrderId=";              //订单详情√
 }

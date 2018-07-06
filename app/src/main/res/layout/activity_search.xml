@@ -19,19 +19,40 @@
         <include layout="@layout/layout_list" />
 
         <LinearLayout
+            android:id="@+id/search_history"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
             android:orientation="vertical"
             android:padding="@dimen/dimen_size_5">
 
-            <TextView
-                style="@style/Font15_gray"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_size_10"
                 android:layout_marginTop="@dimen/dimen_size_10"
-                android:text="热门搜索" />
+                android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/Font15_gray"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_size_10"
+                    android:layout_weight="1"
+                    android:text="热门搜索" />
+
+                <TextView
+                    android:id="@+id/search_del"
+                    style="@style/Font15_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dimen_size_10"
+                    android:drawableStart="@mipmap/search_del"
+                    android:drawablePadding="@dimen/dimen_size_5"
+                    android:onClick="doClick"
+                    android:text="清空" />
+
+
+            </LinearLayout>
 
             <com.zhy.view.flowlayout.TagFlowLayout
                 android:id="@+id/search_hot"

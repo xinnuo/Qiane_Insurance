@@ -20,6 +20,7 @@ import net.idik.lib.slimadapter.SlimAdapter
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.dip
+import org.jetbrains.anko.sdk25.listeners.textChangedListener
 import org.jetbrains.anko.sp
 import org.jetbrains.anko.startActivity
 import java.util.ArrayList
@@ -89,7 +90,14 @@ class ClientSearchActivity : BaseActivity() {
             }
         }
 
-        client_edit.addTextChangedListener(this@ClientSearchActivity)
+        client_edit.textChangedListener {
+            onTextChanged { s, _, _, _ ->
+                if (s!!.isEmpty() && keyWord.isNotEmpty()) {
+                    keyWord = ""
+                    updateList()
+                }
+            }
+        }
         client_edit.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 KeyboardHelper.hideSoftInput(baseContext) //隐藏软键盘
@@ -145,13 +153,6 @@ class ClientSearchActivity : BaseActivity() {
         }
 
         getData()
-    }
-
-    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        if (s.isEmpty() && keyWord.isNotEmpty()) {
-            keyWord = ""
-            updateList()
-        }
     }
 
     override fun finish() {

@@ -3,7 +3,6 @@ package com.ruanmeng.qiane_insurance
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
 import android.text.InputFilter
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -21,6 +20,7 @@ import com.ruanmeng.utils.DialogHelper
 import com.ruanmeng.utils.KeyboardHelper
 import com.ruanmeng.utils.NameLengthFilter
 import kotlinx.android.synthetic.main.activity_info.*
+import org.jetbrains.anko.sdk25.listeners.textChangedListener
 import org.jetbrains.anko.startActivity
 import org.json.JSONObject
 import java.io.File
@@ -59,7 +59,16 @@ class InfoActivity : BaseActivity() {
         }
 
         info_nick.filters = arrayOf<InputFilter>(NameLengthFilter(16))
-        info_nick.addTextChangedListener(this@InfoActivity)
+        info_nick.textChangedListener {
+            afterTextChanged { s ->
+                pageNum = 0
+                (0 until s!!.length).forEach {
+                    val matcher = Pattern.compile("[\u4e00-\u9fa5]").matcher(s[it].toString())
+                    if (matcher.matches()) pageNum += 2
+                    else pageNum++
+                }
+            }
+        }
 
         info_nick.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -241,14 +250,5 @@ class InfoActivity : BaseActivity() {
                     }
 
                 })
-    }
-
-    override fun afterTextChanged(s: Editable) {
-        pageNum = 0
-        (0 until s.length).forEach {
-            val matcher = Pattern.compile("[\u4e00-\u9fa5]").matcher(s[it].toString())
-            if (matcher.matches()) pageNum += 2
-            else pageNum++
-        }
     }
 }

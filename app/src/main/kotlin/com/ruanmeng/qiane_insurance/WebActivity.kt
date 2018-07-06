@@ -75,7 +75,8 @@ class WebActivity : BaseActivity() {
                  */
                 override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                     super.onPageStarted(view, url, favicon)
-                    showLoadingDialog()
+                    val title = intent.getStringExtra("title")
+                    if (title == "订单详情") showLoadingDialog()
                 }
 
                 /*
@@ -83,27 +84,51 @@ class WebActivity : BaseActivity() {
                  */
                 override fun onPageFinished(view: WebView?, url: String?) {
                     super.onPageFinished(view, url)
-                    cancelLoadingDialog()
+                    val title = intent.getStringExtra("title")
+                    if (title == "订单详情") cancelLoadingDialog()
                 }
             }
         }
         init_title(intent.getStringExtra("title"))
 
         when (intent.getStringExtra("title")) {
-            "祁安理赔" -> {
-                webView.loadUrl("https://www.baidu.com/")
-            }
-            "关于我们" -> {
-                webView.loadUrl("https://www.baidu.com/")
-            }
-            "注册协议" -> {
-                webView.loadUrl("https://www.baidu.com/")
-            }
-            "提现规则" -> {
-                webView.loadUrl("https://www.baidu.com/")
-            }
-            "积分规则" -> {
-                webView.loadUrl("https://www.baidu.com/")
+            "祁安理赔", "关于我们", "注册协议",
+            "提现规则", "积分规则" -> {
+                OkGo.post<String>(BaseHttp.help_center)
+                        .tag(this@WebActivity)
+                        .params("htmlKey", when (intent.getStringExtra("title")) {
+                            "祁安理赔" -> "qnlp"
+                            "关于我们" -> "gywm"
+                            "注册协议" -> "zcxy"
+                            "提现规则" -> "txgz"
+                            "积分规则" -> "gfgz"
+                            else -> ""
+                        })
+                        .execute(object : StringDialogCallback(baseContext) {
+
+                            override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
+
+                                val obj = JSONObject(response.body())
+                                val str = "<!doctype html><html>\n" +
+                                        "<meta charset=\"utf-8\">" +
+                                        "<style type=\"text/css\">" +
+                                        "body{ padding:0; margin:0; }\n" +
+                                        ".con{ width:95%; margin:0 auto; color:#666; padding:0.5em 0; overflow:hidden; display:block; font-size:0.92em; line-height:1.8em; }\n" +
+                                        ".con h1,h2,h3,h4,h5,h6{ font-size:1em; }\n " +
+                                        "img{ width:auto; max-width: 100% !important; height:auto !important; margin:0 auto; display:block; }\n" +
+                                        "*{ max-width:100% !important; }\n" +
+                                        "</style>\n" +
+                                        "<body style=\"padding:0; margin:0; \">" +
+                                        "<div class=\"con\">" +
+                                        obj.optString("help") +
+                                        "</div>" +
+                                        "</body>" +
+                                        "</html>"
+
+                                webView.loadDataWithBaseURL(BaseHttp.baseImg, str, "text/html", "utf-8", "")
+                            }
+
+                        })
             }
             "订单详情" -> webView.loadUrl(BaseHttp.order_detlis + intent.getStringExtra("goodsOrderId"))
             "公司介绍" -> {

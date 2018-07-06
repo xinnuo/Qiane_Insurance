@@ -12,6 +12,7 @@ import com.ruanmeng.base.showToast
 import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.utils.ActivityStack
 import kotlinx.android.synthetic.main.activity_feedback.*
+import org.jetbrains.anko.sdk25.listeners.textChangedListener
 
 class FeedbackActivity : BaseActivity() {
 
@@ -26,7 +27,17 @@ class FeedbackActivity : BaseActivity() {
         feedback_submit.setBackgroundResource(R.drawable.rec_bg_d0d0d0)
         feedback_submit.isClickable = false
 
-        feedback_content.addTextChangedListener(this@FeedbackActivity)
+        feedback_content.textChangedListener {
+            onTextChanged { _, _, _, _ ->
+                if (feedback_content.text.isNotBlank()) {
+                    feedback_submit.setBackgroundResource(R.drawable.rec_bg_red)
+                    feedback_submit.isClickable = true
+                } else {
+                    feedback_submit.setBackgroundResource(R.drawable.rec_bg_d0d0d0)
+                    feedback_submit.isClickable = false
+                }
+            }
+        }
 
         feedback_submit.setOneClickListener(View.OnClickListener {
             OkGo.post<String>(BaseHttp.leave_message_sub)
@@ -43,15 +54,5 @@ class FeedbackActivity : BaseActivity() {
 
                     })
         })
-    }
-
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        if (feedback_content.text.isNotBlank()) {
-            feedback_submit.setBackgroundResource(R.drawable.rec_bg_red)
-            feedback_submit.isClickable = true
-        } else {
-            feedback_submit.setBackgroundResource(R.drawable.rec_bg_d0d0d0)
-            feedback_submit.isClickable = false
-        }
     }
 }

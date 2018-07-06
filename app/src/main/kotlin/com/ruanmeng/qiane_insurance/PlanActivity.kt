@@ -2,6 +2,7 @@ package com.ruanmeng.qiane_insurance
 
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import com.lzg.extend.BaseResponse
 import com.lzg.extend.jackson.JacksonDialogCallback
@@ -11,12 +12,15 @@ import com.ruanmeng.base.*
 import com.ruanmeng.model.CommonData
 import com.ruanmeng.model.RefreshMessageEvent
 import com.ruanmeng.share.BaseHttp
+import com.ruanmeng.utils.KeyboardHelper
 import kotlinx.android.synthetic.main.activity_plan.*
 import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_list.*
 import net.idik.lib.slimadapter.SlimAdapter
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.jetbrains.anko.sdk25.listeners.onEditorAction
+import org.jetbrains.anko.sdk25.listeners.textChangedListener
 import org.jetbrains.anko.startActivity
 import java.util.ArrayList
 
@@ -57,7 +61,7 @@ class PlanActivity : BaseActivity() {
                     val position = list.indexOf(data)
                     val isLast = list.indexOf(data) == list.size - 1
 
-                    injector.text(R.id.item_plan_name, data.prospectusTitle)
+                    injector.text(R.id.item_plan_name, getColorText(data.prospectusTitle, keyword))
                             .text(R.id.item_plan_content, data.synopsis)
 
                             .with<ImageView>(R.id.item_plan_img) {
@@ -75,6 +79,28 @@ class PlanActivity : BaseActivity() {
                             }
                 }
                 .attachTo(recycle_list)
+
+        plan_edit.textChangedListener {
+            onTextChanged { s, _, _, _ ->
+                if (s!!.isEmpty() && keyword.isNotEmpty()) {
+                    keyword = ""
+                    updateList()
+                }
+            }
+        }
+        plan_edit.onEditorAction { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                KeyboardHelper.hideSoftInput(baseContext) //隐藏软键盘
+
+                if (plan_edit.text.toString().isBlank()) {
+                    showToast("请输入关键字")
+                } else {
+                    keyword = plan_edit.text.toString()
+                    updateList()
+                }
+            }
+            return@onEditorAction false
+        }
     }
 
     override fun doClick(v: View) {
