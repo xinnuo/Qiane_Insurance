@@ -87,14 +87,19 @@ class PlanLookActivity : BaseActivity() {
                 webChromeClient = object : WebChromeClient() {
                     override fun onReceivedTitle(view: WebView, title: String) {
                         super.onReceivedTitle(view, title)
-                        tvTitle.text = title
+                        if (!title.isWeb()) tvTitle.text = title
 
                         when (intent.getStringExtra("type")) {
                             "计划书" -> {
                                 val hint = intent.getStringExtra("title")
                                 if (hint == title) ivRight.visible() else ivRight.gone()
                             }
-                            "产品详情" -> if (title == "产品详情") ivRight.visible() else ivRight.gone()
+                            "产品详情" -> {
+                                val outHref = intent.getStringExtra("outHref")
+                                if (outHref.isEmpty()){
+                                    if (title == "产品详情") ivRight.visible() else ivRight.gone()
+                                }
+                            }
                         }
                     }
                 }
@@ -115,6 +120,10 @@ class PlanLookActivity : BaseActivity() {
 
                         if (url.isNotEmpty() && url.endsWith("apk")) browse(url)
                         else {
+                            if (url.contains("pingan")) {
+                                if (!url.contains("index.do")) ivRight.gone()
+                            }
+
                             view.loadUrl(url)
                             return true
                         }
@@ -151,9 +160,15 @@ class PlanLookActivity : BaseActivity() {
                 webView.loadUrl(BaseHttp.prospectus_open + intent.getStringExtra("prospectusId") + "&userInfoId=$userInfoId")
             }
             "产品详情" -> {
-                EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
-                val userInfoId = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
-                webView.loadUrl(BaseHttp.product_detils + intent.getStringExtra("productinId") + "&userInfoId=$userInfoId")
+                val outHref = intent.getStringExtra("outHref")
+                if (outHref.isEmpty()) {
+                    EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
+                    val userInfoId = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
+                    webView.loadUrl(BaseHttp.product_detils + intent.getStringExtra("productinId") + "&userInfoId=$userInfoId")
+                } else {
+                    ivRight.visible()
+                    webView.loadUrl(outHref)
+                }
             }
         }
     }
@@ -267,19 +282,33 @@ class PlanLookActivity : BaseActivity() {
                                 }
                     }
                     "产品详情" -> {
-                        val productinId = intent.getStringExtra("productinId")
-                        val urlShare = BaseHttp.share_product_detils + productinId + "&userInfoId=$userInfoId"
+                        val outHref = intent.getStringExtra("outHref")
+                        if (outHref.isEmpty()) {
+                            val productinId = intent.getStringExtra("productinId")
+                            val urlShare = BaseHttp.share_product_detils + productinId + "&userInfoId=$userInfoId"
 
-                        Flowable.just(urlShare)
-                                .map { return@map Jsoup.connect(it).get() }
-                                .subscribeOn(Schedulers.newThread())
-                                .doOnSubscribe { showLoadingDialog() }
-                                .doFinally { cancelLoadingDialog() }
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe {
-                                    val content = it.select("div.container").select("div.item").select("p.text").text()
-                                    showShareDialog(content, urlShare)
-                                }
+                            Flowable.just(urlShare)
+                                    .map { return@map Jsoup.connect(it).get() }
+                                    .subscribeOn(Schedulers.newThread())
+                                    .doOnSubscribe { showLoadingDialog() }
+                                    .doFinally { cancelLoadingDialog() }
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe {
+                                        val content = it.select("div.container").select("div.item").select("p.text").text()
+                                        showShareDialog(content, urlShare)
+                                    }
+                        } else {
+                            Flowable.just(outHref)
+                                    .map { return@map Jsoup.connect(it).get() }
+                                    .subscribeOn(Schedulers.newThread())
+                                    .doOnSubscribe { showLoadingDialog() }
+                                    .doFinally { cancelLoadingDialog() }
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe {
+                                        val content = it.select("div.container").select("div.item").select("p.text").text()
+                                        showShareDialog(content, outHref)
+                                    }
+                        }
                     }
                 }
             }

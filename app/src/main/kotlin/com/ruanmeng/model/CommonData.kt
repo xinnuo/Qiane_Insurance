@@ -43,6 +43,7 @@ data class CommonData(
         //首页列表
         var title: String = "",
         var img: String = "",
+        var outHref: String = "",
         var productprospectusId: String = "",
         var type: String = "",
 

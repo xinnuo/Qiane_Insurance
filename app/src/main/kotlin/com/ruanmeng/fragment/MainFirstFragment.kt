@@ -142,9 +142,12 @@ class MainFirstFragment : BaseFragment() {
                                     startActivity<PlanMakeActivity>(
                                             "title" to data.title,
                                             "prospectusId" to data.productprospectusId)
-                                else startActivity<PlanLookActivity>(
-                                        "productinId" to data.productprospectusId,
-                                        "type" to "产品详情")
+                                else {
+                                    startActivity<PlanLookActivity>(
+                                                "productinId" to data.productprospectusId,
+                                                "type" to "产品详情",
+                                                "outHref" to data.outHref)
+                                }
                             }
                 }
                 .attachTo(recycle_list)
