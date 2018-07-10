@@ -38,7 +38,6 @@ import com.lzy.okgo.https.HttpsUtils
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor
 import com.lzy.okgo.utils.OkLogger
 import com.ruanmeng.qiane_insurance.BuildConfig
-import com.ruanmeng.utils.PreferencesUtils
 import com.umeng.commonsdk.UMConfigure
 import com.umeng.socialize.Config
 import com.umeng.socialize.PlatformConfig
@@ -61,8 +60,6 @@ class Application : MultiDexApplication() {
         //极光推送
         JPushInterface.setDebugMode(BuildConfig.LOG_DEBUG) //设置开启日志,发布时请关闭日志
         JPushInterface.init(this@Application)              //初始化 JPush
-        if (!PreferencesUtils.getBoolean(this, "isLogin"))
-            JPushInterface.stopPush(this@Application)      //停止推送服务
 
         //友盟分享
         UMConfigure.init(this@Application, "5a77bcc9f29d9873ee0000b4", "umeng", UMConfigure.DEVICE_TYPE_PHONE, "")

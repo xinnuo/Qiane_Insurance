@@ -11,6 +11,8 @@ import com.ruanmeng.base.showToast
 import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.share.Const
 import com.ruanmeng.utils.ActivityStack
+import com.ruanmeng.utils.DESUtil
+import com.ruanmeng.utils.EncryptUtil
 import com.ruanmeng.utils.isMobile
 import kotlinx.android.synthetic.main.activity_forget.*
 import org.json.JSONObject
@@ -68,9 +70,12 @@ class ForgetActivity : BaseActivity() {
                     }
                 }
 
+                EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
+                val encodeTel = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), et_tel.text.toString())
+
                 OkGo.post<String>(BaseHttp.identify_getbyforget)
                         .tag(this@ForgetActivity)
-                        .params("mobile", et_tel.text.toString())
+                        .params("mobile", encodeTel)
                         .params("time", Const.MAKER)
                         .execute(object : StringDialogCallback(baseContext) {
 

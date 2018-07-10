@@ -80,7 +80,8 @@ class SearchActivity : BaseActivity() {
                                             "prospectusId" to data.productprospectusId)
                                 else startActivity<PlanLookActivity>(
                                         "productinId" to data.productprospectusId,
-                                        "type" to "产品详情")
+                                        "type" to "产品详情",
+                                        "outHref" to data.outHref)
                             }
                 }
                 .attachTo(recycle_list)

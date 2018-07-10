@@ -243,7 +243,8 @@ class PlanMakeActivity : BaseActivity() {
         when (v.id) {
             R.id.plan_data -> startActivity<PlanLookActivity>(
                     "productinId" to mProductId,
-                    "type" to "产品详情")
+                    "type" to "产品详情",
+                    "outHref" to "")
             R.id.plan_make -> {
                 if (listChecked.isEmpty()) {
                     showToast("请选择险种")

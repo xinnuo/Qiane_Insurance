@@ -19,7 +19,10 @@ class RegisterDoneActivity : BaseActivity() {
         when (v.id) {
             R.id.register_no -> ActivityStack.screenManager.popActivities(this::class.java)
             R.id.register_yes -> {
-                startActivity<InfoRealActivity>("title" to "实名认证", "hint" to "确认")
+                startActivity<InfoRealActivity>(
+                        "title" to "实名认证",
+                        "hint" to "确认",
+                        "token" to intent.getStringExtra("token"))
                 ActivityStack.screenManager.popActivities(this::class.java)
             }
         }

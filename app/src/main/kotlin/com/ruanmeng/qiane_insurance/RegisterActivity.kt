@@ -14,6 +14,8 @@ import com.ruanmeng.base.showToast
 import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.share.Const
 import com.ruanmeng.utils.ActivityStack
+import com.ruanmeng.utils.DESUtil
+import com.ruanmeng.utils.EncryptUtil
 import com.ruanmeng.utils.isMobile
 import kotlinx.android.synthetic.main.activity_register.*
 import org.jetbrains.anko.startActivity
@@ -75,9 +77,12 @@ class RegisterActivity : BaseActivity() {
                     }
                 }
 
+                EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
+                val encodeTel = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), et_name.text.toString())
+
                 OkGo.post<String>(BaseHttp.identify_get)
                         .tag(this@RegisterActivity)
-                        .params("mobile", et_name.text.toString())
+                        .params("mobile", encodeTel)
                         .params("time", Const.MAKER)
                         .execute(object : StringDialogCallback(baseContext) {
 
@@ -133,7 +138,9 @@ class RegisterActivity : BaseActivity() {
                             override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
 
                                 showToast(msg)
-                                startActivity<RegisterDoneActivity>()
+                                val obj = JSONObject(response.body()).optJSONObject("object") ?: JSONObject()
+                                val token = obj.optString("token")
+                                startActivity<RegisterDoneActivity>("token" to token)
                                 ActivityStack.screenManager.popActivities(this@RegisterActivity::class.java)
                             }
 

@@ -3,8 +3,13 @@ package com.ruanmeng.qiane_insurance
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import cn.jpush.android.api.JPushInterface
 import com.luck.picture.lib.tools.PictureFileUtils
 import com.ruanmeng.base.BaseActivity
+import com.ruanmeng.base.getBoolean
+import com.ruanmeng.base.getString
+import com.ruanmeng.base.putBoolean
+import com.ruanmeng.share.Const
 import com.ruanmeng.utils.GlideCacheUtil
 import com.ruanmeng.utils.Tools
 import kotlinx.android.synthetic.main.activity_setting.*
@@ -23,6 +28,21 @@ class SettingActivity : BaseActivity() {
         super.init_title()
         setting_cache.text = GlideCacheUtil.getInstance().getCacheSize(this@SettingActivity)
         setting_version.text = "v${Tools.getVersion(baseContext)}"
+        setting_switch.isChecked = !getBoolean("isTS")
+
+        setting_switch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                JPushInterface.resumePush(applicationContext)
+                JPushInterface.setAlias(
+                        applicationContext,
+                        Const.JPUSH_SEQUENCE,
+                        getString("token"))
+                putBoolean("isTS", false)
+            } else {
+                JPushInterface.stopPush(applicationContext)
+                putBoolean("isTS", true)
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")

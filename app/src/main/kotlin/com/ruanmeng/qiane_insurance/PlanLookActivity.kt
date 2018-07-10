@@ -10,6 +10,7 @@ import android.view.View
 import android.webkit.JavascriptInterface
 import android.widget.Button
 import android.widget.LinearLayout
+import com.lzy.okgo.utils.OkLogger
 import com.ruanmeng.base.*
 import com.ruanmeng.model.RefreshMessageEvent
 import com.ruanmeng.share.BaseHttp
@@ -116,7 +117,8 @@ class PlanLookActivity : BaseActivity() {
 
                         if (url.contains("tel:")) makeCall(url.replace("tel:", ""))
 
-                        if (!url.isWeb()) return true
+                        if (!(url.startsWith("https://") || url.startsWith("http://"))) return true
+                        // if (!url.isWeb()) return true
 
                         if (url.isNotEmpty() && url.endsWith("apk")) browse(url)
                         else {
@@ -179,7 +181,7 @@ class PlanLookActivity : BaseActivity() {
     }
 
     @SuppressLint("InflateParams")
-    private fun showShareDialog(content: String, urlShare: String) {
+    private fun showShareDialog(hint: String, content: String, urlShare: String, imgUrl: String = "") {
         val view = LayoutInflater.from(baseContext).inflate(R.layout.dialog_share_bottom, null) as View
         val wechat = view.findViewById<LinearLayout>(R.id.dialog_share_wechat)
         val circle = view.findViewById<LinearLayout>(R.id.dialog_share_circle)
@@ -195,9 +197,10 @@ class PlanLookActivity : BaseActivity() {
                     .setPlatform(SHARE_MEDIA.WEIXIN)
                     .withText(getString(R.string.app_name))
                     .withMedia(UMWeb(urlShare).apply {
-                        title = tvTitle.text.toString()
+                        title = hint
                         description = content
-                        setThumb(UMImage(baseContext, Tools.getViewBitmap(webView)))
+                        if (imgUrl.isEmpty()) setThumb(UMImage(baseContext, Tools.getViewBitmap(webView)))
+                        else setThumb(UMImage(baseContext, imgUrl))
                     })
                     .share()
         }
@@ -208,9 +211,10 @@ class PlanLookActivity : BaseActivity() {
                     .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
                     .withText(getString(R.string.app_name))
                     .withMedia(UMWeb(urlShare).apply {
-                        title = tvTitle.text.toString()
+                        title = hint
                         description = content
-                        setThumb(UMImage(baseContext, Tools.getViewBitmap(webView)))
+                        if (imgUrl.isEmpty()) setThumb(UMImage(baseContext, Tools.getViewBitmap(webView)))
+                        else setThumb(UMImage(baseContext, imgUrl))
                     })
                     .share()
         }
@@ -221,9 +225,10 @@ class PlanLookActivity : BaseActivity() {
                     .setPlatform(SHARE_MEDIA.QQ)
                     .withText(getString(R.string.app_name))
                     .withMedia(UMWeb(urlShare).apply {
-                        title = tvTitle.text.toString()
+                        title = hint
                         description = content
-                        setThumb(UMImage(baseContext, Tools.getViewBitmap(webView)))
+                        if (imgUrl.isEmpty()) setThumb(UMImage(baseContext, Tools.getViewBitmap(webView)))
+                        else setThumb(UMImage(baseContext, imgUrl))
                     })
                     .share()
         }
@@ -234,9 +239,10 @@ class PlanLookActivity : BaseActivity() {
                     .setPlatform(SHARE_MEDIA.QZONE)
                     .withText(getString(R.string.app_name))
                     .withMedia(UMWeb(urlShare).apply {
-                        title = tvTitle.text.toString()
+                        title = hint
                         description = content
-                        setThumb(UMImage(baseContext, Tools.getViewBitmap(webView)))
+                        if (imgUrl.isEmpty()) setThumb(UMImage(baseContext, Tools.getViewBitmap(webView)))
+                        else setThumb(UMImage(baseContext, imgUrl))
                     })
                     .share()
         }
@@ -278,7 +284,7 @@ class PlanLookActivity : BaseActivity() {
                                     }
                                     val content = strHint.toString().replace(" ", "")
 
-                                    showShareDialog(content, urlShare)
+                                    showShareDialog(it.title(), content, urlShare)
                                 }
                     }
                     "产品详情" -> {
@@ -295,19 +301,51 @@ class PlanLookActivity : BaseActivity() {
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe {
                                         val content = it.select("div.container").select("div.item").select("p.text").text()
-                                        showShareDialog(content, urlShare)
+                                        showShareDialog(it.title(), content, urlShare)
                                     }
                         } else {
-                            Flowable.just(outHref)
-                                    .map { return@map Jsoup.connect(it).get() }
-                                    .subscribeOn(Schedulers.newThread())
-                                    .doOnSubscribe { showLoadingDialog() }
-                                    .doFinally { cancelLoadingDialog() }
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe {
-                                        val content = it.select("div.container").select("div.item").select("p.text").text()
-                                        showShareDialog(content, outHref)
-                                    }
+                            if (outHref.startsWith("https://mobile.health.pingan.com")) {
+                                Flowable.just(outHref)
+                                        .map { return@map Jsoup.connect(it).get() }
+                                        .subscribeOn(Schedulers.newThread())
+                                        .doOnSubscribe { showLoadingDialog() }
+                                        .doFinally { cancelLoadingDialog() }
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe {
+                                            OkLogger.i(outHref)
+                                            OkLogger.i(it.select("script").toString())
+                                            val items = it.select("script")
+
+                                            var descContent = it.title()
+                                            var imgUrl = ""
+
+                                            items.forEach { item ->
+                                                val hint = item.toString()
+                                                if (hint.contains("var")
+                                                        && hint.contains("lineLink")
+                                                        && hint.contains("imgUrl")
+                                                        && hint.contains("descContent")) {
+                                                    val data = hint.split("var")
+                                                    data.forEach {
+                                                        if (it.contains("descContent =")) {
+                                                            descContent = it.split("=")[1]
+                                                                    .trim()
+                                                                    .replace("'", "")
+                                                                    .replace(";", "")
+                                                        }
+                                                        if (it.contains("imgUrl =")) {
+                                                            imgUrl = it.split("=")[1]
+                                                                    .trim()
+                                                                    .replace("'", "")
+                                                                    .replace(";", "")
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            showShareDialog(it.title(), descContent, outHref, imgUrl)
+                                        }
+                            }
                         }
                     }
                 }
@@ -367,7 +405,7 @@ class PlanLookActivity : BaseActivity() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
                         val content = it.select("div.container").select("div.item").select("p.text").text()
-                        showShareDialog(content, urlShare)
+                        showShareDialog(it.title(), content, urlShare)
                     }
         }
 
@@ -387,7 +425,7 @@ class PlanLookActivity : BaseActivity() {
                     .subscribe {
                         val name = it.select("div.card-text").select("h4").text()
                         val company = it.select("div.card-text").select("p").select("span").text()
-                        showShareDialog("$name $company", urlShare)
+                        showShareDialog(it.title(), "$name $company", urlShare)
                     }
         }
     }

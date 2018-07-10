@@ -92,7 +92,8 @@ class MainSecondFragment : BaseFragment() {
                             .clicked(R.id.item_first) {
                                 startActivity<PlanLookActivity>(
                                         "productinId" to data.productinId,
-                                        "type" to "产品详情")
+                                        "type" to "产品详情",
+                                        "outHref" to data.outHref)
                             }
                 }
                 .attachTo(recycle_list)

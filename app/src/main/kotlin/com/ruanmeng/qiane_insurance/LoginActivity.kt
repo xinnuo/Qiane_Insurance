@@ -95,6 +95,7 @@ class LoginActivity : BaseActivity() {
         putBoolean("isLogin", false)
         putString("token", "")
 
+        putBoolean("isTS", false)
         putString("nickName", "")
         putString("realName", "")
         putString("userhead", "")

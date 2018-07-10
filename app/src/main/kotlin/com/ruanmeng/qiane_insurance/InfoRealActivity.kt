@@ -6,10 +6,7 @@ import android.view.View
 import com.lzg.extend.StringDialogCallback
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.model.Response
-import com.ruanmeng.base.BaseActivity
-import com.ruanmeng.base.getString
-import com.ruanmeng.base.putString
-import com.ruanmeng.base.showToast
+import com.ruanmeng.base.*
 import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.utils.ActivityStack
 import com.ruanmeng.utils.CommonUtil
@@ -46,30 +43,49 @@ class InfoRealActivity : BaseActivity() {
                     return
                 }
 
-                OkGo.post<String>(BaseHttp.certification_sub)
-                        .tag(this@InfoRealActivity)
-                        .isMultipart(true)
-                        .headers("token", getString("token"))
-                        .params("userName", et_name.text.trim().toString())
-                        .params("cardNo", et_card.text.toString().toUpperCase())
-                        .params("type", when (intent.getStringExtra("title")) {
-                            "实名认证" -> "0"
-                            "获取资质证书" -> "1"
-                            else -> ""
-                        })
-                        .execute(object : StringDialogCallback(baseContext) {
+                if (getBoolean("isLogin")) {
+                    OkGo.post<String>(BaseHttp.certification_sub)
+                            .tag(this@InfoRealActivity)
+                            .isMultipart(true)
+                            .headers("token", getString("token"))
+                            .params("userName", et_name.text.trim().toString())
+                            .params("cardNo", et_card.text.toString().toUpperCase())
+                            .params("type", when (intent.getStringExtra("title")) {
+                                "实名认证" -> "0"
+                                "获取资质证书" -> "1"
+                                else -> ""
+                            })
+                            .execute(object : StringDialogCallback(baseContext) {
 
-                            override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
+                                override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
 
-                                showToast(msg)
-                                if (intent.getStringExtra("title") == "实名认证") {
-                                    putString("realName", et_name.text.trim().toString())
-                                    putString("pass", "-1")
+                                    showToast(msg)
+                                    if (intent.getStringExtra("title") == "实名认证") {
+                                        putString("realName", et_name.text.trim().toString())
+                                        putString("pass", "-1")
+                                    }
+                                    ActivityStack.screenManager.popActivities(this@InfoRealActivity::class.java)
                                 }
-                                ActivityStack.screenManager.popActivities(this@InfoRealActivity::class.java)
-                            }
 
-                        })
+                            })
+                } else {
+                    OkGo.post<String>(BaseHttp.certification_sub)
+                            .tag(this@InfoRealActivity)
+                            .isMultipart(true)
+                            .headers("token", intent.getStringExtra("token"))
+                            .params("userName", et_name.text.trim().toString())
+                            .params("cardNo", et_card.text.toString().toUpperCase())
+                            .params("type", 0)
+                            .execute(object : StringDialogCallback(baseContext) {
+
+                                override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
+
+                                    showToast(msg)
+                                    ActivityStack.screenManager.popActivities(this@InfoRealActivity::class.java)
+                                }
+
+                            })
+                }
             }
         }
     }

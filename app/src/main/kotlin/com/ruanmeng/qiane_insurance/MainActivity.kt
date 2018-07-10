@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.CompoundButton
 import cn.jpush.android.api.JPushInterface
 import com.ruanmeng.base.BaseActivity
+import com.ruanmeng.base.getBoolean
 import com.ruanmeng.base.getString
 import com.ruanmeng.base.showToast
 import com.ruanmeng.fragment.MainFirstFragment
@@ -24,12 +25,14 @@ class MainActivity : BaseActivity() {
         transparentStatusBar(false)
         init_title()
 
-        JPushInterface.resumePush(applicationContext)
-        //设置别名（先注册）
-        JPushInterface.setAlias(
-                applicationContext,
-                Const.JPUSH_SEQUENCE,
-                getString("token"))
+        if (!getBoolean("isTS")) {
+            JPushInterface.resumePush(applicationContext)
+            //设置别名（先初始化）
+            JPushInterface.setAlias(
+                    applicationContext,
+                    Const.JPUSH_SEQUENCE,
+                    getString("token"))
+        }
 
         main_check1.performClick()
     }

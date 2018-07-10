@@ -41,6 +41,7 @@ android {
 
         //友盟分享QQ的appid，极光推送的pkgname、key、channel
         manifestPlaceholders = [
+                wxappid      : applicationId,
                 qqappid      : "1106641891",
                 JPUSH_PKGNAME: applicationId,
                 JPUSH_APPKEY : "18e9a406ef4554b3573feaf5",
