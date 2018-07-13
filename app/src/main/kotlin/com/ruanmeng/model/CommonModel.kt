@@ -39,6 +39,15 @@ data class CommonModel(
         var news: List<CommonData> ?= ArrayList(),
 
         //计划书详情
+        var coverStartAge: String = "0",
+        var coverEndAge: String = "0",
+        var dfCoverAge: String = "0",
+        var startAge: String = "0",
+        var endAge: String = "0",
+        var dfAge: String = "0",
+        var spouseStartAge: String = "0",
+        var spouseEndAge: String = "0",
+        var dfSpouseAge: String = "0",
         var companyId: String = "",
         var productId: String = "",
         var prospectusId: String = "",

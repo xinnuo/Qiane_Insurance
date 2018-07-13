@@ -10,10 +10,7 @@ import android.view.View
 import android.webkit.*
 import android.widget.Button
 import android.widget.LinearLayout
-import com.ruanmeng.base.BaseActivity
-import com.ruanmeng.base.cancelLoadingDialog
-import com.ruanmeng.base.getString
-import com.ruanmeng.base.showLoadingDialog
+import com.ruanmeng.base.*
 import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.share.Const
 import com.ruanmeng.utils.DESUtil
@@ -191,25 +188,26 @@ class ShareActivity : BaseActivity() {
     }
 
     inner class JsInteration {
+        @Suppress("unused")
         @JavascriptInterface
         fun openDialog() {
-                Flowable.just(BaseHttp.invite_index + getString("token"))
-                        .map { return@map Jsoup.connect(it).get() }
-                        .subscribeOn(Schedulers.newThread())
-                        .doOnSubscribe { showLoadingDialog() }
-                        .doFinally { cancelLoadingDialog() }
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe {
-                            val items = it.select("div.jl-list").select("div.item")
-                            val strHint = StringBuilder()
-                            items.forEachWithIndex { index, item ->
-                                strHint.append(item.select("div.jl-text").select("span").text())
-                                strHint.append(if (index == items.size - 1) "。" else "，")
-                            }
-                            mContent = strHint.toString().replace(" ", "")
-
-                            showShareDialog()
+            Flowable.just(BaseHttp.invite_index + getString("token"))
+                    .map { Jsoup.connect(it).get() }
+                    .subscribeOn(Schedulers.newThread())
+                    .doOnSubscribe { showLoadingDialog() }
+                    .doFinally { cancelLoadingDialog() }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        val items = it.select("div.jl-list").select("div.item")
+                        val strHint = StringBuilder()
+                        items.forEachWithIndex { index, item ->
+                            strHint.append(item.select("div.jl-text").select("span").text())
+                            strHint.append(if (index == items.size - 1) "。" else "，")
                         }
+                        mContent = strHint.toString().replace(" ", "")
+
+                        showShareDialog()
+                    }, { showToast("网络数据解析失败") })
         }
     }
 }

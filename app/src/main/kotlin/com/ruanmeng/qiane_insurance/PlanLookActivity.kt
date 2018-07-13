@@ -10,7 +10,6 @@ import android.view.View
 import android.webkit.JavascriptInterface
 import android.widget.Button
 import android.widget.LinearLayout
-import com.lzy.okgo.utils.OkLogger
 import com.ruanmeng.base.*
 import com.ruanmeng.model.RefreshMessageEvent
 import com.ruanmeng.share.BaseHttp
@@ -155,19 +154,16 @@ class PlanLookActivity : BaseActivity() {
 
         EventBus.getDefault().register(this@PlanLookActivity)
 
+        EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
+        val userInfoId = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
         when (intent.getStringExtra("type")) {
-            "计划书" -> {
-                EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
-                val userInfoId = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
-                webView.loadUrl(BaseHttp.prospectus_open + intent.getStringExtra("prospectusId") + "&userInfoId=$userInfoId")
-            }
+            "计划书" -> webView.loadUrl(BaseHttp.prospectus_open + intent.getStringExtra("prospectusId") + "&userInfoId=$userInfoId")
+            "我的名片" -> webView.loadUrl(BaseHttp.businessCard + userInfoId + "&userinfoId=${getString("token")}")
             "产品详情" -> {
                 val outHref = intent.getStringExtra("outHref")
-                if (outHref.isEmpty()) {
-                    EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
-                    val userInfoId = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
+                if (outHref.isEmpty())
                     webView.loadUrl(BaseHttp.product_detils + intent.getStringExtra("productinId") + "&userInfoId=$userInfoId")
-                } else {
+                else {
                     ivRight.visible()
                     webView.loadUrl(outHref)
                 }
@@ -270,7 +266,7 @@ class PlanLookActivity : BaseActivity() {
                                 .doOnSubscribe { showLoadingDialog() }
                                 .doFinally { cancelLoadingDialog() }
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe {
+                                .subscribe({
                                     val strHint = StringBuilder()
                                     val itemGender = it.select("div.gender").select("span")
                                     itemGender.forEach { strHint.append(it.text()) }
@@ -285,7 +281,7 @@ class PlanLookActivity : BaseActivity() {
                                     val content = strHint.toString().replace(" ", "")
 
                                     showShareDialog(it.title(), content, urlShare)
-                                }
+                                }, { showToast("网络数据解析失败") })
                     }
                     "产品详情" -> {
                         val outHref = intent.getStringExtra("outHref")
@@ -299,21 +295,19 @@ class PlanLookActivity : BaseActivity() {
                                     .doOnSubscribe { showLoadingDialog() }
                                     .doFinally { cancelLoadingDialog() }
                                     .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe {
+                                    .subscribe({
                                         val content = it.select("div.container").select("div.item").select("p.text").text()
                                         showShareDialog(it.title(), content, urlShare)
-                                    }
+                                    }, { showToast("网络数据解析失败") })
                         } else {
-                            if (outHref.startsWith("https://mobile.health.pingan.com")) {
+                            if (outHref.contains("mobile.health.pingan.com")) {
                                 Flowable.just(outHref)
                                         .map { return@map Jsoup.connect(it).get() }
                                         .subscribeOn(Schedulers.newThread())
                                         .doOnSubscribe { showLoadingDialog() }
                                         .doFinally { cancelLoadingDialog() }
                                         .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe {
-                                            OkLogger.i(outHref)
-                                            OkLogger.i(it.select("script").toString())
+                                        .subscribe({
                                             val items = it.select("script")
 
                                             var descContent = it.title()
@@ -324,7 +318,8 @@ class PlanLookActivity : BaseActivity() {
                                                 if (hint.contains("var")
                                                         && hint.contains("lineLink")
                                                         && hint.contains("imgUrl")
-                                                        && hint.contains("descContent")) {
+                                                        && hint.contains("descContent")
+                                                        && hint.contains("=")) {
                                                     val data = hint.split("var")
                                                     data.forEach {
                                                         if (it.contains("descContent =")) {
@@ -344,7 +339,7 @@ class PlanLookActivity : BaseActivity() {
                                             }
 
                                             showShareDialog(it.title(), descContent, outHref, imgUrl)
-                                        }
+                                        }, { showToast("网络数据解析失败") })
                             }
                         }
                     }
@@ -354,7 +349,7 @@ class PlanLookActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        if (webView.canGoBack() && intent.getStringExtra("type") == "计划书") {
+        if (webView.canGoBack() && intent.getStringExtra("type") != "产品详情") {
             // webView.settings.cacheMode = WebSettings.LOAD_NO_CACHE //设置无缓存
             webView.goBack()
             return
@@ -389,6 +384,7 @@ class PlanLookActivity : BaseActivity() {
         }
     }
 
+    @Suppress("unused")
     inner class JsInteration {
 
         @JavascriptInterface
@@ -403,10 +399,10 @@ class PlanLookActivity : BaseActivity() {
                     .doOnSubscribe { showLoadingDialog() }
                     .doFinally { cancelLoadingDialog() }
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
+                    .subscribe({
                         val content = it.select("div.container").select("div.item").select("p.text").text()
                         showShareDialog(it.title(), content, urlShare)
-                    }
+                    }, { showToast("网络数据解析失败") })
         }
 
         @JavascriptInterface
@@ -422,11 +418,11 @@ class PlanLookActivity : BaseActivity() {
                     .doOnSubscribe { showLoadingDialog() }
                     .doFinally { cancelLoadingDialog() }
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
+                    .subscribe({
                         val name = it.select("div.card-text").select("h4").text()
                         val company = it.select("div.card-text").select("p").select("span").text()
                         showShareDialog(it.title(), "$name $company", urlShare)
-                    }
+                    }, { showToast("网络数据解析失败") })
         }
     }
 }

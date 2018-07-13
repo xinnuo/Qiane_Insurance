@@ -25,6 +25,7 @@ class CardActivity : BaseActivity() {
         setContentView(R.layout.activity_card)
         init_title("我的名片")
 
+        TODO("无用的页面")
         getData()
     }
 

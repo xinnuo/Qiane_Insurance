@@ -48,6 +48,7 @@ public class BaseHttp {
     public static String index_productprospectus = baseIp + "/index_productprospectus.rm"; //首页列表√
     public static String prospectus_list_data = baseIp + "/prospectus_list_data.rm";       //计划书列表√
     public static String prospectus_detils = baseIp + "/prospectus_detils.rm";             //计划书详情√
+    public static String cascadeItems_items_list = baseIp + "/cascadeItems_items_list.rm"; //获取级联√
     public static String insurancekind_detils = baseIp + "/insurancekind_detils.rm";       //险种信息√
     public static String add_app_prospectus = baseIp + "/add_app_prospectus.rm";           //新增计划书√
     public static String product_list_data = baseIp + "/product_list_data.rm";             //产品列表√
@@ -67,6 +68,7 @@ public class BaseHttp {
     public static String invite_index = baseImg + "forend/invitation_index.hm?userInfoId=";                  //分享√
     public static String register_index = baseImg + "forend/register_index.hm?userInfoId=";                  //分享注册√
     public static String user_businessCard = baseImg + "forend/user_businessCard.hm?type=1&fromuserInfoId="; //分享名片√
+    public static String businessCard = baseImg + "forend/user_businessCard.hm?fromuserInfoId=";             //我的名片√
     public static String prospectus_open = baseImg + "forend/prospectus_open.hm?prospectusId=";              //查看计划书√
     public static String prospectus_detil = baseImg + "forend/prospectus_detils.hm?type=1&prospectusId=";    //计划书详情√
     public static String product_detils = baseImg + "forend/product_detils.hm?productinId=";                 //产品详情√

@@ -55,6 +55,8 @@ data class CommonData(
         //险种列表
         var insuranceKindId: String = "",
         var insuranceKindName: String = "",
+        var startAge: String = "0",
+        var endAge: String = "0",
 
         //险种选项列表
         var insuranceOptDictionaryId: String = "",
@@ -68,13 +70,18 @@ data class CommonData(
         var itemName: String = "",
         var checkItem: String = "",
 
-        //险种项与保额保费关系列表
+        //险种项、年龄与保额保费关系列表
         var insuranceKindItemRefId: String = "",
         var item1: String = "",
         var item2: String = "",
         var item3: String = "",
         var item4: String = "",
-        var proportion: String = "",
+        var item5: String = "",
+        var item6: String = "",
+        var proportion: String = "0",
+        var insuredAmount: String = "0",
+        var premium: String = "0",
+        var allow: String = "",
 
         //计划书阅读列表
         var coverSex: String = "",

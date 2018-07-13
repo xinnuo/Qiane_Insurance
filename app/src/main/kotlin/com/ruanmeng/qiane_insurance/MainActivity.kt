@@ -84,7 +84,7 @@ class MainActivity : BaseActivity() {
             R.id.third_setting -> startActivity<SettingActivity>()
             R.id.third_message -> startActivity<MessageActivity>()
             R.id.third_info -> startActivity<InfoActivity>()
-            R.id.third_card -> startActivity<CardActivity>()
+            R.id.third_card -> startActivity<PlanLookActivity>("type" to "我的名片")
             R.id.third_income_ll -> startActivity<IncomeActivity>()
             R.id.third_point_ll -> startActivity<PointActivity>()
             R.id.third_order, R.id.third_order_all  -> startActivity<OrderActivity>()
