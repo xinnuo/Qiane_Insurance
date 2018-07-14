@@ -36,6 +36,10 @@ import java.io.Serializable
  */
 data class InsuranceHomeModel( //险种详情
         var itemName: String = "",
+        var insuranceKindId: String = "",
         var insuredParentPosition: Int = 0,
+        var insuredAmount: Double = 0.00, //选择保额
+        var premium: Double = 0.00,       //选择保费
+        var isClickable: Boolean = true,  //是否点击
         var isChecked: Boolean = false    //是否选中
 ): Serializable

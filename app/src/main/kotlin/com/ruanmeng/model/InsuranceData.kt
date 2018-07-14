@@ -49,6 +49,7 @@ data class InsuranceData(
         var optDictionaryName: String = "",
         var type: String = "",
         var checkName: String = "",
+        var checkItemId: String = "",
         var optDictionaryFee: String = "",
         var insuredParentPosition: Int = 0
 ) : Serializable
