@@ -114,7 +114,7 @@ class SearchActivity : BaseActivity() {
                     keyWord = search_edit.text.toString()
 
                     val arr = if (getString("history").isEmpty()) JSONArray() else JSONArray(getString("history"))
-                    if (!arr.toString().contains(keyWord)) arr.put(keyWord)
+                    if (keyWord !in arr.toString()) arr.put(keyWord)
                     putString("history", arr.toString())
 
                     updateList()

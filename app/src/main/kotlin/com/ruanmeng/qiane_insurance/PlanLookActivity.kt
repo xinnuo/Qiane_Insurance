@@ -114,7 +114,7 @@ class PlanLookActivity : BaseActivity() {
                     @Suppress("DEPRECATION")
                     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
 
-                        if (url.contains("tel:")) makeCall(url.replace("tel:", ""))
+                        if ("tel:" in url) makeCall(url.replace("tel:", ""))
 
                         if (!(url.startsWith("https://") || url.startsWith("http://"))) return true
                         // if (!url.isWeb()) return true

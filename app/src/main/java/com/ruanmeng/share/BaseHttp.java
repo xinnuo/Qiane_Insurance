@@ -48,6 +48,7 @@ public class BaseHttp {
     public static String index_productprospectus = baseIp + "/index_productprospectus.rm"; //首页列表√
     public static String prospectus_list_data = baseIp + "/prospectus_list_data.rm";       //计划书列表√
     public static String prospectus_detils = baseIp + "/prospectus_detils.rm";             //计划书详情√
+    public static String items_byAge = baseIp + "/items_byAge.rm";                         //根据年龄获取选项值√
     public static String cascadeItems_items_list = baseIp + "/cascadeItems_items_list.rm"; //获取级联√
     public static String insurancekind_detils = baseIp + "/insurancekind_detils.rm";       //险种信息√
     public static String add_app_prospectus = baseIp + "/add_app_prospectus.rm";           //新增计划书√

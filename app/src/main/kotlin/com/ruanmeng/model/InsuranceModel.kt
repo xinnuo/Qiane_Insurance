@@ -56,12 +56,13 @@ data class InsuranceModel( //险种详情
         var pinsuranceKindItemIds: String = "",
         var type: String = "",                    // "1":"主险", "2":"附加险", "3":"豁免相关", "4":"双豁免"
         var proportionType: String = "",          //费率方式
+        var proportionAllow: String = "",         //是否允许
         var proportion: Double = 0.00,            //选择费率
         var insuredAmount: Double = 0.00,         //选择保额
         var premium: Double = 0.00,               //选择保费
-        var lds: List<CommonData>? = ArrayList(), //险种选项列表
-        var lis: List<CommonData>? = ArrayList(), //险种选项选择列表
-        var lrs: List<CommonData>? = ArrayList(), //险种项、年龄与保额保费关系列表
+        var lds: ArrayList<CommonData>? = ArrayList(), //险种选项列表
+        var lis: ArrayList<CommonData>? = ArrayList(), //险种选项选择列表
+        var lrs: ArrayList<CommonData>? = ArrayList(), //险种项、年龄与保额保费关系列表
         var insuredParentPosition: Int = 0,
         var isGray: Boolean = false,      //是否灰色
         var isClickable: Boolean = true,  //是否点击
