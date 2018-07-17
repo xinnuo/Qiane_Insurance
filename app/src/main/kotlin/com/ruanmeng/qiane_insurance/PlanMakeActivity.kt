@@ -31,6 +31,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_plan_make.*
 import net.idik.lib.slimadapter.SlimAdapter
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.collections.forEachWithIndex
 import org.jetbrains.anko.sdk25.listeners.onCheckedChange
 import org.jetbrains.anko.sdk25.listeners.onClick
@@ -104,6 +106,8 @@ class PlanMakeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_plan_make)
         init_title("计划书")
+
+        EventBus.getDefault().register(this@PlanMakeActivity)
 
         getData()
     }
@@ -500,6 +504,7 @@ class PlanMakeActivity : BaseActivity() {
                             .subscribe { showHomeInsuranceDialog(it) }
                 } else showOptionDialog()
             }
+            R.id.planr_in -> startActivity<ClientSearchActivity>("isPlan" to true)
         }
     }
 
@@ -662,6 +667,7 @@ class PlanMakeActivity : BaseActivity() {
                                             DialogHelper.showItemDialog(
                                                     baseContext,
                                                     "选择${data.optDictionaryName}",
+                                                    if (itemStr.indexOf(data.checkName) < 0) 0 else itemStr.indexOf(data.checkName),
                                                     itemStr) { position, name ->
 
                                                 data.checkName = name
@@ -1144,6 +1150,9 @@ class PlanMakeActivity : BaseActivity() {
                     val items = ArrayList<Any>()
                     items.addItems(mapChecked[kindId])
                     calculateProportion(items)
+
+                    val indexPosition = items.indexOfFirst { it is CommonData }
+                    if (indexPosition > -1) calculateFee(indexPosition, 0, items)
 
                     items.filter {
                         it is InsuranceModel
@@ -1980,5 +1989,21 @@ class PlanMakeActivity : BaseActivity() {
                     }
 
                 })
+    }
+
+    override fun finish() {
+        EventBus.getDefault().unregister(this@PlanMakeActivity)
+        super.finish()
+    }
+
+    @Subscribe
+    fun onMessageEvent(event: RefreshMessageEvent) {
+        when (event.type) {
+            "选择客户" -> {
+                planr_name.setText(event.name)
+                planr_name.setSelection(planr_name.text.length)
+                planer_check.check(if (event.id == "0") R.id.planer_check2 else R.id.planer_check1)
+            }
+        }
     }
 }

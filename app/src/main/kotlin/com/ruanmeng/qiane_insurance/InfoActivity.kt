@@ -177,7 +177,7 @@ class InfoActivity : BaseActivity() {
                     window.decorView.postDelayed({ runOnUiThread { getSexData(position) } }, 300)
                 }
             }
-            R.id.info_tel_ll -> startActivity<InfoPhoneActivity>()
+            // R.id.info_tel_ll -> startActivity<InfoPhoneActivity>()
             R.id.info_real_ll -> when (getString("pass")) {
                 "-1" -> showToast("实名认证正在认证中，请耐心等待！")
                 "1" -> showToast("已通过实名认证！")

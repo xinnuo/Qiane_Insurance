@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.ruanmeng.qiane_insurance.MessageActivity;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -53,15 +55,11 @@ public class JPushReceiver extends BroadcastReceiver {
                     String businessId = json.optString("businessId");
                     switch (push_type) {
                         case "SYS":
-                            /*intent = new Intent(context, MessageActivity.class);
+                        case "MSG":
+                        case "ORDER":
+                            intent = new Intent(context, MessageActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            context.startActivity(intent);*/
-                            break;
-                        case "ORDER_CUSTOMER":
-                            /*intent = new Intent(context, IssueDetailActivity.class);
-                            intent.putExtra("goodsOrderId", businessId);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            context.startActivity(intent);*/
+                            context.startActivity(intent);
                             break;
                     }
                 }

@@ -9,8 +9,11 @@ import com.lzy.okgo.model.Response
 import com.ruanmeng.base.BaseActivity
 import com.ruanmeng.base.getString
 import com.ruanmeng.base.optStringNotEmpty
+import com.ruanmeng.model.RefreshMessageEvent
 import com.ruanmeng.share.BaseHttp
 import kotlinx.android.synthetic.main.activity_income.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.startActivity
 import org.json.JSONObject
 
@@ -22,6 +25,8 @@ class IncomeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_income)
         init_title("我的收入", "明细")
+
+        EventBus.getDefault().register(this@IncomeActivity)
 
         getData()
     }
@@ -54,5 +59,17 @@ class IncomeActivity : BaseActivity() {
                     }
 
                 })
+    }
+
+    override fun finish() {
+        EventBus.getDefault().unregister(this@IncomeActivity)
+        super.finish()
+    }
+
+    @Subscribe
+    fun onMessageEvent(event: RefreshMessageEvent) {
+        when (event.type) {
+            "提现" -> getData()
+        }
     }
 }

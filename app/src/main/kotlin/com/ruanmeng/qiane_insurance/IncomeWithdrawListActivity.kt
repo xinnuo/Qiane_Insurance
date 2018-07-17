@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.layout_list.*
 import net.idik.lib.slimadapter.SlimAdapter
 import org.jetbrains.anko.include
 import org.jetbrains.anko.verticalLayout
+import java.text.DecimalFormat
 import java.util.ArrayList
 
 class IncomeWithdrawListActivity : BaseActivity() {
@@ -53,7 +54,7 @@ class IncomeWithdrawListActivity : BaseActivity() {
                                         "3" -> "(成功)"
                                         else -> ""
                                     })
-                            .text(R.id.item_income_money, "-${data.withdrawSum}")
+                            .text(R.id.item_income_money, "-${DecimalFormat("0.00").format(data.withdrawSum.toDouble())}")
 
                             .visibility(R.id.item_income_divider1, if (isLast) View.GONE else View.VISIBLE)
                             .visibility(R.id.item_income_divider2, if (!isLast) View.GONE else View.VISIBLE)

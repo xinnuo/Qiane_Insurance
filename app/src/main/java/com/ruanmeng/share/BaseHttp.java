@@ -33,6 +33,7 @@ public class BaseHttp {
     public static String assets_info = baseIp + "/assets_info.rm";                             //我的收入√
     public static String integral_info = baseIp + "/integral_info.rm";                         //我的积分√
     public static String withdraw_list_data = baseIp + "/withdraw_list_data.rm";               //提现列表√
+    public static String add_withdraw_sub = baseIp + "/add_withdraw_sub.rm";                   //提现√
     public static String profit_list_data = baseIp + "/profit_list_data.rm";                   //收益列表√
     public static String integral_list_data = baseIp + "/integral_list_data.rm";               //积分列表√
     public static String myprospectus_list_data = baseIp + "/myprospectus_list_data.rm";       //我的计划书√

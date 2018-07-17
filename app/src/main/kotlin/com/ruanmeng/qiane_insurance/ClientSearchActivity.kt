@@ -12,6 +12,7 @@ import com.ruanmeng.base.*
 import com.ruanmeng.model.CommonData
 import com.ruanmeng.model.RefreshMessageEvent
 import com.ruanmeng.share.BaseHttp
+import com.ruanmeng.utils.ActivityStack
 import com.ruanmeng.utils.KeyboardHelper
 import com.ruanmeng.view.NormalDecoration
 import kotlinx.android.synthetic.main.activity_client_search.*
@@ -67,7 +68,15 @@ class ClientSearchActivity : BaseActivity() {
                             .visibility(R.id.item_client_divider2, if (!isLast) View.GONE else View.VISIBLE)
 
                             .clicked(R.id.item_client) {
-                                startActivity<ClientAddActivity>(
+                                val isPlan = intent.getBooleanExtra("isPlan", false)
+                                if (isPlan) {
+                                    EventBus.getDefault().post(RefreshMessageEvent(
+                                            "选择客户",
+                                            data.customerSex,
+                                            data.customerName))
+
+                                    ActivityStack.screenManager.popActivities(this@ClientSearchActivity::class.java)
+                                } else startActivity<ClientAddActivity>(
                                         "title" to "客户信息",
                                         "usercustomerId" to data.usercustomerId)
                             }
