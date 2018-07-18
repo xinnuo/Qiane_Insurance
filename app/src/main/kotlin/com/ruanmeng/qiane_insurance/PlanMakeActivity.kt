@@ -1532,6 +1532,7 @@ class PlanMakeActivity : BaseActivity() {
                                             DialogHelper.showItemDialog(
                                                     baseContext,
                                                     "选择${data.optDictionaryName}",
+                                                    if (itemStr.indexOf(data.checkName) < 0) 0 else itemStr.indexOf(data.checkName),
                                                     itemStr) { position, name ->
 
                                                 when (data.insuranceOptDictionaryId) {
