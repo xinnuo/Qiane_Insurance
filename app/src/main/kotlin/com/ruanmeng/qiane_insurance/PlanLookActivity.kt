@@ -39,6 +39,7 @@ import org.jetbrains.anko.frameLayout
 import org.jetbrains.anko.sdk25.listeners.onClick
 import org.jetbrains.anko.startActivity
 import org.jsoup.Jsoup
+import java.net.URLEncoder
 
 class PlanLookActivity : BaseActivity() {
 
@@ -119,10 +120,14 @@ class PlanLookActivity : BaseActivity() {
                         if (!(url.startsWith("https://") || url.startsWith("http://"))) return true
                         // if (!url.isWeb()) return true
 
-                        if (url.isNotEmpty() && url.endsWith("apk")) browse(url)
+                        if (url.endsWith("apk")) browse(url)
                         else {
-                            if (url.contains("pingan")) {
-                                if (!url.contains("index.do")) ivRight.gone()
+                            if ("pingan" in url) {
+                                if ("index.do" !in url) ivRight.gone()
+                            }
+
+                            if ("m_aliPay_sub.hm" in url || "m_weixin_pay.hm" in url) {
+                                EventBus.getDefault().post(RefreshMessageEvent("订单支付"))
                             }
 
                             view.loadUrl(url)
@@ -155,7 +160,8 @@ class PlanLookActivity : BaseActivity() {
         EventBus.getDefault().register(this@PlanLookActivity)
 
         EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
-        val userInfoId = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
+        val encodeStr = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
+        val userInfoId = URLEncoder.encode(encodeStr, "utf-8")
         when (intent.getStringExtra("type")) {
             "计划书" -> webView.loadUrl(BaseHttp.prospectus_open + intent.getStringExtra("prospectusId") + "&userInfoId=$userInfoId")
             "我的名片" -> webView.loadUrl(BaseHttp.businessCard + userInfoId + "&userinfoId=${getString("token")}")
@@ -168,6 +174,8 @@ class PlanLookActivity : BaseActivity() {
                     webView.loadUrl(outHref)
                 }
             }
+            "订单支付" -> webView.loadUrl(BaseHttp.confirm_pay + intent.getStringExtra("goodsOrderId"))
+            "订单详情" -> webView.loadUrl(BaseHttp.order_detlis + intent.getStringExtra("goodsOrderId"))
         }
     }
 
@@ -253,7 +261,8 @@ class PlanLookActivity : BaseActivity() {
         when (v.id) {
             R.id.iv_nav_right -> {
                 EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
-                val userInfoId = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
+                val encodeStr = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
+                val userInfoId = URLEncoder.encode(encodeStr, "utf-8")
 
                 when (intent.getStringExtra("type")) {
                     "计划书" -> {
@@ -349,10 +358,14 @@ class PlanLookActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        if (webView.canGoBack() && intent.getStringExtra("type") != "产品详情") {
+        if (webView.canGoBack()) {
             // webView.settings.cacheMode = WebSettings.LOAD_NO_CACHE //设置无缓存
-            webView.goBack()
-            return
+
+            val type = intent.getStringExtra("type")
+            if (type != "产品详情" && type != "订单支付") {
+                webView.goBack()
+                return
+            }
         }
         super.onBackPressed()
     }
@@ -390,7 +403,8 @@ class PlanLookActivity : BaseActivity() {
         @JavascriptInterface
         fun openDialog(id: String) {
             EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
-            val userInfoId = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
+            val encodeStr = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
+            val userInfoId = URLEncoder.encode(encodeStr, "utf-8")
             val urlShare = BaseHttp.share_product_detils + id + "&userInfoId=$userInfoId"
 
             Flowable.just(urlShare)

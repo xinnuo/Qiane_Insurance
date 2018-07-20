@@ -75,6 +75,7 @@ class ForgetActivity : BaseActivity() {
 
                 OkGo.post<String>(BaseHttp.identify_getbyforget)
                         .tag(this@ForgetActivity)
+                        .isMultipart(true)
                         .params("mobile", encodeTel)
                         .params("time", Const.MAKER)
                         .execute(object : StringDialogCallback(baseContext) {

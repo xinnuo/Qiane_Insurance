@@ -70,23 +70,6 @@ class WebActivity : BaseActivity() {
                     return super.shouldOverrideUrlLoading(view, url)
                 }
 
-                /*
-                 * 在开始加载网页时会回调
-                 */
-                override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                    super.onPageStarted(view, url, favicon)
-                    val title = intent.getStringExtra("title")
-                    if (title == "订单详情") showLoadingDialog()
-                }
-
-                /*
-                 * 在结束加载网页时会回调
-                 */
-                override fun onPageFinished(view: WebView?, url: String?) {
-                    super.onPageFinished(view, url)
-                    val title = intent.getStringExtra("title")
-                    if (title == "订单详情") cancelLoadingDialog()
-                }
             }
         }
         init_title(intent.getStringExtra("title"))
@@ -130,7 +113,6 @@ class WebActivity : BaseActivity() {
 
                         })
             }
-            "订单详情" -> webView.loadUrl(BaseHttp.order_detlis + intent.getStringExtra("goodsOrderId"))
             "公司介绍" -> {
                 OkGo.post<String>(BaseHttp.company_info)
                         .tag(this@WebActivity)

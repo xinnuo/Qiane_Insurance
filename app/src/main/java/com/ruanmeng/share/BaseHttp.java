@@ -76,4 +76,5 @@ public class BaseHttp {
     public static String product_detils = baseImg + "forend/product_detils.hm?productinId=";                 //产品详情√
     public static String share_product_detils = baseImg + "forend/share_product_detils.hm?productinId=";     //产品详情分享√
     public static String order_detlis = baseImg + "forend/goods_order_detlis.hm?goodsOrderId=";              //订单详情√
+    public static String confirm_pay = baseImg + "forend/confirm_pay.hm?goodsOrderId=";                      //订单支付√
 }

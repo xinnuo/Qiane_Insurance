@@ -13,11 +13,14 @@ import com.lzy.okgo.OkGo
 import com.lzy.okgo.model.Response
 import com.ruanmeng.base.*
 import com.ruanmeng.model.CommonData
+import com.ruanmeng.model.RefreshMessageEvent
 import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.utils.isNumeric
 import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_list.*
 import net.idik.lib.slimadapter.SlimAdapter
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.design.listeners.onTabSelectedListener
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.startActivity
@@ -34,6 +37,8 @@ class OrderActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order)
         init_title("我的订单")
+
+        EventBus.getDefault().register(this@OrderActivity)
     }
 
     override fun init_title() {
@@ -101,7 +106,7 @@ class OrderActivity : BaseActivity() {
                                     } else "0"}%")
 
                             .visibility(R.id.item_order_pay,
-                                    if (data.status == "-1" || data.status == "0") View.VISIBLE else View.GONE)
+                                    if (data.status in "-1,0,1") View.VISIBLE else View.GONE)
                             .visibility(R.id.item_order_divider,
                                     if (list.indexOf(data) == 0) View.VISIBLE else View.GONE)
 
@@ -109,11 +114,15 @@ class OrderActivity : BaseActivity() {
                                 it.setImageURL(BaseHttp.baseImg + data.productImg)
                             }
 
-                            .clicked(R.id.item_order_pay) {}
+                            .clicked(R.id.item_order_pay) {
+                                startActivity<PlanLookActivity>(
+                                        "type" to "订单支付",
+                                        "goodsOrderId" to data.goodsOrderId)
+                            }
 
                             .clicked(R.id.item_order) {
-                                startActivity<WebActivity>(
-                                        "title" to "订单详情",
+                                startActivity<PlanLookActivity>(
+                                        "type" to "订单详情",
                                         "goodsOrderId" to data.goodsOrderId)
                             }
                 }
@@ -164,5 +173,20 @@ class OrderActivity : BaseActivity() {
 
         pageNum = 1
         getData(pageNum)
+    }
+
+    override fun finish() {
+        EventBus.getDefault().unregister(this@OrderActivity)
+        super.finish()
+    }
+
+    @Subscribe
+    fun onMessageEvent(event: RefreshMessageEvent) {
+        when (event.type) {
+            "订单支付" -> {
+                swipe_refresh.isRefreshing = true
+                getData(1)
+            }
+        }
     }
 }

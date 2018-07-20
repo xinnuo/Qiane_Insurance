@@ -595,7 +595,7 @@ class PlanMakeActivity : BaseActivity() {
                                             if (data.isClickable) {
                                                 data.isChecked = !data.isChecked
 
-                                                if (data.isChecked && data.type in "12") {
+                                                if (data.isChecked && data.type in "1,2") {
                                                     OkGo.post<BaseResponse<ArrayList<InsuranceModel>>>(BaseHttp.items_byAge)
                                                             .tag(this@PlanMakeActivity)
                                                             .params("age", mMedianAge)
@@ -670,9 +670,6 @@ class PlanMakeActivity : BaseActivity() {
                                                     if (itemStr.indexOf(data.checkName) < 0) 0 else itemStr.indexOf(data.checkName),
                                                     itemStr) { position, name ->
 
-                                                data.checkName = name
-                                                data.checkItemId = options[position].insuranceItemId
-
                                                 //选项id联动
                                                 val linkId = item.pitems
                                                 if (data.insuranceOptDictionaryId in linkId) {
@@ -691,6 +688,11 @@ class PlanMakeActivity : BaseActivity() {
                                                                             val itemLrs = ArrayList<CommonData>()
                                                                             itemLrs.addItems(response.body().`object`)
                                                                             val linkids = linkId.split(",")
+
+                                                                            if (itemLrs.isEmpty()) return
+
+                                                                            data.checkName = name
+                                                                            data.checkItemId = options[position].insuranceItemId
 
                                                                             linkids.filterNot {
                                                                                 it == "10"
@@ -727,6 +729,9 @@ class PlanMakeActivity : BaseActivity() {
                                                                     })
                                                         }, 300)
                                                     } else {
+                                                        data.checkName = name
+                                                        data.checkItemId = options[position].insuranceItemId
+
                                                         Observable.create<Int> {
                                                             val index = items.indexOf(data)
                                                             calculateProportion(items)
@@ -738,6 +743,9 @@ class PlanMakeActivity : BaseActivity() {
                                                                 .subscribe { (adapter as SlimAdapter).notifyDataSetChanged() }
                                                     }
                                                 } else {
+                                                    data.checkName = name
+                                                    data.checkItemId = options[position].insuranceItemId
+
                                                     (adapter as SlimAdapter).notifyDataSetChanged()
                                                 }
                                             }
@@ -842,6 +850,7 @@ class PlanMakeActivity : BaseActivity() {
             it.isExpand = it.inshow == "1"
             it.isChecked = it.pitchOn == "1"
             it.isGray = !it.isChecked && !it.isClickable
+            it.insuredParentPosition = index
             val ageStart = it.startAge.toInt()
             val ageEnd = it.endAge.toInt()
             when (it.type) {
@@ -864,7 +873,6 @@ class PlanMakeActivity : BaseActivity() {
                     it.isGray = true
                 }
             }
-            it.insuredParentPosition = index
 
             items.add(it)
             if (it.isChecked) {
@@ -883,13 +891,24 @@ class PlanMakeActivity : BaseActivity() {
                                     it.checkItem == "1"
                                             && it.insuranceOptDictionaryId == item.insuranceOptDictionaryId
                                 }) {
-                            val data = itemLis.first {
+                            val data = itemLis.firstOrNull {
                                 it.checkItem == "1"
                                         && it.insuranceOptDictionaryId == item.insuranceOptDictionaryId
                             }
 
-                            item.checkItemId = data.insuranceItemId
-                            item.checkName = data.itemName
+                            if (data != null) {
+                                item.checkItemId = data.insuranceItemId
+                                item.checkName = data.itemName
+                            }
+                        } else {
+                            val data = itemLis.firstOrNull {
+                                it.insuranceOptDictionaryId == item.insuranceOptDictionaryId
+                            }
+
+                            if (data != null) {
+                                item.checkItemId = data.insuranceItemId
+                                item.checkName = data.itemName
+                            }
                         }
                         item.insuredParentPosition = index
                         items.add(item)
@@ -937,13 +956,24 @@ class PlanMakeActivity : BaseActivity() {
                                 it.checkItem == "1"
                                         && it.insuranceOptDictionaryId == inner.insuranceOptDictionaryId
                             }) {
-                        val data = itemLis.first {
+                        val data = itemLis.firstOrNull {
                             it.checkItem == "1"
                                     && it.insuranceOptDictionaryId == inner.insuranceOptDictionaryId
                         }
 
-                        inner.checkItemId = data.insuranceItemId
-                        inner.checkName = data.itemName
+                        if (data != null) {
+                            inner.checkItemId = data.insuranceItemId
+                            inner.checkName = data.itemName
+                        }
+                    } else {
+                        val data = itemLis.firstOrNull {
+                            it.insuranceOptDictionaryId == inner.insuranceOptDictionaryId
+                        }
+
+                        if (data != null) {
+                            inner.checkItemId = data.insuranceItemId
+                            inner.checkName = data.itemName
+                        }
                     }
                     inner.insuredParentPosition = item.insuredParentPosition
                     itemLbs.add(inner)
@@ -988,7 +1018,7 @@ class PlanMakeActivity : BaseActivity() {
             items.filter {
                 it is InsuranceModel
                         && it.isChecked
-                        && it.type in "12"
+                        && it.type in "1,2"
             }.forEach {
                 it as InsuranceModel
                 itemKindIds.add(it.insuranceKindId)

@@ -82,6 +82,7 @@ class RegisterActivity : BaseActivity() {
 
                 OkGo.post<String>(BaseHttp.identify_get)
                         .tag(this@RegisterActivity)
+                        .isMultipart(true)
                         .params("mobile", encodeTel)
                         .params("time", Const.MAKER)
                         .execute(object : StringDialogCallback(baseContext) {

@@ -30,6 +30,7 @@ import org.jetbrains.anko.collections.forEachWithIndex
 import org.jetbrains.anko.sdk25.listeners.onClick
 import org.jetbrains.anko.webView
 import org.jsoup.Jsoup
+import java.net.URLEncoder
 
 class ShareActivity : BaseActivity() {
 
@@ -118,7 +119,8 @@ class ShareActivity : BaseActivity() {
     @SuppressLint("InflateParams")
     private fun showShareDialog() {
         EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
-        val userInfoId = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
+        val encodeStr = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
+        val userInfoId = URLEncoder.encode(encodeStr, "utf-8")
         val urlShare = BaseHttp.register_index + userInfoId
 
         val view = LayoutInflater.from(baseContext).inflate(R.layout.dialog_share_bottom, null) as View
