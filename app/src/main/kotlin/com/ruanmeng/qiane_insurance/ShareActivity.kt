@@ -119,7 +119,7 @@ class ShareActivity : BaseActivity() {
     @SuppressLint("InflateParams")
     private fun showShareDialog() {
         EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
-        val encodeStr = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
+        val encodeStr = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token")).replace("/n", "")
         val userInfoId = URLEncoder.encode(encodeStr, "utf-8")
         val urlShare = BaseHttp.register_index + userInfoId
 

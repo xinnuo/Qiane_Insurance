@@ -160,7 +160,7 @@ class PlanLookActivity : BaseActivity() {
         EventBus.getDefault().register(this@PlanLookActivity)
 
         EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
-        val encodeStr = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
+        val encodeStr = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token")).replace("/n", "")
         val userInfoId = URLEncoder.encode(encodeStr, "utf-8")
         when (intent.getStringExtra("type")) {
             "计划书" -> webView.loadUrl(BaseHttp.prospectus_open + intent.getStringExtra("prospectusId") + "&userInfoId=$userInfoId")
@@ -261,7 +261,7 @@ class PlanLookActivity : BaseActivity() {
         when (v.id) {
             R.id.iv_nav_right -> {
                 EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
-                val encodeStr = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
+                val encodeStr = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token")).replace("/n", "")
                 val userInfoId = URLEncoder.encode(encodeStr, "utf-8")
 
                 when (intent.getStringExtra("type")) {
@@ -403,7 +403,7 @@ class PlanLookActivity : BaseActivity() {
         @JavascriptInterface
         fun openDialog(id: String) {
             EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
-            val encodeStr = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token"))
+            val encodeStr = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token")).replace("/n", "")
             val userInfoId = URLEncoder.encode(encodeStr, "utf-8")
             val urlShare = BaseHttp.share_product_detils + id + "&userInfoId=$userInfoId"
 
