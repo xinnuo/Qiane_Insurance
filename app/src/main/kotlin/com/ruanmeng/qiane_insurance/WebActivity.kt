@@ -1,7 +1,6 @@
 package com.ruanmeng.qiane_insurance
 
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebChromeClient
@@ -12,14 +11,11 @@ import com.lzg.extend.StringDialogCallback
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.model.Response
 import com.ruanmeng.base.BaseActivity
-import com.ruanmeng.base.cancelLoadingDialog
-import com.ruanmeng.base.showLoadingDialog
 import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.utils.isWeb
 import org.jetbrains.anko.browse
 import org.jetbrains.anko.webView
 import org.json.JSONObject
-
 
 class WebActivity : BaseActivity() {
 
