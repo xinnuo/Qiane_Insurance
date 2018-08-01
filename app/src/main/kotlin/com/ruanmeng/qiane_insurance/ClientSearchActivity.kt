@@ -114,7 +114,7 @@ class ClientSearchActivity : BaseActivity() {
                 if (client_edit.text.toString().isBlank()) {
                     showToast("请输入关键字")
                 } else {
-                    keyWord = client_edit.text.toString()
+                    keyWord = client_edit.text.trim().toString()
                     updateList()
                 }
             }

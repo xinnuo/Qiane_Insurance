@@ -111,7 +111,7 @@ class SearchActivity : BaseActivity() {
                 if (search_edit.text.toString().isBlank()) {
                     showToast("请输入关键字")
                 } else {
-                    keyWord = search_edit.text.toString()
+                    keyWord = search_edit.text.trim().toString()
 
                     val arr = if (getString("history").isEmpty()) JSONArray() else JSONArray(getString("history"))
                     if (keyWord !in arr.toString()) arr.put(keyWord)

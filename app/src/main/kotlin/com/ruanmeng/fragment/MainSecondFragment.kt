@@ -108,7 +108,7 @@ class MainSecondFragment : BaseFragment() {
         OkGo.post<String>(BaseHttp.read_user_ctn_data)
                 .tag(this@MainSecondFragment)
                 .headers("token", getString("token"))
-                .execute(object : StringDialogCallback(activity) {
+                .execute(object : StringDialogCallback(activity, false) {
 
                     @SuppressLint("SetTextI18n")
                     override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
@@ -238,6 +238,7 @@ class MainSecondFragment : BaseFragment() {
 
                 updateList()
             }
+            "更新客户", "删除客户" -> getData()
         }
     }
 }
