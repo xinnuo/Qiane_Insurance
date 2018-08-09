@@ -216,7 +216,7 @@ class PlanMakeActivity : BaseActivity() {
                                     }
                                 }
 
-                                .clicked(R.id.item_plan_modify) {
+                                .clicked(R.id.item_plan_modify) { _ ->
                                     if (!isHomeInsurance) {
                                         Flowable.just<String>(data.insuranceKindId)
                                                 .map { id ->
@@ -591,7 +591,7 @@ class PlanMakeActivity : BaseActivity() {
                                         .visibility(R.id.item_plan_divider2, if (!isLast) View.GONE else View.VISIBLE)
                                         .visibility(R.id.item_plan_divider3, if (!isFirst) View.GONE else View.VISIBLE)
 
-                                        .clicked(R.id.item_plan) {
+                                        .clicked(R.id.item_plan) { _ ->
                                             if (data.isClickable) {
                                                 data.isChecked = !data.isChecked
 
@@ -649,7 +649,7 @@ class PlanMakeActivity : BaseActivity() {
                                             it.text = data.checkName
                                         }
 
-                                        .clicked(R.id.dialog_type_age_ll) {
+                                        .clicked(R.id.dialog_type_age_ll) { _ ->
                                             val options = ArrayList<CommonData>()
                                             val itemStr = ArrayList<String>()
 
@@ -757,16 +757,16 @@ class PlanMakeActivity : BaseActivity() {
                                 injector.text(R.id.dialog_type_name, data.optDictionaryName)
                                         .visibility(R.id.dialog_type_divider, if (!isLast) View.GONE else View.VISIBLE)
 
-                                        .with<EditText>(R.id.dialog_type_num) {
+                                        .with<EditText>(R.id.dialog_type_num) { v ->
 
-                                            if (it.tag != null && it.tag is TextWatcher) {
-                                                it.removeTextChangedListener(it.tag as TextWatcher)
+                                            if (v.tag != null && v.tag is TextWatcher) {
+                                                v.removeTextChangedListener(v.tag as TextWatcher)
                                             }
 
-                                            it.setText(data.checkName)
-                                            it.setSelection(it.text.length)
-                                            it.hint = "请输入"
-                                            if (mFocusPosition == items.indexOf(data)) it.requestFocus()
+                                            v.setText(data.checkName)
+                                            v.setSelection(v.text.length)
+                                            v.hint = "请输入"
+                                            if (mFocusPosition == items.indexOf(data)) v.requestFocus()
 
                                             val textWatcher = object : TextWatcher {
                                                 override fun afterTextChanged(s: Editable) {
@@ -787,11 +787,11 @@ class PlanMakeActivity : BaseActivity() {
                                                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
                                             }
 
-                                            it.addTextChangedListener(textWatcher)
-                                            it.tag = textWatcher
+                                            v.addTextChangedListener(textWatcher)
+                                            v.tag = textWatcher
                                         }
 
-                                        .clicked(R.id.dialog_type_num_clear) {
+                                        .clicked(R.id.dialog_type_num_clear) { _ ->
                                             Observable.create<Int> {
                                                 val index = items.indexOf(data)
                                                 data.checkName = ""
@@ -809,7 +809,7 @@ class PlanMakeActivity : BaseActivity() {
 
                 dialogTitle.text = intent.getStringExtra("title")
                 dialogClose.onClick { dismiss() }
-                dialogOk.onClick {
+                dialogOk.onClick { _ ->
 
                     items.forEach { item ->
                         when (item) {
@@ -1175,8 +1175,8 @@ class PlanMakeActivity : BaseActivity() {
      */
     private fun updateCheckedList() {
         Flowable.fromIterable(listChecked)
-                .concatMap {
-                    val kindId = it.insuranceKindId
+                .concatMap { data ->
+                    val kindId = data.insuranceKindId
                     val items = ArrayList<Any>()
                     items.addItems(mapChecked[kindId])
                     calculateProportion(items)
@@ -1203,7 +1203,7 @@ class PlanMakeActivity : BaseActivity() {
                 .map { getCheckedList(it) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
+                .subscribe { _ ->
                     listChecked.removeAll { it.insuredTable.size < 2 }
                     updateList()
                 }
@@ -1506,7 +1506,7 @@ class PlanMakeActivity : BaseActivity() {
                                         .visibility(R.id.item_plan_divider2, if (!isLast) View.GONE else View.VISIBLE)
                                         .visibility(R.id.item_plan_divider3, if (!isFirst) View.GONE else View.VISIBLE)
 
-                                        .clicked(R.id.item_plan) {
+                                        .clicked(R.id.item_plan) { _ ->
                                             if (data.isClickable) {
                                                 data.isChecked = !data.isChecked
 
@@ -1532,7 +1532,7 @@ class PlanMakeActivity : BaseActivity() {
                                             it.text = data.checkName
                                         }
 
-                                        .clicked(R.id.dialog_type_age_ll) {
+                                        .clicked(R.id.dialog_type_age_ll) { _ ->
                                             val options = ArrayList<CommonData>()
                                             val itemStr = ArrayList<String>()
 

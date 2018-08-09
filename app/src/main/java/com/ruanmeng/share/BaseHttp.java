@@ -52,6 +52,7 @@ public class BaseHttp {
     public static String items_byAge = baseIp + "/items_byAge.rm";                         //根据年龄获取选项值√
     public static String cascadeItems_items_list = baseIp + "/cascadeItems_items_list.rm"; //获取级联√
     public static String insurancekind_detils = baseIp + "/insurancekind_detils.rm";       //险种信息√
+    public static String items_Price = baseIp + "/items_Price.rm";                         //获取保额保费比例√
     public static String add_app_prospectus = baseIp + "/add_app_prospectus.rm";           //新增计划书√
     public static String product_list_data = baseIp + "/product_list_data.rm";             //产品列表√
     public static String read_user_ctn_data = baseIp + "/read_user_ctn_data.rm";           //阅读数、获客数√
