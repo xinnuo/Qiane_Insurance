@@ -218,16 +218,19 @@ class PlanMakeActivity : BaseActivity() {
 
                                 .clicked(R.id.item_plan_modify) { _ ->
                                     if (!isHomeInsurance) {
-                                        Flowable.just<String>(data.insuranceKindId)
-                                                .map { id ->
-                                                    val items = mapChecked[id]!!
-                                                    val indexPosition = items.indexOfFirst { it is CommonData }
-                                                    calculateFee(indexPosition, 0, items)
-                                                    return@map items
-                                                }
-                                                .subscribeOn(Schedulers.newThread())
-                                                .observeOn(AndroidSchedulers.mainThread())
-                                                .subscribe { showInsuranceDialog(it) }
+                                        val items = mapChecked[data.insuranceKindId]!!
+                                        val itemIds = getProportionItemIds(items)
+
+                                        getProportionData(itemIds.toString(), items, object : ResultCallBack {
+                                            override fun doWork() {
+                                                val indexPosition = items.indexOfFirst { it is CommonData }
+                                                Flowable.just<Int>(indexPosition)
+                                                        .map { return@map calculateFee(it, 0, items) }
+                                                        .subscribeOn(Schedulers.newThread())
+                                                        .observeOn(AndroidSchedulers.mainThread())
+                                                        .subscribe { showInsuranceDialog(items) }
+                                            }
+                                        })
                                     } else {
                                         Flowable.just<String>(data.insuranceKindId)
                                                 .map { return@map mapChecked[it]!! }
@@ -715,15 +718,17 @@ class PlanMakeActivity : BaseActivity() {
                                                                                 }
                                                                             }
 
-                                                                            Observable.create<Int> {
-                                                                                val index = items.indexOf(data)
-                                                                                calculateProportion(items)
-                                                                                calculateFee(index, data.insuredParentPosition, items)
-                                                                                it.onNext(index)
-                                                                            }
-                                                                                    .subscribeOn(Schedulers.newThread())
-                                                                                    .observeOn(AndroidSchedulers.mainThread())
-                                                                                    .subscribe { (adapter as SlimAdapter).notifyDataSetChanged() }
+                                                                            val itemIds = getProportionItemIds(items)
+                                                                            getProportionData(itemIds.toString(), items, object : ResultCallBack {
+                                                                                override fun doWork() {
+                                                                                    val index = items.indexOf(data)
+                                                                                    Flowable.just<Int>(index)
+                                                                                            .map { return@map calculateFee(it, data.insuredParentPosition, items) }
+                                                                                            .subscribeOn(Schedulers.newThread())
+                                                                                            .observeOn(AndroidSchedulers.mainThread())
+                                                                                            .subscribe { (adapter as SlimAdapter).notifyDataSetChanged() }
+                                                                                }
+                                                                            })
                                                                         }
 
                                                                     })
@@ -732,15 +737,17 @@ class PlanMakeActivity : BaseActivity() {
                                                         data.checkName = name
                                                         data.checkItemId = options[position].insuranceItemId
 
-                                                        Observable.create<Int> {
-                                                            val index = items.indexOf(data)
-                                                            calculateProportion(items)
-                                                            calculateFee(index, data.insuredParentPosition, items)
-                                                            it.onNext(index)
-                                                        }
-                                                                .subscribeOn(Schedulers.newThread())
-                                                                .observeOn(AndroidSchedulers.mainThread())
-                                                                .subscribe { (adapter as SlimAdapter).notifyDataSetChanged() }
+                                                        val itemIds = getProportionItemIds(items)
+                                                        getProportionData(itemIds.toString(), items, object : ResultCallBack {
+                                                            override fun doWork() {
+                                                                val index = items.indexOf(data)
+                                                                Flowable.just<Int>(index)
+                                                                        .map { return@map calculateFee(it, data.insuredParentPosition, items) }
+                                                                        .subscribeOn(Schedulers.newThread())
+                                                                        .observeOn(AndroidSchedulers.mainThread())
+                                                                        .subscribe { (adapter as SlimAdapter).notifyDataSetChanged() }
+                                                            }
+                                                        })
                                                     }
                                                 } else {
                                                     data.checkName = name
@@ -891,7 +898,7 @@ class PlanMakeActivity : BaseActivity() {
                                     it.checkItem == "1"
                                             && it.insuranceOptDictionaryId == item.insuranceOptDictionaryId
                                 }) {
-                            val data = itemLis.firstOrNull {
+                            val data = itemLis.find {
                                 it.checkItem == "1"
                                         && it.insuranceOptDictionaryId == item.insuranceOptDictionaryId
                             }
@@ -901,7 +908,7 @@ class PlanMakeActivity : BaseActivity() {
                                 item.checkName = data.itemName
                             }
                         } else {
-                            val data = itemLis.firstOrNull {
+                            val data = itemLis.find {
                                 it.insuranceOptDictionaryId == item.insuranceOptDictionaryId
                             }
 
@@ -928,9 +935,6 @@ class PlanMakeActivity : BaseActivity() {
             }
         }
 
-        val indexPosition = items.indexOfFirst { it is CommonData }
-        if (indexPosition > -1) calculateFee(indexPosition, 0, items)
-
         return items
     }
 
@@ -956,7 +960,7 @@ class PlanMakeActivity : BaseActivity() {
                                 it.checkItem == "1"
                                         && it.insuranceOptDictionaryId == inner.insuranceOptDictionaryId
                             }) {
-                        val data = itemLis.firstOrNull {
+                        val data = itemLis.find {
                             it.checkItem == "1"
                                     && it.insuranceOptDictionaryId == inner.insuranceOptDictionaryId
                         }
@@ -966,7 +970,7 @@ class PlanMakeActivity : BaseActivity() {
                             inner.checkName = data.itemName
                         }
                     } else {
-                        val data = itemLis.firstOrNull {
+                        val data = itemLis.find {
                             it.insuranceOptDictionaryId == inner.insuranceOptDictionaryId
                         }
 
@@ -993,7 +997,6 @@ class PlanMakeActivity : BaseActivity() {
 
             items.addAll(currentPos + 1, itemLbs)
 
-            calculateProportion(items)
             val indexPosition = items.indexOfFirst { it is CommonData }
             calculateFee(indexPosition, 0, items)
         } else {
@@ -1174,137 +1177,136 @@ class PlanMakeActivity : BaseActivity() {
      * 更新已选险种列表
      */
     private fun updateCheckedList() {
-        Flowable.fromIterable(listChecked)
-                .concatMap { data ->
-                    val kindId = data.insuranceKindId
-                    val items = ArrayList<Any>()
-                    items.addItems(mapChecked[kindId])
-                    calculateProportion(items)
+        val itemsAll = ArrayList<Any>()
 
-                    val indexPosition = items.indexOfFirst { it is CommonData }
-                    if (indexPosition > -1) calculateFee(indexPosition, 0, items)
+        listChecked.forEach { data ->
+            val kindId = data.insuranceKindId
+            itemsAll.addItems(mapChecked[kindId])
+        }
 
-                    items.filter {
-                        it is InsuranceModel
-                                && it.isChecked
-                                && it.proportionAllow == "0"
-                    }.forEach { item ->
-                        item as InsuranceModel
-                        item.isChecked = false
-                        item.proportionAllow = ""
+        val itemIds = getProportionItemIds(itemsAll)
+        getProportionData(itemIds.toString(), itemsAll, object : ResultCallBack {
+            override fun doWork() {
 
-                        items.removeAll {
-                            (it is CommonData && it.insuredParentPosition == item.insuredParentPosition)
-                                    || (it is InsuranceData && it.insuredParentPosition == item.insuredParentPosition)
+                Flowable.fromIterable(listChecked)
+                        .concatMap { data ->
+                            val kindId = data.insuranceKindId
+                            val items = ArrayList<Any>()
+                            items.addItems(mapChecked[kindId])
+
+                            items.filter {
+                                it is InsuranceModel
+                                        && it.isChecked
+                                        && it.proportionAllow == "0"
+                            }.forEach { item ->
+                                item as InsuranceModel
+                                item.isChecked = false
+                                item.proportionAllow = ""
+
+                                items.removeAll {
+                                    (it is CommonData && it.insuredParentPosition == item.insuredParentPosition)
+                                            || (it is InsuranceData && it.insuredParentPosition == item.insuredParentPosition)
+                                }
+                            }
+
+                            val indexPosition = items.indexOfFirst { it is CommonData }
+                            if (indexPosition > -1) calculateFee(indexPosition, 0, items)
+
+                            Flowable.just(items)
                         }
-                    }
-                    Flowable.just(items)
-                }
-                .map { getCheckedList(it) }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { _ ->
-                    listChecked.removeAll { it.insuredTable.size < 2 }
-                    updateList()
-                }
+                        .map { getCheckedList(it) }
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe { _ ->
+                            listChecked.removeAll { it.insuredTable.size < 2 }
+                            updateList()
+                        }
+            }
+        })
     }
 
     /**
-     * 根据险种选项计算费率
+     * 获取险种选项值
      */
-    private fun calculateProportion(items: ArrayList<Any>) {
-        if (items.isEmpty()) return
-        val itemMain = items.first { it is InsuranceModel && it.type == "1" } as InsuranceModel //主险种
+    private fun getProportionItemIds(items: ArrayList<Any>): JSONArray {
+        val objArr = JSONArray()
+        if (items.isEmpty()) return objArr
 
         items.filter { it is InsuranceModel && it.isChecked }.forEachWithIndex { index, data ->
             data as InsuranceModel  //当前险种
 
-            //费率列表
-            val itemLrs = ArrayList<CommonData>()
-            itemLrs.addItems(data.lrs)
+            val objItem = JSONObject()
+            val linkCheckIds = ArrayList<String>()
+            objItem.put("insuranceKindId", data.insuranceKindId)
 
             //选项联动id
             val linkId = data.pitems
             if (linkId.isEmpty()) return@forEachWithIndex
-
-            //获取选项联动的id值
             val linkIds = linkId.split(",")
-            val linkCheckIds = ArrayList<String>()
+
             linkIds.forEach { item ->
-                when (item) {
-                    "10" -> when (data.type) {
-                        "1", "2" -> linkCheckIds.add(mMedianAge.toString())
-                        "3" -> linkCheckIds.add(mMedianAge1.toString())
-                        "4" -> linkCheckIds.add(mMedianAge2.toString())
-                    }
-                    "11" -> when (data.type) {
-                        "1", "2" -> linkCheckIds.add(if (mPlanedSex == 0) "女" else "男")
-                        "3" -> linkCheckIds.add(if (mPlanSex == 0) "女" else "男")
-                        "4" -> linkCheckIds.add(if (mPlaneSex == 0) "女" else "男")
-                    }
-                    else -> {
-                        val itemIds = data.insuranceKindItemIds
-                        if (item in itemIds) { //从主险获取
-                            val itemMainLds = ArrayList<CommonData>()
-                            itemMainLds.addItems(itemMain.lds) //选项列表里已包含初始值
-                            linkCheckIds.add(itemMainLds.first {
-                                it.type == "0" && it.insuranceOptDictionaryId == item
-                            }.checkItemId)
-                        } else {
-                            val innerData = items.find {
-                                it is CommonData
-                                        && it.insuredParentPosition == index
-                                        && it.insuranceOptDictionaryId == item
-                            } as CommonData
-                            linkCheckIds.add(innerData.checkItemId)
-                        }
-                    }
-                }
+                val itemIds = data.pinsuranceKindItemIds
+
+                if (item == "10"
+                        || item == "11"
+                        || item in itemIds) return@forEach
+
+                val innerData = items.find {
+                    it is CommonData
+                            && it.insuredParentPosition == index
+                            && it.insuranceOptDictionaryId == item
+                } as CommonData
+                linkCheckIds.add(innerData.checkItemId)
             }
 
-            //获取费率
-            val dataLrs = when (linkCheckIds.size) {
-                1 -> itemLrs.firstOrNull { it.item1 == linkCheckIds[0] }
-                2 -> itemLrs.firstOrNull {
-                    it.item1 == linkCheckIds[0]
-                            && it.item2 == linkCheckIds[1]
-                }
-                3 -> itemLrs.firstOrNull {
-                    it.item1 == linkCheckIds[0]
-                            && it.item2 == linkCheckIds[1]
-                            && it.item3 == linkCheckIds[2]
-                }
-                4 -> itemLrs.firstOrNull {
-                    it.item1 == linkCheckIds[0]
-                            && it.item2 == linkCheckIds[1]
-                            && it.item3 == linkCheckIds[2]
-                            && it.item4 == linkCheckIds[3]
-                }
-                5 -> itemLrs.firstOrNull {
-                    it.item1 == linkCheckIds[0]
-                            && it.item2 == linkCheckIds[1]
-                            && it.item3 == linkCheckIds[2]
-                            && it.item4 == linkCheckIds[3]
-                            && it.item5 == linkCheckIds[4]
-                }
-                6 -> itemLrs.firstOrNull {
-                    it.item1 == linkCheckIds[0]
-                            && it.item2 == linkCheckIds[1]
-                            && it.item3 == linkCheckIds[2]
-                            && it.item4 == linkCheckIds[3]
-                            && it.item5 == linkCheckIds[4]
-                            && it.item6 == linkCheckIds[5]
-                }
-                else -> null
-            } ?: return@forEachWithIndex
-
-            data.proportionType = dataLrs.type
-            data.proportionAllow = dataLrs.allow
-            if (dataLrs.type == "1") {
-                data.insuredAmount = if (dataLrs.insuredAmount.isEmpty()) 0.0 else dataLrs.insuredAmount.toDouble()
-                data.premium = if (dataLrs.premium.isEmpty()) 0.0 else dataLrs.premium.toDouble()
-            } else data.proportion = dataLrs.proportion.toDouble()
+            objItem.put("itemIds", linkCheckIds.joinToString(","))
+            objArr.put(objItem)
         }
+
+        return objArr
+    }
+
+    /**
+     * 获取险种费率
+     */
+    private fun getProportionData(itemIds: String, items: ArrayList<Any>, callBack: ResultCallBack) {
+        OkGo.post<BaseResponse<ArrayList<CommonData>>>(BaseHttp.items_Price)
+                .tag(this@PlanMakeActivity)
+                .params("infos", itemIds)
+                .params("age", mMedianAge)
+                .params("sex", mPlanedSex)
+                .params("coverAge", mMedianAge1)
+                .params("coverSex", mPlanSex)
+                .params("spouseAge", mMedianAge2)
+                .params("spouseSex", mPlaneSex)
+                .execute(object : JacksonDialogCallback<BaseResponse<ArrayList<CommonData>>>(baseContext, true) {
+
+                    override fun onSuccess(response: Response<BaseResponse<ArrayList<CommonData>>>) {
+
+                        val itemLrs = ArrayList<CommonData>()
+                        itemLrs.addItems(response.body().`object`)
+
+                        itemLrs.forEach { item ->
+                            val itemData = items.find {
+                                it is InsuranceModel
+                                        && it.insuranceKindId == item.insuranceKindId
+                            } as InsuranceModel
+
+                            itemData.proportionType = item.type
+                            itemData.proportionAllow = item.allow
+                            if (item.type == "1") {
+                                itemData.insuredAmount = if (item.insuredAmount.isEmpty()) 0.0 else item.insuredAmount.toDouble()
+                                itemData.premium = if (item.premium.isEmpty()) 0.0 else item.premium.toDouble()
+                            } else itemData.proportion = item.bproportion.toDouble()
+                        }
+                    }
+
+                    override fun onFinish() {
+                        super.onFinish()
+                        callBack.doWork()
+                    }
+
+                })
     }
 
     /**
@@ -1315,8 +1317,6 @@ class PlanMakeActivity : BaseActivity() {
 
         when (items[currentPos]) {
             is CommonData -> {
-                calculateProportion(items)
-
                 items.filter { it is InsuranceModel && it.isChecked }.forEachWithIndex { index, data ->
                     data as InsuranceModel
 
@@ -1378,7 +1378,7 @@ class PlanMakeActivity : BaseActivity() {
                 val item = items[currentPos] as InsuranceData
                 when (item.optDictionaryName) {
                     "保额" -> {
-                        val itemFee = items.firstOrNull {
+                        val itemFee = items.find {
                             it is InsuranceData
                                     && it.optDictionaryName == "保费"
                                     && it.insuredParentPosition == parentPos
@@ -1393,7 +1393,7 @@ class PlanMakeActivity : BaseActivity() {
                         }
                     }
                     "保费" -> {
-                        val itemTotal = items.firstOrNull {
+                        val itemTotal = items.find {
                             it is InsuranceData
                                     && it.optDictionaryName == "保额"
                                     && it.insuredParentPosition == parentPos
@@ -1791,30 +1791,30 @@ class PlanMakeActivity : BaseActivity() {
             }
 
             val dataLrs = when (linkCheckIds.size) {
-                1 -> itemLrs.firstOrNull { it.item1 == linkCheckIds[0] }
-                2 -> itemLrs.firstOrNull {
+                1 -> itemLrs.find { it.item1 == linkCheckIds[0] }
+                2 -> itemLrs.find {
                     it.item1 == linkCheckIds[0]
                             && it.item2 == linkCheckIds[1]
                 }
-                3 -> itemLrs.firstOrNull {
+                3 -> itemLrs.find {
                     it.item1 == linkCheckIds[0]
                             && it.item2 == linkCheckIds[1]
                             && it.item3 == linkCheckIds[2]
                 }
-                4 -> itemLrs.firstOrNull {
+                4 -> itemLrs.find {
                     it.item1 == linkCheckIds[0]
                             && it.item2 == linkCheckIds[1]
                             && it.item3 == linkCheckIds[2]
                             && it.item4 == linkCheckIds[3]
                 }
-                5 -> itemLrs.firstOrNull {
+                5 -> itemLrs.find {
                     it.item1 == linkCheckIds[0]
                             && it.item2 == linkCheckIds[1]
                             && it.item3 == linkCheckIds[2]
                             && it.item4 == linkCheckIds[3]
                             && it.item5 == linkCheckIds[4]
                 }
-                6 -> itemLrs.firstOrNull {
+                6 -> itemLrs.find {
                     it.item1 == linkCheckIds[0]
                             && it.item2 == linkCheckIds[1]
                             && it.item3 == linkCheckIds[2]
@@ -1990,12 +1990,29 @@ class PlanMakeActivity : BaseActivity() {
                             itemLbs.addItems(items.filter { it.inshow == "1" })
                             itemShow.addAll(getInsuranceList(itemLbs))
 
-                            if (itemShow.isNotEmpty())
-                                Flowable.just(itemShow)
-                                        .map { getCheckedList(it) }
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe { updateList() }
+                            val indexPosition = itemShow.indexOfFirst { it is CommonData }
+                            if (indexPosition > -1) {
+                                val itemIds = getProportionItemIds(itemShow)
+                                getProportionData(itemIds.toString(), itemShow, object : ResultCallBack {
+                                    override fun doWork() {
+                                        calculateFee(indexPosition, 0, itemShow)
+
+                                        if (itemShow.isNotEmpty())
+                                            Flowable.just(itemShow)
+                                                    .map { getCheckedList(it) }
+                                                    .subscribeOn(Schedulers.io())
+                                                    .observeOn(AndroidSchedulers.mainThread())
+                                                    .subscribe { updateList() }
+                                    }
+                                })
+                            } else {
+                                if (itemShow.isNotEmpty())
+                                    Flowable.just(itemShow)
+                                            .map { getCheckedList(it) }
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribe { updateList() }
+                            }
 
                         }
                     }
@@ -2016,7 +2033,19 @@ class PlanMakeActivity : BaseActivity() {
                         itemLbs.addItems(response.body().`object`)
                         mapKind[kindId] = itemLbs
 
-                        showInsuranceDialog(getInsuranceList(itemLbs))
+                        val items = ArrayList<Any>()
+                        items.addAll(getInsuranceList(itemLbs))
+
+                        val indexPosition = items.indexOfFirst { it is CommonData }
+                        if (indexPosition > -1) {
+                            val itemIds = getProportionItemIds(items)
+                            getProportionData(itemIds.toString(), items, object : ResultCallBack {
+                                override fun doWork() {
+                                    calculateFee(indexPosition, 0, items)
+                                    showInsuranceDialog(items)
+                                }
+                            })
+                        } else showInsuranceDialog(items)
                     }
 
                 })
@@ -2036,5 +2065,9 @@ class PlanMakeActivity : BaseActivity() {
                 planer_check.check(if (event.id == "0") R.id.planer_check2 else R.id.planer_check1)
             }
         }
+    }
+
+    private interface ResultCallBack {
+        fun doWork()
     }
 }

@@ -79,6 +79,7 @@ data class CommonData(
         var item5: String = "",
         var item6: String = "",
         var proportion: String = "0",
+        var bproportion: String = "0",
         var insuredAmount: String = "0",
         var premium: String = "0",
         var allow: String = "",
