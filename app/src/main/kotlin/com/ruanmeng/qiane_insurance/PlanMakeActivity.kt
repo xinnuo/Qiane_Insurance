@@ -504,7 +504,14 @@ class PlanMakeActivity : BaseActivity() {
                             }
                             .subscribeOn(Schedulers.newThread())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe { showHomeInsuranceDialog(it) }
+                            .subscribe {
+                                val itemIds = getHomeFeeItemIds(listKind[0].insuranceKindId, it)
+                                getHomeFeeData(itemIds.toString(), it, object : ResultCallBack {
+                                    override fun doWork() {
+                                        showHomeInsuranceDialog(it)
+                                    }
+                                })
+                            }
                 } else showOptionDialog()
             }
             R.id.planr_in -> startActivity<ClientSearchActivity>("isPlan" to true)
@@ -1472,8 +1479,6 @@ class PlanMakeActivity : BaseActivity() {
             }
         }
 
-        calculateHomeFee(item.insuranceKindId, items)
-
         return items
     }
 
@@ -1517,7 +1522,14 @@ class PlanMakeActivity : BaseActivity() {
                                                 }
                                                         .subscribeOn(Schedulers.newThread())
                                                         .observeOn(AndroidSchedulers.mainThread())
-                                                        .subscribe { (adapter as SlimAdapter).notifyDataSetChanged() }
+                                                        .subscribe {
+                                                            val itemIds = getHomeFeeItemIds(data.insuranceKindId, items)
+                                                            getHomeFeeData(itemIds.toString(), items, object : ResultCallBack {
+                                                                override fun doWork() {
+                                                                    (adapter as SlimAdapter).notifyDataSetChanged()
+                                                                }
+                                                            })
+                                                        }
                                             }
                                         }
                             }
@@ -1583,14 +1595,13 @@ class PlanMakeActivity : BaseActivity() {
                                                 //选项id联动
                                                 val linkId = item.pitems
                                                 if (data.insuranceOptDictionaryId in linkId) {
-                                                    Observable.create<Int> {
-                                                        val index = items.indexOf(data)
-                                                        calculateHomeFee(data.insuranceKindId, items)
-                                                        it.onNext(index)
-                                                    }
-                                                            .subscribeOn(Schedulers.newThread())
-                                                            .observeOn(AndroidSchedulers.mainThread())
-                                                            .subscribe { (adapter as SlimAdapter).notifyDataSetChanged() }
+
+                                                    val itemIds = getHomeFeeItemIds(data.insuranceKindId, items)
+                                                    getHomeFeeData(itemIds.toString(), items, object : ResultCallBack {
+                                                        override fun doWork() {
+                                                            (adapter as SlimAdapter).notifyDataSetChanged()
+                                                        }
+                                                    })
                                                 } else {
                                                     (adapter as SlimAdapter).notifyDataSetChanged()
                                                 }
@@ -1663,8 +1674,8 @@ class PlanMakeActivity : BaseActivity() {
                     }
 
                     if (inner.insuranceOptDictionaryId == "10") {
-                        innerData.checkItemId = item[0].medianAge
-                        innerData.checkName = "${item[0].medianAge}岁"
+                        innerData.checkItemId = if (item[0].medianAge.isEmpty()) item[0].startAge else item[0].medianAge
+                        innerData.checkName = "${if (item[0].medianAge.isEmpty()) item[0].startAge else item[0].medianAge}岁"
                     }
 
                     if (inner.insuranceOptDictionaryId == "11") {
@@ -1679,8 +1690,6 @@ class PlanMakeActivity : BaseActivity() {
             }
 
             items.addAll(currentPos + 1, itemLbs)
-
-            calculateHomeFee(kindId, items)
         } else {
             items.removeAll {
                 it is InsuranceData
@@ -1690,28 +1699,24 @@ class PlanMakeActivity : BaseActivity() {
     }
 
     /**
-     * 根据险种选项计算家庭版保额、保费
+     * 获取家庭版险种选项值
      */
-    private fun calculateHomeFee(kindId: String, items: ArrayList<Any>) {
-        if (items.isEmpty()) return
-        val itemList = mapKind[kindId] ?: return
+    private fun getHomeFeeItemIds(kindId: String, items: ArrayList<Any>): JSONArray {
+        val objArr = JSONArray()
+        if (items.isEmpty()) return objArr
+        val itemList = mapKind[kindId] ?: return objArr
         val itemMain = itemList[0]
 
         //选项联动id
         val linkId = itemMain.pitems
-        if (linkId.isEmpty()) return
+        if (linkId.isEmpty()) return objArr
 
         items.filter { it is InsuranceHomeModel }.forEachWithIndex { index, data ->
             data as InsuranceHomeModel  //当前险种
+            if (!data.isChecked) return@forEachWithIndex
 
-            if (items.none {
-                        it is InsuranceData
-                                && it.insuredParentPosition == index
-                    }) return@forEachWithIndex
-
-            //费率列表
-            val itemLrs = ArrayList<CommonData>()
-            itemLrs.addItems(itemMain.lrs)
+            val objItem = JSONObject()
+            objItem.put("insuranceKindId", data.insuranceKindId)
 
             //获取选项联动的id值
             val linkIds = linkId.split(",")
@@ -1719,43 +1724,36 @@ class PlanMakeActivity : BaseActivity() {
             linkIds.forEach { item ->
                 when (item) {
                     "10" -> {
-                        if (index == 0) linkCheckIds.add(mMedianAge.toString())
+                        if (index == 0) objItem.put("age", mMedianAge.toString())
                         else {
                             if (items.none {
                                         it is InsuranceData
                                                 && it.insuredParentPosition == index
                                                 && it.insuranceOptDictionaryId == item
                                     }) {
-                                val innerData = items.find {
-                                    it is InsuranceData
-                                            && it.insuredParentPosition == 0
-                                            && it.insuranceOptDictionaryId == item
-                                } as InsuranceData
-                                linkCheckIds.add(innerData.checkItemId)
+
+                                objItem.put("age", mMedianAge.toString())
                             } else {
                                 val innerData = items.find {
                                     it is InsuranceData
                                             && it.insuredParentPosition == index
                                             && it.insuranceOptDictionaryId == item
                                 } as InsuranceData
-                                linkCheckIds.add(innerData.checkItemId)
+
+                                objItem.put("age", innerData.checkItemId)
                             }
                         }
                     }
                     "11" -> {
-                        if (index == 0) linkCheckIds.add(if (mPlanedSex == 0) "女" else "男")
+                        if (index == 0) objItem.put("sex", mPlanedSex.toString())
                         else {
                             if (items.none {
                                         it is InsuranceData
                                                 && it.insuredParentPosition == index
                                                 && it.insuranceOptDictionaryId == item
                                     }) {
-                                val innerData = items.find {
-                                    it is InsuranceData
-                                            && it.insuredParentPosition == 0
-                                            && it.insuranceOptDictionaryId == item
-                                } as InsuranceData
-                                linkCheckIds.add(innerData.checkItemId)
+
+                                objItem.put("sex", mPlanedSex.toString())
                             } else {
                                 val innerData = items.find {
                                     it is InsuranceData
@@ -1763,6 +1761,8 @@ class PlanMakeActivity : BaseActivity() {
                                             && it.insuranceOptDictionaryId == item
                                 } as InsuranceData
                                 linkCheckIds.add(innerData.checkItemId)
+
+                                objItem.put("sex", if (innerData.checkItemId == "男") "1" else "0")
                             }
                         }
                     }
@@ -1777,6 +1777,7 @@ class PlanMakeActivity : BaseActivity() {
                                         && it.insuredParentPosition == 0
                                         && it.insuranceOptDictionaryId == item
                             } as InsuranceData
+
                             linkCheckIds.add(innerData.checkItemId)
                         } else {
                             val innerData = items.find {
@@ -1784,52 +1785,60 @@ class PlanMakeActivity : BaseActivity() {
                                         && it.insuredParentPosition == index
                                         && it.insuranceOptDictionaryId == item
                             } as InsuranceData
+
                             linkCheckIds.add(innerData.checkItemId)
                         }
                     }
                 }
             }
 
-            val dataLrs = when (linkCheckIds.size) {
-                1 -> itemLrs.find { it.item1 == linkCheckIds[0] }
-                2 -> itemLrs.find {
-                    it.item1 == linkCheckIds[0]
-                            && it.item2 == linkCheckIds[1]
-                }
-                3 -> itemLrs.find {
-                    it.item1 == linkCheckIds[0]
-                            && it.item2 == linkCheckIds[1]
-                            && it.item3 == linkCheckIds[2]
-                }
-                4 -> itemLrs.find {
-                    it.item1 == linkCheckIds[0]
-                            && it.item2 == linkCheckIds[1]
-                            && it.item3 == linkCheckIds[2]
-                            && it.item4 == linkCheckIds[3]
-                }
-                5 -> itemLrs.find {
-                    it.item1 == linkCheckIds[0]
-                            && it.item2 == linkCheckIds[1]
-                            && it.item3 == linkCheckIds[2]
-                            && it.item4 == linkCheckIds[3]
-                            && it.item5 == linkCheckIds[4]
-                }
-                6 -> itemLrs.find {
-                    it.item1 == linkCheckIds[0]
-                            && it.item2 == linkCheckIds[1]
-                            && it.item3 == linkCheckIds[2]
-                            && it.item4 == linkCheckIds[3]
-                            && it.item5 == linkCheckIds[4]
-                            && it.item6 == linkCheckIds[5]
-                }
-                else -> null
-            } ?: return@forEachWithIndex
-
-            if (dataLrs.type == "1") {
-                data.insuredAmount = if (dataLrs.insuredAmount.isEmpty()) 0.0 else dataLrs.insuredAmount.toDouble()
-                data.premium = if (dataLrs.premium.isEmpty()) 0.0 else dataLrs.premium.toDouble()
-            }
+            objItem.put("itemIds", linkCheckIds.joinToString(","))
+            objArr.put(objItem)
         }
+
+        return objArr
+    }
+
+    /**
+     * 获取家庭版保额、保费
+     */
+    private fun getHomeFeeData(itemIds: String, items: ArrayList<Any>, callBack: ResultCallBack) {
+        OkGo.post<BaseResponse<ArrayList<CommonData>>>(BaseHttp.items_homePrice)
+                .tag(this@PlanMakeActivity)
+                .params("infos", itemIds)
+                .params("age", mMedianAge)
+                .params("sex", mPlanedSex)
+                .params("coverAge", mMedianAge1)
+                .params("coverSex", mPlanSex)
+                .params("spouseAge", mMedianAge2)
+                .params("spouseSex", mPlaneSex)
+                .execute(object : JacksonDialogCallback<BaseResponse<ArrayList<CommonData>>>(baseContext, true) {
+
+                    override fun onSuccess(response: Response<BaseResponse<ArrayList<CommonData>>>) {
+
+                        val itemLrs = ArrayList<CommonData>()
+                        itemLrs.addItems(response.body().`object`)
+
+                        if (itemLrs.size == items.filter { it is InsuranceHomeModel && it.isChecked }.size) {
+                            items.filter { it is InsuranceHomeModel && it.isChecked }.forEachWithIndex { index, data ->
+                                data as InsuranceHomeModel
+
+                                val dataLrs = itemLrs[index]
+
+                                if (dataLrs.type == "1") {
+                                    data.insuredAmount = if (dataLrs.insuredAmount.isEmpty()) 0.0 else dataLrs.insuredAmount.toDouble()
+                                    data.premium = if (dataLrs.premium.isEmpty()) 0.0 else dataLrs.premium.toDouble()
+                                }
+                            }
+                        }
+                    }
+
+                    override fun onFinish() {
+                        super.onFinish()
+                        callBack.doWork()
+                    }
+
+                })
     }
 
     /**
@@ -1912,12 +1921,20 @@ class PlanMakeActivity : BaseActivity() {
 
         when (type) {
             0 -> if ("11" in linkId) {
-                calculateHomeFee(kindId, items)
-                getHomeCheckedList(items)
+                val itemIds = getHomeFeeItemIds(kindId, items)
+                getHomeFeeData(itemIds.toString(), items, object : ResultCallBack {
+                    override fun doWork() {
+                        getHomeCheckedList(items)
+                    }
+                })
             }
             1, 2 -> if ("10" in linkId) {
-                calculateHomeFee(kindId, items)
-                getHomeCheckedList(items)
+                val itemIds = getHomeFeeItemIds(kindId, items)
+                getHomeFeeData(itemIds.toString(), items, object : ResultCallBack {
+                    override fun doWork() {
+                        getHomeCheckedList(items)
+                    }
+                })
             }
         }
     }

@@ -38,6 +38,7 @@ import com.lzy.okgo.https.HttpsUtils
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor
 import com.lzy.okgo.utils.OkLogger
 import com.ruanmeng.qiane_insurance.BuildConfig
+import com.tencent.smtt.sdk.QbSdk
 import com.umeng.commonsdk.UMConfigure
 import com.umeng.socialize.Config
 import com.umeng.socialize.PlatformConfig
@@ -67,6 +68,12 @@ class Application : MultiDexApplication() {
         PlatformConfig.setQQZone("1106641891", "9rE1bLKqw2biHQ0T")
         Config.isJumptoAppStore = true
         UMConfigure.setLogEnabled(BuildConfig.LOG_DEBUG)
+
+        QbSdk.initX5Environment(this@Application, object : QbSdk.PreInitCallback {
+            override fun onCoreInitFinished() {}
+            //x5內核初始化完成的回调，为true表示x5内核加载成功，否则表示x5内核加载失败，会自动切换到系统内核。
+            override fun onViewInitFinished(result: Boolean) = OkLogger.d("initX5Environment: $result")
+        })
     }
 
     private fun initOkGo() {
