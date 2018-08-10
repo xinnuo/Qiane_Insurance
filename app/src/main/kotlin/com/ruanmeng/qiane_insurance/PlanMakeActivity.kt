@@ -631,7 +631,19 @@ class PlanMakeActivity : BaseActivity() {
                                                                     }
                                                                             .subscribeOn(Schedulers.newThread())
                                                                             .observeOn(AndroidSchedulers.mainThread())
-                                                                            .subscribe { (adapter as SlimAdapter).notifyDataSetChanged() }
+                                                                            .subscribe { _ ->
+                                                                                val itemIds = getProportionItemIds(items)
+                                                                                getProportionData(itemIds.toString(), items, object : ResultCallBack {
+                                                                                    override fun doWork() {
+                                                                                        val indexPosition = items.indexOfFirst { it is CommonData }
+                                                                                        Flowable.just<Int>(indexPosition)
+                                                                                                .map { return@map calculateFee(it, data.insuredParentPosition, items) }
+                                                                                                .subscribeOn(Schedulers.newThread())
+                                                                                                .observeOn(AndroidSchedulers.mainThread())
+                                                                                                .subscribe { (adapter as SlimAdapter).notifyDataSetChanged() }
+                                                                                    }
+                                                                                })
+                                                                            }
                                                                 }
 
                                                             })
