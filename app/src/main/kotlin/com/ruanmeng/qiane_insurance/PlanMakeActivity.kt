@@ -1197,14 +1197,26 @@ class PlanMakeActivity : BaseActivity() {
      */
     private fun updateCheckedList() {
         val itemsAll = ArrayList<Any>()
+        val itemsArray = ArrayList<JSONArray>()
 
         listChecked.forEach { data ->
             val kindId = data.insuranceKindId
-            itemsAll.addItems(mapChecked[kindId])
+            val items = ArrayList<Any>()
+            items.addItems(mapChecked[kindId])
+
+            itemsArray.add(getProportionItemIds(items))
+            itemsAll.addItems(items)
         }
 
-        val itemIds = getProportionItemIds(itemsAll)
-        getProportionData(itemIds.toString(), itemsAll, object : ResultCallBack {
+        val itemIdsFirst = itemsArray[0]
+        if(itemsArray.size > 1) (1 until itemsArray.size).forEach { index ->
+            (0 until itemsArray[index].length()).forEach {
+                itemIdsFirst.put(itemsArray[index][it])
+            }
+        }
+
+        //val itemIds = getProportionItemIds(itemsAll)
+        getProportionData(itemIdsFirst.toString(), itemsAll, object : ResultCallBack {
             override fun doWork() {
 
                 Flowable.fromIterable(listChecked)
@@ -1251,8 +1263,9 @@ class PlanMakeActivity : BaseActivity() {
         val objArr = JSONArray()
         if (items.isEmpty()) return objArr
 
-        items.filter { it is InsuranceModel && it.isChecked }.forEachWithIndex { index, data ->
+        items.filter { it is InsuranceModel }.forEachWithIndex { index, data ->
             data as InsuranceModel  //当前险种
+            if (!data.isChecked) return@forEachWithIndex
 
             val objItem = JSONObject()
             val linkCheckIds = ArrayList<String>()
