@@ -72,7 +72,7 @@ class Application : MultiDexApplication() {
         QbSdk.initX5Environment(this@Application, object : QbSdk.PreInitCallback {
             override fun onCoreInitFinished() {}
             //x5內核初始化完成的回调，为true表示x5内核加载成功，否则表示x5内核加载失败，会自动切换到系统内核。
-            override fun onViewInitFinished(result: Boolean) = OkLogger.d("initX5Environment: $result")
+            override fun onViewInitFinished(isX5Core: Boolean) = OkLogger.d("initX5Environment: $isX5Core")
         })
     }
 
