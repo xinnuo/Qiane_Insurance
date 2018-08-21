@@ -132,7 +132,7 @@ class MainFirstFragment : BaseFragment() {
                             }
 
                             .visibility(R.id.item_first_price, if (data.type == "1") View.GONE else View.VISIBLE)
-                            .visibility(R.id.item_first_tui, if (data.type == "1") View.GONE else View.VISIBLE)
+                            // .visibility(R.id.item_first_tui, if (data.type == "1") View.GONE else View.VISIBLE)
                             .visibility(R.id.item_first_divider1, if (isLast) View.GONE else View.VISIBLE)
                             .visibility(R.id.item_first_divider2, if (!isLast) View.GONE else View.VISIBLE)
                             .visibility(R.id.item_first_divider3, if (!isLast) View.GONE else View.VISIBLE)

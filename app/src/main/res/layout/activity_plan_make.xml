@@ -745,7 +745,8 @@
             android:onClick="doClick"
             android:paddingEnd="@dimen/dimen_size_15"
             android:paddingStart="@dimen/dimen_size_15"
-            android:text="产品资料" />
+            android:text="产品资料"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/plan_make"

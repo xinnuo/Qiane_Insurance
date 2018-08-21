@@ -43,18 +43,18 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:maxLines="1"
                         android:ellipsize="end"
+                        android:maxLines="1"
                         android:text="标题" />
 
                     <TextView
                         android:id="@+id/item_first_price"
                         style="@style/Font14_black"
                         android:layout_width="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_size_10"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/colorAccent"
-                        android:text="0元" />
+                        android:layout_marginStart="@dimen/dimen_size_10"
+                        android:text="0元"
+                        android:textColor="@color/colorAccent" />
 
                 </LinearLayout>
 
@@ -72,8 +72,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_size_10"
+                    android:text="推广费0%"
                     android:textColor="@color/colorAccent"
-                    android:text="推广费0%" />
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -83,8 +84,8 @@
             android:id="@+id/item_first_divider1"
             android:layout_width="match_parent"
             android:layout_height="@dimen/divider_height"
-            android:layout_marginStart="@dimen/dimen_size_75"
             android:layout_marginEnd="@dimen/dimen_size_10"
+            android:layout_marginStart="@dimen/dimen_size_75"
             android:background="@color/divider" />
 
     </LinearLayout>

@@ -852,6 +852,8 @@ class PlanMakeActivity : BaseActivity() {
 
                     dismiss()
 
+                    if (items.none { it is InsuranceModel && it.isChecked }) return@onClick
+
                     Flowable.just(items)
                             .map { getCheckedList(it) }
                             .subscribeOn(Schedulers.newThread())
@@ -1639,7 +1641,7 @@ class PlanMakeActivity : BaseActivity() {
 
                 dialogTitle.text = intent.getStringExtra("title")
                 dialogClose.onClick { dismiss() }
-                dialogOk.onClick {
+                dialogOk.onClick { _ ->
 
                     items.forEach { item ->
                         when (item) {
@@ -1651,6 +1653,8 @@ class PlanMakeActivity : BaseActivity() {
                     }
 
                     dismiss()
+
+                    if (items.none { it is InsuranceHomeModel && it.isChecked }) return@onClick
 
                     getHomeCheckedList(items)
                     mapChecked[listKind[0].insuranceKindId] = items
