@@ -68,6 +68,8 @@ class MainFirstFragment : BaseFragment() {
 
     @SuppressLint("InflateParams")
     override fun init_title() {
+        companyId = getString("companyId")
+
         swipe_refresh.setProgressViewOffset(
                 false,
                 swipe_refresh.progressViewStartOffset + dip(60),
@@ -144,9 +146,9 @@ class MainFirstFragment : BaseFragment() {
                                             "prospectusId" to data.productprospectusId)
                                 else {
                                     startActivity<PlanLookActivity>(
-                                                "productinId" to data.productprospectusId,
-                                                "type" to "产品详情",
-                                                "outHref" to data.outHref)
+                                            "productinId" to data.productprospectusId,
+                                            "type" to "产品详情",
+                                            "outHref" to data.outHref)
                                 }
                             }
                 }
@@ -227,7 +229,8 @@ class MainFirstFragment : BaseFragment() {
 
                     override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
 
-                        val obj = JSONObject(response.body()).optJSONObject("object") ?: JSONObject()
+                        val obj = JSONObject(response.body()).optJSONObject("object")
+                                ?: JSONObject()
 
                         putString("companyName", obj.optString("companyName"))
                         first_company_name.text = getString("companyName")

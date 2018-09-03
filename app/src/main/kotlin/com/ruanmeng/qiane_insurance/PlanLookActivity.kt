@@ -97,7 +97,7 @@ class PlanLookActivity : BaseActivity() {
                             }
                             "产品详情" -> {
                                 val outHref = intent.getStringExtra("outHref")
-                                if (outHref.isEmpty()){
+                                if (outHref.isEmpty()) {
                                     if (title == "产品详情") ivRight.visible() else ivRight.gone()
                                 }
                             }
@@ -120,7 +120,7 @@ class PlanLookActivity : BaseActivity() {
                         if (!(url.startsWith("https://") || url.startsWith("http://"))) return true
                         // if (!url.isWeb()) return true
 
-                        if (url.endsWith("apk")) browse(url)
+                        if (url.endsWith("apk") || "productclause_download" in url) browse(url)
                         else {
                             if ("pingan" in url) {
                                 if ("index.do" !in url) ivRight.gone()
