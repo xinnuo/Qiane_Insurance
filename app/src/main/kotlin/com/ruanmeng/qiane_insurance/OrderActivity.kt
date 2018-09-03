@@ -83,7 +83,8 @@ class OrderActivity : BaseActivity() {
 
         mAdapter = SlimAdapter.create()
                 .register<CommonData>(R.layout.item_order_list) { data, injector ->
-                    injector.text(R.id.item_order_time, data.createDate)
+                    injector.invisible(R.id.item_order_around)
+                            .text(R.id.item_order_time, data.createDate)
                             .text(R.id.item_order_title, data.productName)
                             .text(R.id.item_order_plan, "投保人：${data.buyName}")
                             .text(R.id.item_order_planed, "被保人：${data.coverName}")

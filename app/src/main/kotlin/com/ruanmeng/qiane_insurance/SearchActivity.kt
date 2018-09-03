@@ -69,7 +69,7 @@ class SearchActivity : BaseActivity() {
                             }
 
                             .visibility(R.id.item_first_price, if (data.type == "1") View.GONE else View.VISIBLE)
-                            .visibility(R.id.item_first_tui, if (data.type == "1") View.GONE else View.VISIBLE)
+                            // .visibility(R.id.item_first_tui, if (data.type == "1") View.GONE else View.VISIBLE)
                             .visibility(R.id.item_first_divider1, if (isLast) View.GONE else View.VISIBLE)
                             .visibility(R.id.item_first_divider2, if (!isLast) View.GONE else View.VISIBLE)
 
@@ -127,6 +127,7 @@ class SearchActivity : BaseActivity() {
     override fun getData(pindex: Int) {
         OkGo.post<BaseResponse<ArrayList<CommonData>>>(BaseHttp.index_productprospectus)
                 .tag(this@SearchActivity)
+                .isMultipart(true)
                 .params("key", keyWord)
                 .params("page", pindex)
                 .execute(object : JacksonDialogCallback<BaseResponse<ArrayList<CommonData>>>(baseContext) {
