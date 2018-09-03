@@ -275,13 +275,13 @@ class PlanLookActivity : BaseActivity() {
                                 .doOnSubscribe { showLoadingDialog() }
                                 .doFinally { cancelLoadingDialog() }
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe({
+                                .subscribe({ inner ->
                                     val strHint = StringBuilder()
-                                    val itemGender = it.select("div.gender").select("span")
-                                    itemGender.forEach { strHint.append(it.text()) }
+                                    val itemGender = inner.select("div.gender").select("span")
+                                    itemGender.forEach { strHint.append(inner.text()) }
                                     strHint.append("，")
 
-                                    val items = it.select("ul.info-class").select("li")
+                                    val items = inner.select("ul.info-class").select("li")
                                     items.forEachWithIndex { index, item ->
                                         strHint.append(item.select("span").text())
                                         strHint.append(item.select("b.red").text())
@@ -289,7 +289,7 @@ class PlanLookActivity : BaseActivity() {
                                     }
                                     val content = strHint.toString().replace(" ", "")
 
-                                    showShareDialog(it.title(), content, urlShare)
+                                    showShareDialog(inner.title(), content, urlShare)
                                 }, { showToast("网络数据解析失败") })
                     }
                     "产品详情" -> {
@@ -316,10 +316,10 @@ class PlanLookActivity : BaseActivity() {
                                         .doOnSubscribe { showLoadingDialog() }
                                         .doFinally { cancelLoadingDialog() }
                                         .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe({
-                                            val items = it.select("script")
+                                        .subscribe({ inner ->
+                                            val items = inner.select("script")
 
-                                            var descContent = it.title()
+                                            var descContent = inner.title()
                                             var imgUrl = ""
 
                                             items.forEach { item ->
@@ -347,7 +347,7 @@ class PlanLookActivity : BaseActivity() {
                                                 }
                                             }
 
-                                            showShareDialog(it.title(), descContent, outHref, imgUrl)
+                                            showShareDialog(inner.title(), descContent, outHref, imgUrl)
                                         }, { showToast("网络数据解析失败") })
                             }
                         }
@@ -361,13 +361,34 @@ class PlanLookActivity : BaseActivity() {
         if (webView.canGoBack()) {
             // webView.settings.cacheMode = WebSettings.LOAD_NO_CACHE //设置无缓存
 
-            val type = intent.getStringExtra("type")
-            if (type != "产品详情" && type != "订单支付") {
-                webView.goBack()
-                return
+            when(intent.getStringExtra("type")) {
+                "订单支付" -> super.onBackPressed()
+                "产品详情" -> {
+                    EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
+                    val encodeStr = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token")).replace("/n", "")
+                    val userInfoId = URLEncoder.encode(encodeStr, "utf-8")
+
+                    val urlThis = webView.url
+                    val outHref = intent.getStringExtra("outHref")
+                    val urlDetail = BaseHttp.product_detils + intent.getStringExtra("productinId") + "&userInfoId=$userInfoId"
+
+                    if (outHref.isEmpty()) {
+                        if (urlThis != urlDetail) webView.loadUrl(urlDetail)
+                        else super.onBackPressed()
+                    } else {
+                        if (urlThis != outHref && "index.do" !in urlThis) {
+                            ivRight.visible()
+                            webView.loadUrl(outHref)
+                        }
+                        else super.onBackPressed()
+                    }
+                }
+                else -> {
+                    webView.goBack()
+                    return
+                }
             }
-        }
-        super.onBackPressed()
+        } else super.onBackPressed()
     }
 
     override fun onResume() {
