@@ -1,7 +1,6 @@
 package com.ruanmeng.qiane_insurance
 
 import android.os.Bundle
-import android.view.View
 import com.ruanmeng.base.BaseActivity
 import com.ruanmeng.fragment.OnFragmentItemSelectListener
 import com.ruanmeng.fragment.PhoneFirstFragment

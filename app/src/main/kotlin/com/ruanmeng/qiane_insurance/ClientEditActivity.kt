@@ -72,7 +72,7 @@ class ClientEditActivity : BaseActivity() {
                                     if ((!isLast && data.fristName != list[index + 1].fristName) || isLast) View.GONE else View.VISIBLE)
                             .visibility(R.id.item_client_divider2, if (!isLast) View.GONE else View.VISIBLE)
 
-                            .clicked(R.id.item_client) {
+                            .clicked(R.id.item_client) { _ ->
                                 if (isEdit) {
                                     data.isChecked = !data.isChecked
                                     mAdapterEx.notifyDataSetChanged()
@@ -159,7 +159,7 @@ class ClientEditActivity : BaseActivity() {
                     title = "温馨提示"
                     message = "确定要删除所选择的客户吗？"
                     negativeButton("取消") {}
-                    positiveButton("删除") {
+                    positiveButton("删除") { _ ->
                         val itemIds = ArrayList<String>()
                         list.filter { it.isChecked }.forEach { itemIds.add(it.usercustomerId) }
 

@@ -93,12 +93,12 @@ class FilterCompanyActivity : BaseActivity() {
                 }
                 .attachTo(mRecycler)
 
-        clearBT.onClick {
+        clearBT.onClick { _ ->
             list.filter { it.isChecked }.forEach { it.isChecked = false }
             mAdapter.notifyDataSetChanged()
         }
 
-        sureBT.onClick {
+        sureBT.onClick { _ ->
             val itemIds = ArrayList<String>()
             val itemNames = ArrayList<String>()
 

@@ -173,6 +173,9 @@
         <activity
             android:name=".FeedbackActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettlementActivity"
+            android:screenOrientation="portrait" />
 
         <!-- JPush start -->
         <!-- JPush 用户自定义的广播接收器 -->
@@ -198,7 +201,6 @@
             tools:ignore="ExportedReceiver">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
-
                 <category android:name="${applicationId}" />
             </intent-filter>
         </receiver>

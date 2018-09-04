@@ -91,7 +91,7 @@ class FilterActivity : BaseActivity() {
                                 }
                             }
 
-                            .clicked(R.id.item_company) {
+                            .clicked(R.id.item_company) { _ ->
                                 list.filter { it is CommonData && it.isChecked && it.type == data.type }
                                         .forEach { (it as CommonData).isChecked = false }
                                 data.isChecked = true
@@ -100,13 +100,13 @@ class FilterActivity : BaseActivity() {
                 }
                 .attachTo(mRecycler)
 
-        clearBT.onClick {
+        clearBT.onClick { _ ->
             list.filter { it is CommonData && it.isChecked }
                     .forEach { (it as CommonData).isChecked = false }
             mAdapter.notifyDataSetChanged()
         }
 
-        sureBT.onClick {
+        sureBT.onClick { _ ->
             val itemIds = ArrayList<String>()
             val itemNames = ArrayList<String>()
 

@@ -93,7 +93,8 @@ class MainActivity : BaseActivity() {
             R.id.third_get -> startActivity<InfoRealActivity>("title" to "获取资质证书", "hint" to "去认证")
             R.id.third_guest -> startActivity<ClientActivity>()
             R.id.third_plan -> startActivity<PlanMineActivity>()
-            R.id.third_put -> startActivity<WebActivity>("title" to "祁安理赔")
+            // R.id.third_put -> startActivity<WebActivity>("title" to "祁安理赔")
+            R.id.third_put -> startActivity<SettlementActivity>()
             R.id.third_share -> startActivity<ShareActivity>()
         }
     }

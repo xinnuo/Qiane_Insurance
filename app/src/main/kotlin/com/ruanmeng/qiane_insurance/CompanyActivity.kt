@@ -49,7 +49,7 @@ class CompanyActivity : BaseActivity() {
                                     }
                                 }
 
-                                .clicked(R.id.item_company) {
+                                .clicked(R.id.item_company) { _ ->
                                     list.filter { it.isChecked }.forEach { it.isChecked = false }
                                     data.isChecked = true
                                     (this.adapter as SlimAdapter).notifyDataSetChanged()
