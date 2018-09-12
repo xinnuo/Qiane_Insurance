@@ -31,7 +31,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_size_10"
         android:gravity="center"
-        android:text="经纪人版" />
+        android:text="经纪人版"
+        android:visibility="invisible" />
 
     <LinearLayout
         android:layout_width="match_parent"
