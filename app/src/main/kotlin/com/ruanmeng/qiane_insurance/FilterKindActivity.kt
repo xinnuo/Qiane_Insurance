@@ -99,9 +99,13 @@ class FilterKindActivity : BaseActivity() {
                             }
 
                             .clicked(R.id.item_company) { _ ->
-                                list.filter { it is CommonData && it.isChecked && it.type == data.type }
-                                        .forEach { (it as CommonData).isChecked = false }
-                                data.isChecked = true
+                                list.filter {
+                                    it is CommonData
+                                            && it.isChecked
+                                            && it.type == data.type
+                                            && !data.isChecked
+                                }.forEach { (it as CommonData).isChecked = false }
+                                data.isChecked = !data.isChecked
                                 mAdapter.notifyDataSetChanged()
                             }
                 }
@@ -109,7 +113,7 @@ class FilterKindActivity : BaseActivity() {
 
         clearBT.onClick { _ ->
             list.filter { it is CommonData && it.isChecked }
-                .forEach { (it as CommonData).isChecked = false }
+                    .forEach { (it as CommonData).isChecked = false }
             mAdapter.notifyDataSetChanged()
         }
 

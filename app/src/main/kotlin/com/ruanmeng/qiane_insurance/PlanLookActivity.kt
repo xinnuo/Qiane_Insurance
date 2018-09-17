@@ -44,6 +44,7 @@ import java.net.URLEncoder
 class PlanLookActivity : BaseActivity() {
 
     private lateinit var webView: WebView
+    private var outCurrentHref = ""
 
     @Suppress("DEPRECATION")
     @SuppressLint("SetJavaScriptEnabled")
@@ -115,16 +116,17 @@ class PlanLookActivity : BaseActivity() {
                     @Suppress("DEPRECATION")
                     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
 
+                        if (outCurrentHref.isEmpty()) outCurrentHref = url
+
                         if ("tel:" in url) makeCall(url.replace("tel:", ""))
 
                         if (!(url.startsWith("https://") || url.startsWith("http://"))) return true
-                        // if (!url.isWeb()) return true
 
-                        if (url.endsWith("apk") || "productclause_download" in url) browse(url)
+                        if (url.endsWith(".apk")
+                                || url.endsWith(".pdf")
+                                || "productclause_download" in url) browse(url)
                         else {
-                            if ("pingan" in url) {
-                                if ("index.do" !in url) ivRight.gone()
-                            }
+                            if ("pingan" in url && "index.do" !in url) ivRight.gone()
 
                             if ("m_aliPay_sub.hm" in url || "m_weixin_pay.hm" in url) {
                                 EventBus.getDefault().post(RefreshMessageEvent("订单支付"))
@@ -278,7 +280,7 @@ class PlanLookActivity : BaseActivity() {
                                 .subscribe({ inner ->
                                     val strHint = StringBuilder()
                                     val itemGender = inner.select("div.gender").select("span")
-                                    itemGender.forEach { strHint.append(inner.text()) }
+                                    itemGender.forEach { _ -> strHint.append(inner.text()) }
                                     strHint.append("，")
 
                                     val items = inner.select("ul.info-class").select("li")
@@ -349,6 +351,14 @@ class PlanLookActivity : BaseActivity() {
 
                                             showShareDialog(inner.title(), descContent, outHref, imgUrl)
                                         }, { showToast("网络数据解析失败") })
+                            } else {
+                                try {
+                                    showShareDialog(tvTitle.text.toString(),
+                                            tvTitle.text.toString(),
+                                            outHref)
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
                             }
                         }
                     }
@@ -361,7 +371,7 @@ class PlanLookActivity : BaseActivity() {
         if (webView.canGoBack()) {
             // webView.settings.cacheMode = WebSettings.LOAD_NO_CACHE //设置无缓存
 
-            when(intent.getStringExtra("type")) {
+            when (intent.getStringExtra("type")) {
                 "订单支付" -> super.onBackPressed()
                 "产品详情" -> {
                     EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
@@ -373,14 +383,21 @@ class PlanLookActivity : BaseActivity() {
                     val urlDetail = BaseHttp.product_detils + intent.getStringExtra("productinId") + "&userInfoId=$userInfoId"
 
                     if (outHref.isEmpty()) {
-                        if (urlThis != urlDetail) webView.loadUrl(urlDetail)
+                        if (BaseHttp.product_detils !in urlThis) webView.loadUrl(urlDetail)
                         else super.onBackPressed()
                     } else {
-                        if (urlThis != outHref && "index.do" !in urlThis) {
-                            ivRight.visible()
-                            webView.loadUrl(outHref)
+                        val urlThisShort = urlThis.split("?")[0]
+                        val outHrefShort = outHref.split("?")[0]
+
+                        when {
+                            "mobile.health.pingan.com" in outHref -> {
+                                if (urlThisShort != outHrefShort) {
+                                    ivRight.visible()
+                                    webView.loadUrl(outHref)
+                                } else super.onBackPressed()
+                            }
+                            else -> super.onBackPressed()
                         }
-                        else super.onBackPressed()
                     }
                 }
                 else -> {
