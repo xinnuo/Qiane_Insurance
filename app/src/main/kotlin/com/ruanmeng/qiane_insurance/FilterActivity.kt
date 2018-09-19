@@ -130,12 +130,12 @@ class FilterActivity : BaseActivity() {
         list.add(CommonData().apply {
             title = "默认排序"
             type = "排序"
-            insuranceTypeId = "1"
+            insuranceTypeId = "0"
         })
         list.add(CommonData().apply {
             title = "推广费优先"
             type = "排序"
-            insuranceTypeId = "0"
+            insuranceTypeId = "1"
         })
 
         val insuranceTypeIds = intent.getStringExtra("id") ?: ""
