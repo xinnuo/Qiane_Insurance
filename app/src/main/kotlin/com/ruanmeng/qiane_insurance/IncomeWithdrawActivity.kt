@@ -3,6 +3,7 @@ package com.ruanmeng.qiane_insurance
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.InputFilter
+import android.text.InputType
 import android.view.View
 import com.lzg.extend.StringDialogCallback
 import com.lzy.okgo.OkGo
@@ -63,13 +64,15 @@ class IncomeWithdrawActivity : BaseActivity() {
                             withdraw_hint.text = "银行卡卡号"
                             et_num.hint = "请输入银行卡卡号"
                             et_num.setText("")
+                            et_num.inputType = InputType.TYPE_CLASS_NUMBER
                             et_num.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(19))
                         }
                         1 -> {
                             withdraw_hint.text = "支付宝账号"
                             et_num.hint = "请输入支付宝账号"
                             et_num.setText("")
-                            et_num.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(11))
+                            et_num.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+                            et_num.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(30))
                         }
                     }
                 }
@@ -83,7 +86,7 @@ class IncomeWithdrawActivity : BaseActivity() {
                         }
                     }
                     1 -> {
-                        if (!et_num.text.toString().isMobile()) {
+                        if (!et_num.text.toString().isMobile() && !et_num.text.toString().isEmail()) {
                             showToast("请输入正确的支付宝账号")
                             return
                         }

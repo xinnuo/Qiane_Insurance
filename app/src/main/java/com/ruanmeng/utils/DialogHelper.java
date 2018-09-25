@@ -152,10 +152,24 @@ public class DialogHelper {
             final int count,
             final String title,
             final boolean isCurrentDate,
-            final boolean isLimited,
+            final boolean isBeforeLimited,
             final DateItemCallBack callback) {
         showDateDialog(context, minYearValue, maxYearValue, count, title, -1, -1 ,
-                -1, -1, -1, isCurrentDate, isLimited, callback);
+                -1, -1, -1, isCurrentDate, isBeforeLimited, false, callback);
+    }
+
+    public static void showDateDialog(
+            final Context context,
+            final int minYearValue,
+            final int maxYearValue,
+            final int count,
+            final String title,
+            final boolean isCurrentDate,
+            final boolean isBeforeLimited,
+            final boolean isAfterLimited,
+            final DateItemCallBack callback) {
+        showDateDialog(context, minYearValue, maxYearValue, count, title, -1, -1 ,
+                -1, -1, -1, isCurrentDate, isBeforeLimited, isAfterLimited, callback);
     }
 
     public static void showDateDialog(
@@ -166,12 +180,44 @@ public class DialogHelper {
             final int initYear,
             final int initMonth,
             final int initDay,
-            final boolean isLimited,
+            final boolean isBeforeLimited,
             final DateItemCallBack callback) {
         showDateDialog(context, minYearValue, maxYearValue, 3, title, initYear, initMonth ,
-                initDay, 0, 0, false, isLimited, callback);
+                initDay, 0, 0, false, isBeforeLimited, false, callback);
     }
 
+    public static void showDateDialog(
+            final Context context,
+            final int minYearValue,
+            final int maxYearValue,
+            final String title,
+            final int initYear,
+            final int initMonth,
+            final int initDay,
+            final boolean isBeforeLimited,
+            final boolean isAfterLimited,
+            final DateItemCallBack callback) {
+        showDateDialog(context, minYearValue, maxYearValue, 3, title, initYear, initMonth ,
+                initDay, 0, 0, false, isBeforeLimited, isAfterLimited, callback);
+    }
+
+    /**
+     * 时间选择器（R.layout.dialog_select_time 布局文件）
+     * @param context 上下文
+     * @param minYearValue    最小年份
+     * @param maxYearValue    最大年份
+     * @param count           年、月、日、时、分、秒的显示个数
+     * @param title           标题
+     * @param initYear        默认年
+     * @param initMonth       默认月
+     * @param initDay         默认日
+     * @param initHour        默认时
+     * @param initMinute      默认分
+     * @param isCurrentDate   是否默认选择当天日期（与默认年、月、日、时、分互斥）
+     * @param isBeforeLimited 是否可以选择该年内，当天前的日期
+     * @param isAfterLimited  是否可以选择该年内，当天后的日期（前后日期互斥）
+     * @param callback        回调接口
+     */
     public static void showDateDialog(
             final Context context,
             final int minYearValue,
@@ -184,7 +230,8 @@ public class DialogHelper {
             final int initHour,
             final int initMinute,
             final boolean isCurrentDate,
-            final boolean isLimited,
+            final boolean isBeforeLimited,
+            final boolean isAfterLimited,
             final DateItemCallBack callback) {
 
         BottomBaseDialog dialog = new BottomBaseDialog(context) {
@@ -260,12 +307,20 @@ public class DialogHelper {
                         int month_now = calendar.get(Calendar.MONTH);
                         int day_now = calendar.get(Calendar.DAY_OF_MONTH);
 
-                        if (isLimited && year == year_now) {
+                        if (isBeforeLimited && year == year_now) {
                             if (month < month_now + 1) {
                                 month = month_now + 1;
                                 day = day_now;
                             }
                             if (month == month_now + 1 && day < day_now) day = day_now;
+                        }
+
+                        if (isAfterLimited && year == year_now) {
+                            if (month > month_now + 1) {
+                                month = month_now + 1;
+                                day = day_now;
+                            }
+                            if (month == month_now + 1 && day > day_now) day = day_now;
                         }
 
                         String date_new;

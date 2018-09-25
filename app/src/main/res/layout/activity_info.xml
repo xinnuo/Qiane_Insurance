@@ -288,6 +288,84 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_height"
+        android:layout_marginEnd="@dimen/dimen_size_10"
+        android:layout_marginStart="@dimen/dimen_size_10"
+        android:background="@color/divider" />
+
+    <LinearLayout
+        android:id="@+id/info_card_ll"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:gravity="center_vertical"
+        android:onClick="doClick"
+        android:paddingEnd="@dimen/dimen_size_10"
+        android:paddingStart="@dimen/dimen_size_10">
+
+        <TextView
+            style="@style/Font14_black"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="绑定银行卡" />
+
+        <TextView
+            android:id="@+id/info_card"
+            style="@style/Font14_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="未绑定" />
+
+        <ImageView
+            android:layout_width="@dimen/dimen_size_12"
+            android:layout_height="@dimen/dimen_size_12"
+            android:layout_marginStart="@dimen/dimen_size_5"
+            android:src="@mipmap/per_top_icon05"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:layout_marginEnd="@dimen/dimen_size_10"
+        android:layout_marginStart="@dimen/dimen_size_10"
+        android:background="@color/divider" />
+
+    <LinearLayout
+        android:id="@+id/info_alipay_ll"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:gravity="center_vertical"
+        android:onClick="doClick"
+        android:paddingEnd="@dimen/dimen_size_10"
+        android:paddingStart="@dimen/dimen_size_10">
+
+        <TextView
+            style="@style/Font14_black"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="绑定支付宝" />
+
+        <TextView
+            android:id="@+id/info_alipay"
+            style="@style/Font14_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="未绑定" />
+
+        <ImageView
+            android:layout_width="@dimen/dimen_size_12"
+            android:layout_height="@dimen/dimen_size_12"
+            android:layout_marginStart="@dimen/dimen_size_5"
+            android:src="@mipmap/per_top_icon05"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
         android:background="@color/divider" />
 
 </LinearLayout>

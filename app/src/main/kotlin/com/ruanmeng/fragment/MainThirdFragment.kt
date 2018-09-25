@@ -70,6 +70,8 @@ class MainThirdFragment : BaseFragment() {
                         putString("realName", obj.optString("realName"))
                         putString("userhead", obj.optString("userhead"))
                         putString("sex", obj.optString("sex", "1"))
+                        putString("bankNo", obj.optString("bankNo"))
+                        putString("alipay", obj.optString("alipay"))
                         putString("pass", obj.optString("pass"))
                         putString("companyId", obj.optString("companyId"))
                         putString("balance", obj.optStringNotEmpty("balance", "0.00"))

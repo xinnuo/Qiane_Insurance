@@ -56,8 +56,8 @@ class ClientFormActivity : BaseActivity() {
                             }
 
                             .clicked(R.id.item_form) {
-                                startActivity<WebActivity>(
-                                        "title" to "订单详情",
+                                startActivity<PlanLookActivity>(
+                                        "type" to "订单详情",
                                         "goodsOrderId" to data.goodsOrderId)
                             }
                 }

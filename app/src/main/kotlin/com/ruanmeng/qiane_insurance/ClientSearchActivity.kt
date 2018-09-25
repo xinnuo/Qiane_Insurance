@@ -154,7 +154,8 @@ class ClientSearchActivity : BaseActivity() {
                 })
     }
 
-    fun updateList() {
+    private fun updateList() {
+        OkGo.getInstance().cancelTag(this@ClientSearchActivity)
         empty_view.gone()
         if (list.isNotEmpty()) {
             list.clear()

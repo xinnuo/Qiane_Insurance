@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pop_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/pop_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E8E8E8"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen_size_15">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <TextView
+                style="@style/Font14_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dimen_size_15"
+                android:text="日期" />
+
+            <TextView
+                android:id="@+id/pop_start"
+                style="@style/Font14_gray"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rec_bg_white"
+                android:hint="起始日期"
+                android:paddingBottom="@dimen/dimen_size_3"
+                android:paddingLeft="@dimen/dimen_size_10"
+                android:paddingRight="@dimen/dimen_size_10"
+                android:paddingTop="@dimen/dimen_size_3" />
+
+            <TextView
+                style="@style/Font14_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dimen_size_15"
+                android:layout_marginStart="@dimen/dimen_size_15"
+                android:text="至" />
+
+            <TextView
+                android:id="@+id/pop_end"
+                style="@style/Font14_gray"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rec_bg_white"
+                android:hint="结束日期"
+                android:paddingBottom="@dimen/dimen_size_3"
+                android:paddingLeft="@dimen/dimen_size_10"
+                android:paddingRight="@dimen/dimen_size_10"
+                android:paddingTop="@dimen/dimen_size_3" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_size_15"
+            android:gravity="center_vertical">
+
+            <TextView
+                style="@style/Font14_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dimen_size_15"
+                android:text="金额"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/pop_filter"
+                style="@style/Font15_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rec_bg_white_stroke_light"
+                android:paddingBottom="@dimen/dimen_size_5"
+                android:paddingLeft="@dimen/dimen_size_20"
+                android:paddingRight="@dimen/dimen_size_20"
+                android:paddingTop="@dimen/dimen_size_5"
+                android:text="确定" />
+
+            <TextView
+                android:id="@+id/pop_reset"
+                style="@style/Font15_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_size_20"
+                android:background="@drawable/rec_bg_white_stroke_light"
+                android:paddingBottom="@dimen/dimen_size_5"
+                android:paddingLeft="@dimen/dimen_size_20"
+                android:paddingRight="@dimen/dimen_size_20"
+                android:paddingTop="@dimen/dimen_size_5"
+                android:text="重置" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

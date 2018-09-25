@@ -582,22 +582,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_size_10"
-                android:background="@drawable/rec_bg_white_r5"
+                android:background="@drawable/rec_bg_background_r5"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_size_40"
-                    android:background="@drawable/rec_bg_background_r5_top"
                     android:gravity="center_vertical">
 
-                    <ImageView
+                    <CheckBox
+                        android:id="@+id/planer_select"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:button="@null"
+                        android:drawableStart="@drawable/rb_plan_selector"
                         android:paddingEnd="@dimen/dimen_size_10"
-                        android:paddingStart="@dimen/dimen_size_10"
-                        android:src="@mipmap/plan_choose_icon01"
-                        tools:ignore="ContentDescription" />
+                        android:paddingStart="@dimen/dimen_size_10" />
 
                     <TextView
                         style="@style/Font15_black_medium"
@@ -619,78 +619,96 @@
 
                 </LinearLayout>
 
-                <LinearLayout
+                <net.cachapa.expandablelayout.ExpandableLayout
+                    android:id="@+id/planer_expand"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/line_height"
-                    android:gravity="center_vertical"
-                    android:paddingEnd="@dimen/dimen_size_10"
-                    android:paddingStart="@dimen/dimen_size_10">
+                    android:layout_height="wrap_content"
+                    app:el_duration="300"
+                    app:el_expanded="false">
 
-                    <TextView
-                        style="@style/Font14_black"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="姓名：" />
-
-                    <EditText
-                        android:id="@+id/planr_name"
-                        style="@style/Font14_black"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/transparent"
-                        android:hint="输入姓名可生成封面"
-                        android:maxLength="16"
-                        android:paddingEnd="@dimen/dimen_size_10"
-                        android:paddingStart="@dimen/dimen_size_10"
-                        android:singleLine="true" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/divider_height"
-                    android:background="@color/divider" />
-
-                <RadioGroup
-                    android:id="@+id/planer_check"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/line_height"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingEnd="@dimen/dimen_size_10"
-                    android:paddingStart="@dimen/dimen_size_10">
-
-                    <TextView
-                        style="@style/Font14_black"
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="性别：" />
+                        android:orientation="vertical">
 
-                    <RadioButton
-                        android:id="@+id/planer_check1"
-                        style="@style/Font14_black"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:button="@null"
-                        android:drawablePadding="@dimen/dimen_size_5"
-                        android:drawableStart="@drawable/rb_plan_selector"
-                        android:paddingEnd="@dimen/dimen_size_10"
-                        android:paddingStart="@dimen/dimen_size_10"
-                        android:text="男" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/line_height"
+                            android:background="@color/white"
+                            android:gravity="center_vertical"
+                            android:paddingEnd="@dimen/dimen_size_10"
+                            android:paddingStart="@dimen/dimen_size_10">
 
-                    <RadioButton
-                        android:id="@+id/planer_check2"
-                        style="@style/Font14_black"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:button="@null"
-                        android:drawablePadding="@dimen/dimen_size_5"
-                        android:drawableStart="@drawable/rb_plan_selector"
-                        android:paddingEnd="@dimen/dimen_size_10"
-                        android:paddingStart="@dimen/dimen_size_10"
-                        android:text="女" />
+                            <TextView
+                                style="@style/Font14_black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="姓名：" />
 
-                </RadioGroup>
+                            <EditText
+                                android:id="@+id/planr_name"
+                                style="@style/Font14_black"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/transparent"
+                                android:hint="输入姓名可生成封面"
+                                android:maxLength="16"
+                                android:paddingEnd="@dimen/dimen_size_10"
+                                android:paddingStart="@dimen/dimen_size_10"
+                                android:singleLine="true" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/divider_height"
+                            android:background="@color/divider" />
+
+                        <RadioGroup
+                            android:id="@+id/planer_check"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/line_height"
+                            android:background="@drawable/rec_bg_white_r5_bottom"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingEnd="@dimen/dimen_size_10"
+                            android:paddingStart="@dimen/dimen_size_10">
+
+                            <TextView
+                                style="@style/Font14_black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="性别：" />
+
+                            <RadioButton
+                                android:id="@+id/planer_check1"
+                                style="@style/Font14_black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:button="@null"
+                                android:drawablePadding="@dimen/dimen_size_5"
+                                android:drawableStart="@drawable/rb_plan_selector"
+                                android:paddingEnd="@dimen/dimen_size_10"
+                                android:paddingStart="@dimen/dimen_size_10"
+                                android:text="男" />
+
+                            <RadioButton
+                                android:id="@+id/planer_check2"
+                                style="@style/Font14_black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:button="@null"
+                                android:drawablePadding="@dimen/dimen_size_5"
+                                android:drawableStart="@drawable/rb_plan_selector"
+                                android:paddingEnd="@dimen/dimen_size_10"
+                                android:paddingStart="@dimen/dimen_size_10"
+                                android:text="女" />
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                </net.cachapa.expandablelayout.ExpandableLayout>
 
             </LinearLayout>
 

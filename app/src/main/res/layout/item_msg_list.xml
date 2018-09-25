@@ -15,24 +15,53 @@
             android:id="@+id/item_msg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/dimen_size_10">
+            android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/item_msg_time"
-                style="@style/Font13_gray"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="时间" />
+            <ImageView
+                android:id="@+id/item_msg_img"
+                android:layout_width="@dimen/dimen_size_45"
+                android:layout_height="@dimen/dimen_size_45"
+                android:layout_marginStart="@dimen/dimen_size_10"
+                android:src="@mipmap/icon_msg01" />
 
-            <TextView
-                android:id="@+id/item_msg_content"
-                style="@style/Font14_black"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_size_10"
-                android:lineSpacingExtra="@dimen/dimen_size_3"
-                android:text="内容" />
+                android:orientation="vertical"
+                android:padding="@dimen/dimen_size_10">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/item_msg_title"
+                        style="@style/Font14_black"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="标题" />
+
+                    <TextView
+                        android:id="@+id/item_msg_time"
+                        style="@style/Font13_light"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="时间" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/item_msg_content"
+                    style="@style/Font14_light"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_size_10"
+                    android:lineSpacingExtra="@dimen/dimen_size_3"
+                    android:text="内容" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

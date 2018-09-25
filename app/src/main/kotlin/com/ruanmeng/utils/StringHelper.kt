@@ -4,7 +4,7 @@ import java.util.regex.Pattern
 
 /**
  * 姓名替换，保留姓氏
- * 如果身姓名为空 或者 null ,返回空 ；否则，返回替换后的字符串；
+ * 如果姓名为空 或者 null ,返回空 ；否则，返回替换后的字符串；
  */
 fun String.nameReplaceWithStar(): String = when {
     isNullOrEmpty() -> ""
@@ -13,7 +13,7 @@ fun String.nameReplaceWithStar(): String = when {
 
 /**
  * 手机号号替换，保留前三位和后四位
- * 如果身手机号为空 或者 null ,返回空 ；否则，返回替换后的字符串；
+ * 如果手机号为空 或者 null ,返回空 ；否则，返回替换后的字符串；
  */
 fun String.phoneReplaceWithStar(): String = when {
     isNullOrEmpty() -> ""

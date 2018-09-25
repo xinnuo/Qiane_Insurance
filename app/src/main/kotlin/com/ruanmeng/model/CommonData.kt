@@ -47,6 +47,10 @@ data class CommonData(
         var productprospectusId: String = "",
         var type: String = "",
 
+        //热门标签
+        var hotsearchId: String = "",
+        var searchLabel: String = "",
+
         //计划书列表
         var prospectusId: String = "",
         var prospectusImg: String = "",
@@ -139,6 +143,8 @@ data class CommonData(
         //消息列表
         var msgReceiveId: String = "",
         var sendDate: String = "",
+        var msgTitle: String = "",
+        var msgType: String = "",
         var content: String = "",
 
         //客户列表

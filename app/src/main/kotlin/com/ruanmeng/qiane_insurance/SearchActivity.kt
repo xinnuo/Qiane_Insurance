@@ -14,7 +14,6 @@ import com.ruanmeng.model.CommonData
 import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.utils.ActivityStack
 import com.ruanmeng.utils.KeyboardHelper
-import com.ruanmeng.utils.Tools
 import com.zhy.view.flowlayout.FlowLayout
 import com.zhy.view.flowlayout.TagAdapter
 import kotlinx.android.synthetic.main.activity_search.*
@@ -24,8 +23,7 @@ import kotlinx.android.synthetic.main.layout_title_search.*
 import net.idik.lib.slimadapter.SlimAdapter
 import org.jetbrains.anko.sdk25.listeners.textChangedListener
 import org.jetbrains.anko.startActivity
-import org.json.JSONArray
-import java.util.ArrayList
+import java.util.*
 
 class SearchActivity : BaseActivity() {
 
@@ -39,7 +37,7 @@ class SearchActivity : BaseActivity() {
         setToolbarVisibility(false)
         init_title()
 
-        updateHistory()
+        getHotList()
     }
 
     override fun init_title() {
@@ -69,7 +67,7 @@ class SearchActivity : BaseActivity() {
                             }
 
                             .visibility(R.id.item_first_price, if (data.type == "1") View.GONE else View.VISIBLE)
-                            // .visibility(R.id.item_first_tui, if (data.type == "1") View.GONE else View.VISIBLE)
+                            .visibility(R.id.item_first_tui, if (data.type == "1") View.GONE else View.VISIBLE)
                             .visibility(R.id.item_first_divider1, if (isLast) View.GONE else View.VISIBLE)
                             .visibility(R.id.item_first_divider2, if (!isLast) View.GONE else View.VISIBLE)
 
@@ -96,7 +94,6 @@ class SearchActivity : BaseActivity() {
         search_edit.textChangedListener {
             onTextChanged { s, _, _, _ ->
                 if (s!!.isEmpty()) {
-                    updateHistory()
                     search_history.visible()
                     empty_view.gone()
 
@@ -112,11 +109,6 @@ class SearchActivity : BaseActivity() {
                     showToast("请输入关键字")
                 } else {
                     keyWord = search_edit.text.trim().toString()
-
-                    val arr = if (getString("history").isEmpty()) JSONArray() else JSONArray(getString("history"))
-                    if (keyWord !in arr.toString()) arr.put(keyWord)
-                    putString("history", arr.toString())
-
                     updateList()
                 }
             }
@@ -157,17 +149,32 @@ class SearchActivity : BaseActivity() {
                 })
     }
 
-    private fun updateHistory() {
-        listHistory = Tools.jsonArrayToList(getString("history"))
-        search_hot.adapter = object : TagAdapter<String>(listHistory) {
+    private fun getHotList() {
+        OkGo.post<BaseResponse<ArrayList<CommonData>>>(BaseHttp.hot_search_list)
+                .tag(this@SearchActivity)
+                .execute(object : JacksonDialogCallback<BaseResponse<ArrayList<CommonData>>>(baseContext, true) {
 
-            override fun getView(parent: FlowLayout, position: Int, item: String): View {
-                val flowTitle = View.inflate(baseContext, R.layout.item_search_hot_flow, null) as TextView
-                flowTitle.text = item
-                return flowTitle
-            }
+                    override fun onSuccess(response: Response<BaseResponse<ArrayList<CommonData>>>) {
 
-        }
+                        val listItem = ArrayList<CommonData>()
+                        listItem.addItems(response.body().`object`)
+                        listItem.mapTo(listHistory) { it.searchLabel }
+                        // listHistory = Tools.jsonArrayToList(getString("history"))
+
+                        if (listHistory.isNotEmpty()) {
+                            search_hot.adapter = object : TagAdapter<String>(listHistory) {
+
+                                override fun getView(parent: FlowLayout, position: Int, item: String): View {
+                                    val flowTitle = View.inflate(baseContext, R.layout.item_search_hot_flow, null) as TextView
+                                    flowTitle.text = item
+                                    return flowTitle
+                                }
+
+                            }
+                        }
+                    }
+
+                })
     }
 
     private fun updateList() {
@@ -189,10 +196,6 @@ class SearchActivity : BaseActivity() {
             R.id.search_cancel -> {
                 if (search_edit.text.isNotEmpty()) search_edit.setText("")
                 else ActivityStack.screenManager.popActivities(this::class.java)
-            }
-            R.id.search_del -> {
-                putString("history", "")
-                updateHistory()
             }
         }
     }

@@ -89,7 +89,7 @@ class MainActivity : BaseActivity() {
             R.id.third_point_ll -> startActivity<PointActivity>()
             R.id.third_order, R.id.third_order_all  -> startActivity<OrderActivity>()
             R.id.third_order_pay -> startActivity<OrderActivity>("position" to 1)
-            R.id.third_order_out -> startActivity<OrderActivity>("position" to 2)
+            R.id.third_order_out -> startActivity<OrderActivity>("position" to 5)
             R.id.third_get -> startActivity<InfoRealActivity>("title" to "获取资质证书", "hint" to "去认证")
             R.id.third_guest -> startActivity<ClientActivity>()
             R.id.third_plan -> startActivity<PlanMineActivity>()

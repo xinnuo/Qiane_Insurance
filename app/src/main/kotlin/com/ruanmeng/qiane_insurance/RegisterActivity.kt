@@ -141,7 +141,10 @@ class RegisterActivity : BaseActivity() {
                                 showToast(msg)
                                 val obj = JSONObject(response.body()).optJSONObject("object") ?: JSONObject()
                                 val token = obj.optString("token")
-                                startActivity<RegisterDoneActivity>("token" to token)
+                                startActivity<RegisterDoneActivity>(
+                                        "token" to token,
+                                        "account" to mTel,
+                                        "password" to et_pwd.text.toString())
                                 ActivityStack.screenManager.popActivities(this@RegisterActivity::class.java)
                             }
 

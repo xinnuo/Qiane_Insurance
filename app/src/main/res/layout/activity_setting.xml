@@ -140,6 +140,39 @@
             android:background="@color/divider" />
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_height"
+            android:gravity="center_vertical"
+            android:onClick="doClick"
+            android:paddingEnd="@dimen/dimen_size_5"
+            android:paddingStart="@dimen/dimen_size_10">
+
+            <TextView
+                style="@style/Font14_gray"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="是否仅WiFi环境下播放视频" />
+
+            <com.suke.widget.SwitchButton
+                android:id="@+id/setting_video"
+                android:layout_width="@dimen/dimen_size_50"
+                android:layout_height="@dimen/dimen_size_30"
+                app:sb_checked="true"
+                app:sb_checked_color="@color/colorAccent"
+                app:sb_shadow_effect="false"
+                app:sb_show_indicator="false" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_marginEnd="@dimen/dimen_size_10"
+            android:layout_marginStart="@dimen/dimen_size_10"
+            android:background="@color/divider" />
+
+        <LinearLayout
             android:id="@+id/setting_cache_ll"
             android:layout_width="match_parent"
             android:layout_height="@dimen/line_height"

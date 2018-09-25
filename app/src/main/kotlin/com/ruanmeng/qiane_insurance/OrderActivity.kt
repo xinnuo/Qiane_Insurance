@@ -1,193 +1,49 @@
 package com.ruanmeng.qiane_insurance
 
 import android.os.Bundle
-import com.ruanmeng.utils.Tools
+import android.support.v4.app.Fragment
+import com.ruanmeng.base.BaseActivity
+import com.ruanmeng.fragment.OrderFragment
+import java.util.*
+import com.ruanmeng.fragment.TabFragmentAdapter
 import kotlinx.android.synthetic.main.activity_order.*
-import android.support.v4.content.ContextCompat
-import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
-import com.lzg.extend.BaseResponse
-import com.lzg.extend.jackson.JacksonDialogCallback
-import com.lzy.okgo.OkGo
-import com.lzy.okgo.model.Response
-import com.ruanmeng.base.*
-import com.ruanmeng.model.CommonData
-import com.ruanmeng.model.RefreshMessageEvent
-import com.ruanmeng.share.BaseHttp
-import com.ruanmeng.utils.isNumeric
-import kotlinx.android.synthetic.main.layout_empty.*
-import kotlinx.android.synthetic.main.layout_list.*
-import net.idik.lib.slimadapter.SlimAdapter
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.jetbrains.anko.design.listeners.onTabSelectedListener
-import org.jetbrains.anko.dip
-import org.jetbrains.anko.startActivity
-import java.text.DecimalFormat
-import java.util.ArrayList
+import org.jetbrains.anko.collections.forEachWithIndex
 
 class OrderActivity : BaseActivity() {
 
-    private val list = ArrayList<Any>()
     private var tabPosition = 0
-    private var mStatus = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order)
         init_title("我的订单")
-
-        EventBus.getDefault().register(this@OrderActivity)
     }
 
     override fun init_title() {
         super.init_title()
         tabPosition = intent.getIntExtra("position", 0)
 
-        order_tab.apply {
-            (getChildAt(0) as LinearLayout).apply {
-                showDividers = LinearLayout.SHOW_DIVIDER_MIDDLE
-                dividerDrawable = ContextCompat.getDrawable(baseContext, R.drawable.divider_vertical)
-                dividerPadding = dip(15)
-            }
-
-            onTabSelectedListener {
-                onTabSelected {
-                    mStatus = when (it!!.position) {
-                        1 -> "0"
-                        2 -> "3"
-                        else -> ""
-                    }
-
-                    OkGo.getInstance().cancelTag(this@OrderActivity)
-                    window.decorView.postDelayed({ updateList() }, 300)
-                }
-            }
-
-            addTab(this.newTab().setText("全部"), tabPosition == 0)
-            addTab(this.newTab().setText("待付款"), tabPosition == 1)
-            addTab(this.newTab().setText("已出单"), tabPosition == 2)
-
-            post { Tools.setIndicator(this, 30, 30) }
+        val titles = listOf("全部", "待付款", "付款失败", "付款中", "已付款", "已出单", "已生效", "已失效")
+        val fragments = ArrayList<Fragment>()
+        titles.forEachWithIndex { position, _ ->
+            fragments.add(OrderFragment().apply {
+                arguments = Bundle().apply { putString("status", when (position) {
+                    1 -> "0"
+                    2 -> "-1"
+                    3 -> "1"
+                    4 -> "2"
+                    5 -> "3"
+                    6 -> "4"
+                    7 -> "5"
+                    else -> ""
+                }) }
+            })
         }
 
-        empty_hint.text = "暂无相关订单信息"
-        swipe_refresh.refresh { getData(1) }
-        recycle_list.load_Linear(baseContext, swipe_refresh) {
-            if (!isLoadingMore) {
-                isLoadingMore = true
-                getData(pageNum)
-            }
-        }
-
-        mAdapter = SlimAdapter.create()
-                .register<CommonData>(R.layout.item_order_list) { data, injector ->
-                    injector.invisible(R.id.item_order_around)
-                            .text(R.id.item_order_time, data.createDate)
-                            .text(R.id.item_order_title, data.productName)
-                            .text(R.id.item_order_plan, "投保人：${data.buyName}")
-                            .text(R.id.item_order_planed, "被保人：${data.coverName}")
-                            .text(R.id.item_order_money, "订单金额：${data.payCost}元")
-                            .text(R.id.item_order_range,
-                                    "投保期间：${data.startDate.replace("-", ".")} - ${data.endDate.replace("-", ".")}")
-                            .text(R.id.item_order_status, when (data.status) {
-                                "-3" -> "已删除"
-                                "-2" -> "投保中"
-                                "-1" -> "付款失败"
-                                "0" -> "待付款"
-                                "1" -> "付款中"
-                                "2" -> "已付款"
-                                "3" -> "已出单"
-                                else -> ""
-                            })
-                            .text(R.id.item_order_around,
-                                    "推广费${if (data.spreadRate.isNumeric()) {
-                                        DecimalFormat("0.##").format(data.spreadRate.toDouble() * 100)
-                                    } else "0"}%")
-
-                            .visibility(R.id.item_order_pay,
-                                    if (data.status in "-1,0,1") View.VISIBLE else View.GONE)
-                            .visibility(R.id.item_order_divider,
-                                    if (list.indexOf(data) == 0) View.VISIBLE else View.GONE)
-
-                            .with<ImageView>(R.id.item_order_img) {
-                                it.setImageURL(BaseHttp.baseImg + data.productImg)
-                            }
-
-                            .clicked(R.id.item_order_pay) {
-                                startActivity<PlanLookActivity>(
-                                        "type" to "订单支付",
-                                        "goodsOrderId" to data.goodsOrderId)
-                            }
-
-                            .clicked(R.id.item_order) {
-                                startActivity<PlanLookActivity>(
-                                        "type" to "订单详情",
-                                        "goodsOrderId" to data.goodsOrderId)
-                            }
-                }
-                .attachTo(recycle_list)
-    }
-
-    override fun getData(pindex: Int) {
-        OkGo.post<BaseResponse<ArrayList<CommonData>>>(BaseHttp.goodsorder_list_data)
-                .tag(this@OrderActivity)
-                .headers("token", getString("token"))
-                .params("status", mStatus)
-                .params("page", pindex)
-                .execute(object : JacksonDialogCallback<BaseResponse<ArrayList<CommonData>>>(baseContext) {
-
-                    override fun onSuccess(response: Response<BaseResponse<ArrayList<CommonData>>>) {
-
-                        list.apply {
-                            if (pindex == 1) {
-                                clear()
-                                pageNum = pindex
-                            }
-                            addItems(response.body().`object`)
-                            if (count(response.body().`object`) > 0) pageNum++
-                        }
-
-                        mAdapter.updateData(list)
-                    }
-
-                    override fun onFinish() {
-                        super.onFinish()
-                        swipe_refresh.isRefreshing = false
-                        isLoadingMore = false
-
-                        empty_view.apply { if (list.isEmpty()) visible() else gone() }
-                    }
-
-                })
-    }
-
-    private fun updateList() {
-        swipe_refresh.isRefreshing = true
-
-        empty_view.visibility = View.GONE
-        if (list.isNotEmpty()) {
-            list.clear()
-            mAdapter.notifyDataSetChanged()
-        }
-
-        pageNum = 1
-        getData(pageNum)
-    }
-
-    override fun finish() {
-        EventBus.getDefault().unregister(this@OrderActivity)
-        super.finish()
-    }
-
-    @Subscribe
-    fun onMessageEvent(event: RefreshMessageEvent) {
-        when (event.type) {
-            "订单支付" -> {
-                swipe_refresh.isRefreshing = true
-                getData(1)
-            }
-        }
+        order_tab.removeAllTabs()
+        order_container.adapter = TabFragmentAdapter(supportFragmentManager, titles, fragments)
+        // 为TabLayout设置ViewPager
+        order_tab.setupWithViewPager(order_container)
+        order_tab.getTabAt(tabPosition)?.select()
     }
 }

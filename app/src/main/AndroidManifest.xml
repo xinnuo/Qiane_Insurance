@@ -98,6 +98,9 @@
             android:name=".InfoJobActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".InfoBindActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".CardActivity"
             android:screenOrientation="portrait" />
         <activity

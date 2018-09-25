@@ -27,6 +27,8 @@ public class BaseHttp {
     public static String certification_sub = baseIp + "/certification_sub.rm";                 //实名认证√
     public static String user_profession_info = baseIp + "/user_profession_info.rm";           //职业信息√
     public static String add_profession_info = baseIp + "/add_profession_info.rm";             //修改职业信息√
+    public static String edit_useralipay = baseIp + "/edit_useralipay.rm";                     //绑定支付宝√
+    public static String edit_userbankNo = baseIp + "/edit_userbankNo.rm";                     //绑定银行卡√
     public static String user_business_card = baseIp + "/user_business_card.rm";               //名片信息√
     public static String userinfo_uploadWechat_sub = baseIp + "/userinfo_uploadWechat_sub.rm"; //上传二维码√
     public static String edit_company = baseIp + "/edit_company.rm";                           //更新公司√
@@ -47,6 +49,7 @@ public class BaseHttp {
 
     public static String index_data = baseIp + "/index_data.rm";                           //首页√
     public static String index_productprospectus = baseIp + "/index_productprospectus.rm"; //首页列表√
+    public static String hot_search_list = baseIp + "/hot_search_list.rm";                 //热门标签√
     public static String prospectus_list_data = baseIp + "/prospectus_list_data.rm";       //计划书列表√
     public static String prospectus_detils = baseIp + "/prospectus_detils.rm";             //计划书详情√
     public static String items_byAge = baseIp + "/items_byAge.rm";                         //根据年龄获取选项值√

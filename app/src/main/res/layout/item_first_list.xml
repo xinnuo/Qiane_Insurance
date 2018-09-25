@@ -73,8 +73,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_size_10"
                     android:text="推广费0%"
-                    android:textColor="@color/colorAccent"
-                    android:visibility="gone" />
+                    android:textColor="@color/colorAccent" />
 
             </LinearLayout>
 

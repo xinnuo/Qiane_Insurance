@@ -12,6 +12,7 @@ import com.ruanmeng.utils.ActivityStack
 import com.ruanmeng.utils.CommonUtil
 import com.ruanmeng.utils.NameLengthFilter
 import kotlinx.android.synthetic.main.activity_info_real.*
+import org.jetbrains.anko.startActivity
 
 class InfoRealActivity : BaseActivity() {
 
@@ -81,6 +82,10 @@ class InfoRealActivity : BaseActivity() {
                                 override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
 
                                     showToast(msg)
+                                    startActivity<InfoJobActivity>(
+                                            "token" to intent.getStringExtra("token"),
+                                            "account" to intent.getStringExtra("account"),
+                                            "password" to intent.getStringExtra("password"))
                                     ActivityStack.screenManager.popActivities(this@InfoRealActivity::class.java)
                                 }
 

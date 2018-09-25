@@ -316,7 +316,7 @@ class ClientAddActivity : BaseActivity() {
                                     it.tag = textWatcher
                                 }
 
-                                .clicked(R.id.item_address_type_ll) {
+                                .clicked(R.id.item_address_type_ll) { _ ->
                                     showLoadingDialog()
 
                                     getProvince(object : ResultCallBack{
@@ -390,7 +390,7 @@ class ClientAddActivity : BaseActivity() {
                     .attachTo(this)
         }
 
-        tvRight.setOneClickListener(View.OnClickListener {
+        tvRight.setOneClickListener(View.OnClickListener { _ ->
             if (et_name.text.isEmpty()) {
                 showToast("请输入姓名")
                 return@OnClickListener
@@ -542,6 +542,7 @@ class ClientAddActivity : BaseActivity() {
                         3,
                         "选择出生日期",
                         true,
+                        false,
                         true) { _, _, _, _, _, date ->
 
                     client_birth.text = date

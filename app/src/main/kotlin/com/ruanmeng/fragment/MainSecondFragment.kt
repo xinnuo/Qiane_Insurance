@@ -79,7 +79,7 @@ class MainSecondFragment : BaseFragment() {
                     injector.text(R.id.item_first_name, data.productName)
                             .text(R.id.item_first_price, "${data.productSum}元")
                             .text(R.id.item_first_content, data.synopsis)
-                            .text(R.id.item_first_tui, "推广费${(data.recommendSum.toDouble() * 100).toInt()}%")
+                            .text(R.id.item_first_tui, "推广费${if (data.recommendSum.isEmpty()) 0 else (data.recommendSum.toDouble() * 100).toInt()}%")
 
                             .with<ImageView>(R.id.item_first_img) {
                                 it.setImageURL(BaseHttp.baseImg + data.productImg)

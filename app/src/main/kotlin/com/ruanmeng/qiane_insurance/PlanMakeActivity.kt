@@ -109,6 +109,7 @@ class PlanMakeActivity : BaseActivity() {
 
         EventBus.getDefault().register(this@PlanMakeActivity)
 
+        planer_select.isChecked = true
         getData()
     }
 
@@ -137,6 +138,20 @@ class PlanMakeActivity : BaseActivity() {
         plane_select.onCheckedChange { _, isChecked ->
             if (isChecked) plane_expand.expand()
             else plane_expand.collapse()
+        }
+
+        planer_select.onCheckedChange { _, isChecked ->
+            if (isChecked) {
+                planer_expand.expand()
+                planr_in.visible()
+            }
+            else {
+                planer_expand.collapse()
+                planr_in.gone()
+                planr_name.setText("")
+                planer_check1.isChecked = true
+                mPlanerSex = 1
+            }
         }
 
         plane_select.onTouch { _, _ -> return@onTouch !plan_select.isChecked }

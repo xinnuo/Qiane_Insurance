@@ -100,6 +100,8 @@ class LoginActivity : BaseActivity() {
         putString("realName", "")
         putString("userhead", "")
         putString("sex", "")
+        putString("bankNo", "")
+        putString("alipay", "")
         putString("pass", "")
         putString("companyId", "")
         putString("companyName", "")

@@ -16,9 +16,7 @@ import com.lzy.okgo.model.Response
 import com.ruanmeng.base.*
 import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.share.Const
-import com.ruanmeng.utils.DialogHelper
-import com.ruanmeng.utils.KeyboardHelper
-import com.ruanmeng.utils.NameLengthFilter
+import com.ruanmeng.utils.*
 import kotlinx.android.synthetic.main.activity_info.*
 import org.jetbrains.anko.sdk25.listeners.textChangedListener
 import org.jetbrains.anko.startActivity
@@ -46,6 +44,9 @@ class InfoActivity : BaseActivity() {
             "1" -> "已认证"
             else -> "未认证"
         }
+
+        info_card.text = if (getString("bankNo").isEmpty()) "未绑定" else getString("bankNo").bankCardReplaceHeaderWithStar()
+        info_alipay.text = if (getString("alipay").isEmpty()) "未绑定" else getString("alipay").phoneReplaceWithStar()
     }
 
     override fun init_title() {
@@ -189,6 +190,16 @@ class InfoActivity : BaseActivity() {
             }
             R.id.info_job -> startActivity<InfoJobActivity>()
             R.id.info_clear -> info_nick.setText("")
+            R.id.info_card_ll -> {
+                startActivity<InfoBindActivity>(
+                        "title" to "绑定银行卡",
+                        "type" to "1")
+            }
+            R.id.info_alipay_ll -> {
+                startActivity<InfoBindActivity>(
+                        "title" to "绑定支付宝",
+                        "type" to "2")
+            }
         }
     }
 

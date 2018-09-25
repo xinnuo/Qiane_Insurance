@@ -5,10 +5,7 @@ import android.view.View
 import com.lzg.extend.StringDialogCallback
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.model.Response
-import com.ruanmeng.base.BaseActivity
-import com.ruanmeng.base.getString
-import com.ruanmeng.base.putString
-import com.ruanmeng.base.showToast
+import com.ruanmeng.base.*
 import com.ruanmeng.model.RefreshMessageEvent
 import com.ruanmeng.share.BaseHttp
 import com.ruanmeng.utils.ActivityStack
@@ -20,6 +17,7 @@ import org.json.JSONObject
 
 class InfoJobActivity : BaseActivity() {
 
+    private var token = ""
     private var companyId = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +33,7 @@ class InfoJobActivity : BaseActivity() {
     override fun init_title() {
         super.init_title()
         companyId = getString("companyId")
+        token = if (getBoolean("isLogin")) getString("token") else intent.getStringExtra("token")
 
         bt_ok.setBackgroundResource(R.drawable.rec_bg_d0d0d0)
         bt_ok.isClickable = false
@@ -53,7 +52,7 @@ class InfoJobActivity : BaseActivity() {
             R.id.bt_ok -> {
                 OkGo.post<String>(BaseHttp.add_profession_info)
                         .tag(this@InfoJobActivity)
-                        .headers("token", getString("token"))
+                        .headers("token", token)
                         .params("companyId", companyId)
                         .params("workNumber", job_number.text.toString())
                         .execute(object : StringDialogCallback(baseContext) {
@@ -61,10 +60,12 @@ class InfoJobActivity : BaseActivity() {
                             override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
 
                                 showToast(msg)
-                                putString("companyId", companyId)
-                                putString("companyName", job_company.text.toString())
-                                EventBus.getDefault().post(RefreshMessageEvent("更新公司", companyId, job_company.text.toString()))
-                                ActivityStack.screenManager.popActivities(this@InfoJobActivity::class.java)
+                                if (getBoolean("isLogin")) {
+                                    putString("companyId", companyId)
+                                    putString("companyName", job_company.text.toString())
+                                    EventBus.getDefault().post(RefreshMessageEvent("更新公司", companyId, job_company.text.toString()))
+                                    ActivityStack.screenManager.popActivities(this@InfoJobActivity::class.java)
+                                } else getLoginData()
                             }
 
                         })
@@ -72,10 +73,36 @@ class InfoJobActivity : BaseActivity() {
         }
     }
 
+    private fun getLoginData() {
+        OkGo.post<String>(BaseHttp.login_sub)
+                .tag(this@InfoJobActivity)
+                .params("accountName", intent.getStringExtra("account"))
+                .params("password", intent.getStringExtra("password"))
+                .params("loginType", "mobile")
+                .execute(object : StringDialogCallback(baseContext) {
+
+                    override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
+
+                        val obj = JSONObject(response.body()).optJSONObject("object")
+                                ?: JSONObject()
+
+                        putBoolean("isLogin", true)
+                        putString("token", obj.optString("token"))
+                        putString("mobile", obj.optString("mobile"))
+                        putString("companyId", obj.optString("companyId"))
+                        putString("companyName", obj.optString("companyName"))
+
+                        startActivity<MainActivity>()
+                        ActivityStack.screenManager.popActivities(this@InfoJobActivity::class.java, LoginActivity::class.java)
+                    }
+
+                })
+    }
+
     override fun getData() {
         OkGo.post<String>(BaseHttp.user_profession_info)
                 .tag(this@InfoJobActivity)
-                .headers("token", getString("token"))
+                .headers("token", token)
                 .execute(object : StringDialogCallback(baseContext) {
 
                     override fun onSuccessResponse(response: Response<String>, msg: String, msgCode: String) {
