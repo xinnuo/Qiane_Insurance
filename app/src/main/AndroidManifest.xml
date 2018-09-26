@@ -19,7 +19,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".GuideActivity"
             android:screenOrientation="portrait">
@@ -178,6 +179,15 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".SettlementActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ServiceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ContactActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PlatformActivity"
             android:screenOrientation="portrait" />
 
         <!-- JPush start -->

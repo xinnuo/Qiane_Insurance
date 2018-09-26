@@ -96,6 +96,9 @@ class MainActivity : BaseActivity() {
             // R.id.third_put -> startActivity<WebActivity>("title" to "祁安理赔")
             R.id.third_put -> startActivity<SettlementActivity>()
             R.id.third_share -> startActivity<ShareActivity>()
+            R.id.third_service -> startActivity<ServiceActivity>()
+            R.id.third_contact -> startActivity<ContactActivity>()
+            R.id.third_platform -> startActivity<PlatformActivity>()
         }
     }
 

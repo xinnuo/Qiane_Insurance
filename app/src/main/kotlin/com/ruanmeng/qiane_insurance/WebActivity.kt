@@ -71,8 +71,10 @@ class WebActivity : BaseActivity() {
         init_title(intent.getStringExtra("title"))
 
         when (intent.getStringExtra("title")) {
-            "祁安理赔", "关于我们", "注册协议",
-            "提现规则", "积分规则" -> {
+            "祁安理赔", "关于我们", "注册协议", "提现规则", "积分规则",
+            "佣金结算问题", "会员活动问题", "常见问题", "APP使用问题",
+            "合作电话", "合作邮箱", "客服电话", "客服QQ", "客服邮箱", "投诉建议电话",
+            "公司相关拍照和证件", "授权合作单位列表" -> {
                 OkGo.post<String>(BaseHttp.help_center)
                         .tag(this@WebActivity)
                         .params("htmlKey", when (intent.getStringExtra("title")) {
@@ -81,6 +83,18 @@ class WebActivity : BaseActivity() {
                             "注册协议" -> "zcxy"
                             "提现规则" -> "txgz"
                             "积分规则" -> "gfgz"
+                            "佣金结算问题" -> "yjjswt"
+                            "会员活动问题" -> "hyhdwt"
+                            "常见问题" -> "kfcjwt"
+                            "APP使用问题" -> "appsywt"
+                            "合作电话" -> "hzdh"
+                            "合作邮箱" -> "hzyx"
+                            "客服电话" -> "kfdh"
+                            "客服QQ" -> "kfqq"
+                            "客服邮箱" -> "kfyx"
+                            "投诉建议电话" -> "tsjydh"
+                            "公司相关拍照和证件" -> "gszz"
+                            "授权合作单位列表" -> "sqdw"
                             else -> ""
                         })
                         .execute(object : StringDialogCallback(baseContext) {

@@ -550,6 +550,126 @@
 
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_height"
+                    android:layout_marginEnd="@dimen/dimen_size_10"
+                    android:layout_marginStart="@dimen/dimen_size_10"
+                    android:background="@color/divider" />
+
+                <LinearLayout
+                    android:id="@+id/third_service"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:gravity="center_vertical"
+                    android:onClick="doClick"
+                    android:paddingEnd="@dimen/dimen_size_10"
+                    android:paddingStart="@dimen/dimen_size_10"
+                    tools:ignore="OnClick">
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_size_20"
+                        android:layout_height="@dimen/dimen_size_20"
+                        android:src="@mipmap/per_fun_icon03"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        style="@style/Font14_black"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_size_5"
+                        android:layout_weight="1"
+                        android:text="客服" />
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_size_12"
+                        android:layout_height="@dimen/dimen_size_12"
+                        android:layout_marginStart="@dimen/dimen_size_5"
+                        android:src="@mipmap/per_top_icon05"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_height"
+                    android:layout_marginEnd="@dimen/dimen_size_10"
+                    android:layout_marginStart="@dimen/dimen_size_10"
+                    android:background="@color/divider" />
+
+                <LinearLayout
+                    android:id="@+id/third_contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:gravity="center_vertical"
+                    android:onClick="doClick"
+                    android:paddingEnd="@dimen/dimen_size_10"
+                    android:paddingStart="@dimen/dimen_size_10"
+                    tools:ignore="OnClick">
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_size_20"
+                        android:layout_height="@dimen/dimen_size_20"
+                        android:src="@mipmap/per_fun_icon04"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        style="@style/Font14_black"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_size_5"
+                        android:layout_weight="1"
+                        android:text="联系我们" />
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_size_12"
+                        android:layout_height="@dimen/dimen_size_12"
+                        android:layout_marginStart="@dimen/dimen_size_5"
+                        android:src="@mipmap/per_top_icon05"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_height"
+                    android:layout_marginEnd="@dimen/dimen_size_10"
+                    android:layout_marginStart="@dimen/dimen_size_10"
+                    android:background="@color/divider" />
+
+                <LinearLayout
+                    android:id="@+id/third_platform"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:gravity="center_vertical"
+                    android:onClick="doClick"
+                    android:paddingEnd="@dimen/dimen_size_10"
+                    android:paddingStart="@dimen/dimen_size_10"
+                    tools:ignore="OnClick">
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_size_20"
+                        android:layout_height="@dimen/dimen_size_20"
+                        android:src="@mipmap/per_fun_icon05"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        style="@style/Font14_black"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_size_5"
+                        android:layout_weight="1"
+                        android:text="平台资质" />
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_size_12"
+                        android:layout_height="@dimen/dimen_size_12"
+                        android:layout_marginStart="@dimen/dimen_size_5"
+                        android:src="@mipmap/per_top_icon05"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <View
