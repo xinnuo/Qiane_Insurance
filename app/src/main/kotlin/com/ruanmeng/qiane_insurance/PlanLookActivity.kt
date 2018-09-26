@@ -44,7 +44,6 @@ import java.net.URLEncoder
 class PlanLookActivity : BaseActivity() {
 
     private lateinit var webView: WebView
-    private var outCurrentHref = ""
 
     @Suppress("DEPRECATION")
     @SuppressLint("SetJavaScriptEnabled")
@@ -116,24 +115,28 @@ class PlanLookActivity : BaseActivity() {
                     @Suppress("DEPRECATION")
                     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
 
-                        if (outCurrentHref.isEmpty()) outCurrentHref = url
-
-                        if ("tel:" in url) makeCall(url.replace("tel:", ""))
-
-                        if (!(url.startsWith("https://") || url.startsWith("http://"))) return true
-
-                        if (url.endsWith(".apk")
-                                || url.endsWith(".pdf")
-                                || "productclause_download" in url) browse(url)
-                        else {
-                            if ("pingan" in url && "index.do" !in url) ivRight.gone()
-
-                            if ("m_aliPay_sub.hm" in url || "m_weixin_pay.hm" in url) {
-                                EventBus.getDefault().post(RefreshMessageEvent("订单支付"))
+                        when {
+                            "tel:" in url -> makeCall(url.replace("tel:", ""))
+                            !url.startsWith("https://")
+                                    && !url.startsWith("http://") -> {
+                                if (url.startsWith("weixin://wap/pay?")) browse(url)
+                                return true
                             }
+                            url.endsWith(".apk")
+                                    || url.endsWith(".pdf")
+                                    || "productclause_download" in url -> browse(url)
+                            else -> {
+                                if ("pingan" in url && "index.do" !in url) ivRight.gone()
+                                if ("m_aliPay_sub.hm" in url
+                                        || "m_weixin_pay.hm" in url)
+                                    EventBus.getDefault().post(RefreshMessageEvent("订单支付"))
 
-                            view.loadUrl(url)
-                            return true
+                                //H5微信支付要用，不然说"商家参数格式有误"
+                                val extraHeaders = HashMap<String, String>()
+                                extraHeaders["Referer"] = BuildConfig.API_HOST
+                                view.loadUrl(url, extraHeaders)
+                                return true
+                            }
                         }
                         return super.shouldOverrideUrlLoading(view, url)
                     }
@@ -438,6 +441,7 @@ class PlanLookActivity : BaseActivity() {
     @Suppress("unused")
     inner class JsInteration {
 
+        @SuppressLint("CheckResult")
         @JavascriptInterface
         fun openDialog(id: String) {
             EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
@@ -460,6 +464,7 @@ class PlanLookActivity : BaseActivity() {
         @JavascriptInterface
         fun openEditUser() = startActivity<CardEditActivity>()
 
+        @SuppressLint("CheckResult")
         @JavascriptInterface
         fun openShareUser(userId: String, fromuserId: String) {
             val urlShare = BaseHttp.user_businessCard + fromuserId + "&userinfoId=$userId"
