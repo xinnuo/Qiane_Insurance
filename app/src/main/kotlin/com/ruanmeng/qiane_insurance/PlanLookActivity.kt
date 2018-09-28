@@ -116,7 +116,7 @@ class PlanLookActivity : BaseActivity() {
                     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
 
                         when {
-                            "tel:" in url -> makeCall(url.replace("tel:", ""))
+                            "tel:" in url -> return makeCall(url.replace("tel:", ""))
                             !url.startsWith("https://")
                                     && !url.startsWith("http://") -> {
                                 if (url.startsWith("weixin://wap/pay?")) browse(url)
@@ -124,7 +124,7 @@ class PlanLookActivity : BaseActivity() {
                             }
                             url.endsWith(".apk")
                                     || url.endsWith(".pdf")
-                                    || "productclause_download" in url -> browse(url)
+                                    || "productclause_download" in url -> return browse(url)
                             else -> {
                                 if ("pingan" in url && "index.do" !in url) ivRight.gone()
                                 if ("m_aliPay_sub.hm" in url
@@ -138,7 +138,6 @@ class PlanLookActivity : BaseActivity() {
                                 return true
                             }
                         }
-                        return super.shouldOverrideUrlLoading(view, url)
                     }
 
                     /*
