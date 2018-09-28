@@ -46,6 +46,7 @@ public class BaseHttp {
     public static String edit_usercustomer_sub = baseIp + "/edit_usercustomer_sub.rm";         //修改客户√
     public static String delete_usercustomer_sub = baseIp + "/delete_usercustomer_sub.rm";     //删除客户√
     public static String find_usercustome_data = baseIp + "/find_usercustome_data.rm";         //搜索客户√
+    public static String certification_info = baseIp + "/certification_info.rm";               //认证信息√
 
     public static String index_data = baseIp + "/index_data.rm";                           //首页√
     public static String index_productprospectus = baseIp + "/index_productprospectus.rm"; //首页列表√

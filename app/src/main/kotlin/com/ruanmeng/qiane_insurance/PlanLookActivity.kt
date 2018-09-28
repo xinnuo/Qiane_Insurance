@@ -124,7 +124,8 @@ class PlanLookActivity : BaseActivity() {
                             }
                             url.endsWith(".apk")
                                     || url.endsWith(".pdf")
-                                    || "productclause_download" in url -> return browse(url)
+                                    || "productclause_download" in url
+                                    || "baoxintj.hm" in url -> return browse(url)
                             else -> {
                                 if ("pingan" in url && "index.do" !in url) ivRight.gone()
                                 if ("m_aliPay_sub.hm" in url
