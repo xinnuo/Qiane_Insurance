@@ -65,6 +65,9 @@ public class BaseHttp {
     public static String insurancetype_list_data = baseIp + "/insurancetype_list_data.rm"; //保险种类√
     public static String read_prospectus_info = baseIp + "/read_prospectus_info.rm";       //计划书阅读列表√
 
+    public static String find_msg_praise = baseIp + "/find_msg_praise.rm";             //是否点赞√
+    public static String add_msg_praise = baseIp + "/add_msg_praise.rm";               //点赞√
+    public static String cancel_msg_praise = baseIp + "/cancel_msg_praise.rm";         //取消点赞√
     public static String msg_list_data = baseIp + "/msg_list_data.rm";                 //资讯列表√
     public static String information_list_data = baseIp + "/information_list_data.rm"; //资讯列表√
     public static String information_detail = baseIp + "/information_detail.rm";       //资讯详情√

@@ -570,7 +570,7 @@
                     <ImageView
                         android:layout_width="@dimen/dimen_size_20"
                         android:layout_height="@dimen/dimen_size_20"
-                        android:src="@mipmap/per_fun_icon03"
+                        android:src="@mipmap/per_fun_icon06"
                         tools:ignore="ContentDescription" />
 
                     <TextView
@@ -610,7 +610,7 @@
                     <ImageView
                         android:layout_width="@dimen/dimen_size_20"
                         android:layout_height="@dimen/dimen_size_20"
-                        android:src="@mipmap/per_fun_icon04"
+                        android:src="@mipmap/per_fun_icon07"
                         tools:ignore="ContentDescription" />
 
                     <TextView
@@ -650,7 +650,7 @@
                     <ImageView
                         android:layout_width="@dimen/dimen_size_20"
                         android:layout_height="@dimen/dimen_size_20"
-                        android:src="@mipmap/per_fun_icon05"
+                        android:src="@mipmap/per_fun_icon08"
                         tools:ignore="ContentDescription" />
 
                     <TextView

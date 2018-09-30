@@ -69,8 +69,7 @@ class MessageActivity : BaseActivity() {
                             .visibility(R.id.item_msg_divider2, if (!isLast) View.GONE else View.VISIBLE)
 
                             .clicked(R.id.item_msg) {
-                                startActivity<WebActivity>(
-                                        "title" to "消息详情",
+                                startActivity<MessageDetailActivity>(
                                         "hint" to when (data.msgType) {
                                             "0" -> "精选活动"
                                             "1" -> "通知消息"
@@ -79,6 +78,7 @@ class MessageActivity : BaseActivity() {
                                             else -> "消息"
                                         },
                                         "time" to data.sendDate,
+                                        "msgId" to data.msgReceiveId,
                                         "content" to data.content)
                             }
                 }

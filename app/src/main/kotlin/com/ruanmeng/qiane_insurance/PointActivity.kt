@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.layout_list.*
 import net.idik.lib.slimadapter.SlimAdapter
 import net.idik.lib.slimadapter.SlimAdapterEx
 import org.jetbrains.anko.*
+import org.jetbrains.anko.sdk25.listeners.onClick
 import org.json.JSONObject
 import java.text.DecimalFormat
 import java.util.ArrayList
@@ -92,10 +93,22 @@ class PointActivity : BaseActivity() {
                 view { backgroundColorResource = R.color.background }.lparams(height = dip(10))
                 view { backgroundColorResource = R.color.divider }.lparams(height = dip(0.5f))
 
-                themedTextView("积分明细", R.style.Font15_black) {
-                    gravity = Gravity.CENTER_VERTICAL
-                    setPadding(dip(10), 0, 0, 0)
-                }.lparams(width = matchParent, height = dip(40))
+                linearLayout {
+                    lparams(width = matchParent, height = dip(40))
+
+                    themedTextView("积分明细", R.style.Font15_black) {
+                        gravity = Gravity.CENTER_VERTICAL
+                    }.lparams(height = matchParent) {
+                        marginStart = dip(10)
+                        weight = 1f
+                    }
+
+                    themedTextView("积分任务", R.style.Font15_black) {
+                        gravity = Gravity.CENTER_VERTICAL
+                        setPadding(dip(10), dip(0), dip(10), dip(0))
+                        onClick { startActivity<PointListActivity>() }
+                    }.lparams(height = matchParent)
+                }
 
                 view { backgroundColorResource = R.color.divider }.lparams(height = dip(0.5f))
             }

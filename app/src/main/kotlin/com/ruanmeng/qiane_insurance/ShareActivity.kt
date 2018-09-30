@@ -190,6 +190,7 @@ class ShareActivity : BaseActivity() {
     }
 
     inner class JsInteration {
+        @SuppressLint("CheckResult")
         @Suppress("unused")
         @JavascriptInterface
         fun openDialog() {

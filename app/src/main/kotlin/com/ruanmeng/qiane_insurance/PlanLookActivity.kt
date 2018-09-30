@@ -298,6 +298,19 @@ class PlanLookActivity : BaseActivity() {
                                 }, { showToast("网络数据解析失败") })
                     }
                     "产品详情" -> {
+                        if (getString("pass") != "1") {
+                            when (getString("pass")) {
+                                "-1" -> {
+                                    showToast("实名认证正在认证中，请等待审核通过后分享！")
+                                    return
+                                }
+                                else -> {
+                                    showToast("未通过实名认证，暂无法分享！")
+                                    return
+                                }
+                            }
+                        }
+
                         val outHref = intent.getStringExtra("outHref")
                         if (outHref.isEmpty()) {
                             val productinId = intent.getStringExtra("productinId")
@@ -444,6 +457,19 @@ class PlanLookActivity : BaseActivity() {
         @SuppressLint("CheckResult")
         @JavascriptInterface
         fun openDialog(id: String) {
+            if (getString("pass") != "1") {
+                when (getString("pass")) {
+                    "-1" -> {
+                        showToast("实名认证正在认证中，请等待审核通过后分享！")
+                        return
+                    }
+                    else -> {
+                        showToast("未通过实名认证，暂无法分享！")
+                        return
+                    }
+                }
+            }
+
             EncryptUtil.DESIV = EncryptUtil.getiv(Const.MAKER)
             val encodeStr = DESUtil.encode(EncryptUtil.getkey(Const.MAKER), getString("token")).replace("/n", "")
             val userInfoId = URLEncoder.encode(encodeStr, "utf-8")

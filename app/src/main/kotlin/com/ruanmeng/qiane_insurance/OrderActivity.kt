@@ -23,7 +23,7 @@ class OrderActivity : BaseActivity() {
         super.init_title()
         tabPosition = intent.getIntExtra("position", 0)
 
-        val titles = listOf("全部", "待付款", "付款失败", "付款中", "已付款", "已出单", "已生效", "已失效")
+        val titles = listOf("全部", "待付款", "付款失败", "付款中", "已付款", "已出单", "保障中", "已失效")
         val fragments = ArrayList<Fragment>()
         titles.forEachWithIndex { position, _ ->
             fragments.add(OrderFragment().apply {

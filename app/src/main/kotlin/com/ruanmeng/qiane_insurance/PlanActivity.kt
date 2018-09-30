@@ -115,6 +115,7 @@ class PlanActivity : BaseActivity() {
     override fun getData(pindex: Int) {
         OkGo.post<BaseResponse<ArrayList<CommonData>>>(BaseHttp.prospectus_list_data)
                 .tag(this@PlanActivity)
+                .isMultipart(true)
                 .params("companyId", companyId)
                 .params("title", keyword)
                 .params("page", pindex)

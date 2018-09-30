@@ -39,6 +39,9 @@
             android:name=".MessageActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".MessageDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".PlanActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -121,6 +124,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".PointActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PointListActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".OrderActivity"
