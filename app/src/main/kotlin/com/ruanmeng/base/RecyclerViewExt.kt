@@ -72,7 +72,7 @@ fun RecyclerView.load_Linear(mContext: Activity,
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                val total = layoutManager.itemCount
+                val total = layoutManager!!.itemCount
                 val lastVisibleItem = (layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                 //lastVisibleItem >= totalItemCount - 4 表示剩下4个item自动加载，各位自由选择
                 // dy > 0 表示向下滑动
@@ -119,7 +119,7 @@ fun RecyclerView.load_Grid(refreshLayout: SwipeRefreshLayout? = null,
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                val total = layoutManager.itemCount
+                val total = layoutManager!!.itemCount
                 val lastVisibleItem = (layoutManager as GridLayoutManager).findLastVisibleItemPosition()
                 //lastVisibleItem >= totalItemCount - 4 表示剩下4个item自动加载，各位自由选择
                 // dy > 0 表示向下滑动

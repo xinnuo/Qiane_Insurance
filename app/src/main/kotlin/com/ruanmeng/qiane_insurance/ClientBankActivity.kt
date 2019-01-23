@@ -68,7 +68,7 @@ class ClientBankActivity : BaseActivity() {
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        if (et_card.text.isNotBlank()
+        if (et_card.text!!.isNotBlank()
                 && client_bank.text.isNotBlank()
                 && et_tel.text.isNotBlank()) {
             bt_save.setBackgroundResource(R.drawable.rec_bg_red)
